@@ -15,14 +15,16 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->integer('price');
-            $table->boolean('active');
+            $table->date('departure_date');
+            $table->integer('phone_number')->nullable();
+            $table->string('hotel_address')->nullable();
             $table->timestamps();
         });
 
         DB::table('trips')->insert([
             'name' => 'Ramadan Umrah',
+            'departure_date' => '2025-01-25',
             'price' => 40000,
-            'active' => 1,
         ]);
     }
 

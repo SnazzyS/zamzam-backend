@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Trip;
 
+use App\Models\Trip;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\TripStoreRequest;
 
 class TripStoreController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(TripStoreRequest $request)
     {
-        
+        Trip::create($request->validated());
+
+        return response()->json(['message' => 'Trip created successfully'], 201);
     }
 }
