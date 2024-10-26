@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Customer\CustomerPhotoStoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
@@ -23,3 +24,5 @@ Route::put('/trips/{trip:id}', TripUpdateController::class);
 Route::post('trips/{trip:id}/customer', CustomerStoreController::class);
 // Route::get('trips/{trip:id}/{customer:id}', CustomerShowController::class);
 Route::put('trips/{trip:id}/customer/{customer:id}', CustomerUpdateController::class);
+
+Route::post('trips/{trip:id}/customer/{customer:id}/photo', CustomerPhotoStoreController::class);
