@@ -9,10 +9,6 @@ class Room extends Model
 {
     use HasFactory;
 
-    public function customers()
-    {
-        return $this->hasMany(Customer::class);
-    }
 
     public function trip()
     {

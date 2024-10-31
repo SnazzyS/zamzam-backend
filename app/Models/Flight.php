@@ -13,4 +13,9 @@ class Flight extends Model
     {
         return $this->hasMany(Customer::class);
     }
+
+    public function customerTrips()
+    {
+        return $this->hasMany(CustomerTrip::class);
+    }
 }

@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->string('phone_number')->nullable();
             $table->string('hotel_address')->nullable();
             $table->boolean('trip_status')->default(1);
-            // $table->string('trip_code')->nullable();
             $table->timestamps();
         });
 

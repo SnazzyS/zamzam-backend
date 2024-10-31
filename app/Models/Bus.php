@@ -14,10 +14,10 @@ class Bus extends Model
         return $this->belongsTo(Trip::class);
     }
 
-    public function customers()
+    public function customerTrips()
     {
         return $this->hasMany(Trip::class);
     }
 
-    
+
 }

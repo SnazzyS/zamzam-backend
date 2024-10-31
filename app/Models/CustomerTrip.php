@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class CustomerTrip extends Model
+class CustomerTrip extends Pivot
 {
-    use HasFactory;
+    // use HasFactory;
 
     protected $table = 'customer_trip';
+
+    public $timestamps = true;
+
 
     protected $fillable = [
         'customer_id',
@@ -22,11 +26,6 @@ class CustomerTrip extends Model
     ];
 
     
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
-
     public function trip()
     {
         return $this->belongsTo(Trip::class);
@@ -35,6 +34,16 @@ class CustomerTrip extends Model
     public function bus()
     {
         return $this->belongsTo(Bus::class);
+    }
+
+    public function flight()
+    {
+        return $this->belongsTo(Flight::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
      
