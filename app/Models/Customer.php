@@ -10,9 +10,8 @@ class Customer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'umrah_id',
         'name',
-        'id_card',
+        'national_id',
         'date_of_birth',
         'island',
         'phone_number',
@@ -22,37 +21,14 @@ class Customer extends Model
         'passport_number',
         'passport_issued_date',
         'passport_expiry_date',
-        'photo',
-        'trip_id'
+        'photo_url'
     ];
 
-    public function trip()
-    {
-        return $this->belongsTo(Trip::class);
-    }
 
-    public function bus()
+    public function trips()
     {
-        return $this->belongsTo(Bus::class);
-    }
-
-    public function flight()
-    {
-        return $this->belongsTo(Flight::class);
-    }
-
-    public function room()
-    {
-        return $this->belongsTo(Room::class);
-    }
-
-    public function localtrip()
-    {
-        return $this->belongsTo(LocalTrip::class);
-    }
-
-    public function photo()
-    {
-        return $this->hasOne(CustomerPhoto::class);
+        return $this->belongsToMany(Trip::class)
+            ->withPivot(['bus_id', 'flight_id', 'room_id', 'umrah_id'])
+            ->withTimestamps();
     }
 }

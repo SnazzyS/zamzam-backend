@@ -10,12 +10,14 @@ class Trip extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'price', 'departure_date', 'phone_number', 'hotel_address'
+        'name', 'price', 'departure_date', 'phone_number', 'hotel_address', 'trip_code'
     ];
 
     public function customers()
     {
-        return $this->hasMany(Customer::class);
+        return $this->belongsToMany(Customer::class)
+            ->withPivot(['bus_id', 'flight_id', 'room_id', 'umrah_id'])
+            ->withTimestamps();
     }
 
     public function buses()

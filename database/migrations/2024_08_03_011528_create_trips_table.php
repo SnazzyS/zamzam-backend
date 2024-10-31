@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Actions\Trip\TripIDGenerator;
 
 return new class extends Migration {
     /**
@@ -16,8 +17,10 @@ return new class extends Migration {
             $table->string('name');
             $table->integer('price');
             $table->date('departure_date');
-            $table->integer('phone_number')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('hotel_address')->nullable();
+            $table->boolean('trip_status')->default(1);
+            // $table->string('trip_code')->nullable();
             $table->timestamps();
         });
 
@@ -25,6 +28,7 @@ return new class extends Migration {
             'name' => 'Ramadan Umrah',
             'departure_date' => '2025-01-25',
             'price' => 40000,
+            // 'trip_code' => (new TripIDGenerator())->generateTripID()
         ]);
     }
 

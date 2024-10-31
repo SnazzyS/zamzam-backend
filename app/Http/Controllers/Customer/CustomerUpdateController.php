@@ -12,6 +12,7 @@ class CustomerUpdateController extends Controller
 {
     public function __invoke(Trip $trip, Customer $customer, CustomerStoreRequest $request)
     {
+
         $data = [
             'name' => $request->name,
             'id_card' => $request->id_card,
@@ -31,7 +32,11 @@ class CustomerUpdateController extends Controller
             $data['passport_expiry_date'] = Carbon::parse($request->passport_issued_date)->addYears(5)->toDateString();
         }
 
+//        if($data['photo_url'])
+
         $customer->update($data);
+
+
 
         return response()->json([
             'messaage' => "Customer updated successfully"

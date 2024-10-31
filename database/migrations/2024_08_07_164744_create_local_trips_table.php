@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('local_trips', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('price_in_usd');
+            $table->integer('price');
             $table->foreignId('trip_id')->constrained();
             $table->foreignId('customer_id')->constrained();
             $table->timestamps();

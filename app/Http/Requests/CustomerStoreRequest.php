@@ -24,12 +24,10 @@ class CustomerStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'id_card' => [
+           'national_id' => [
                 'required',
                 'regex:/^A\d{6}$/',
-                Rule::unique('customers')->where(function ($query) {
-                    return $query->where('trip_id', $this->trip_id);
-                })->ignore($this->route('customer'))
+                // Rule::unique('customers')->ignore($this->route('customer'))
             ],
             'date_of_birth' => ['required', 'date'],
             'island' => ['required', 'string'],

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Actions\Trip\TripIDGenerator;
+use App\Models\Trip;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TripStoreRequest extends FormRequest
@@ -27,6 +29,7 @@ class TripStoreRequest extends FormRequest
             'departure_date' => ['required', 'date'],
             'phone_number' => ['integer'],
             'hotel_address' => ['string']
+            
         ];
     }
 }
