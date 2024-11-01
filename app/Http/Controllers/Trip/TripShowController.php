@@ -11,16 +11,26 @@ class TripShowController extends Controller
 {
     public function __invoke(Trip $trip)
     {
-        $passengers = CustomerTrip::where('trip_id', 1)
-        ->where('bus_id', 1)
-        ->with(['customer']) // Eager load customer data
-        ->get();
+        // $passengersByBus = CustomerTrip::where('trip_id', $trip->id)
+        //     ->whereNotNull('bus_id')
+        //     ->with(['customer' => function ($query) {
+        //         $query->select(
+        //             'id',
+        //             'name',
+        //             'national_id',
+        //             'phone_number',
+        //             'island',
+        //             'gender'
+        //         );
+        //     }])
+        //     ->get()
+        //     ->groupBy('bus_id');
 
-        dd($passengers);
+        // dd($passengersByBus);
         
         
 
-        // return response()->json($trip->load('customers'));
+        return response()->json($trip->load('customers'));
 
         // return response()->json($trip->load(['customers' => function ($query) {
         //     $query->select('id', 'trip_id', 'name', 'date_of_birth', 'phone_number', 'id_card', 'island', 'address');
