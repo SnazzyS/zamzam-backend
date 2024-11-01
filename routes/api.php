@@ -29,6 +29,4 @@ Route::put('trips/{trip:id}/customer/{customer:id}', CustomerUpdateController::c
 
 // bus, have ability to attach users to bus here?
 Route::get('trips/{trip:id}/bus', BusIndexController::class);
-
-// bus show should show the bus details and the customers in the bus in printable format
 Route::get('trips/{trip:id}/bus/{bus:id}', BusShowController::class);

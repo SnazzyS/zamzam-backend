@@ -15,7 +15,7 @@ class BusIndexController extends Controller
             ->whereNotNull('bus_id')
             ->with([
                 'customer' => function ($query) {
-                    $query->select(
+                   x $query->select(
                         'id',
                         'name',
                         'name_in_english',
