@@ -17,16 +17,17 @@ return new class extends Migration {
             $table->integer('bus_number');
             $table->integer('capacity');
             $table->foreignId('trip_id')->constrained();
+            $table->string('color_code')->nullable();
             $table->timestamps();
         });
 
-        DB::table('buses')->insert([
-            'name' => 'Azeebe',
-            'bus_number' => 1,
-            'capacity' => 50,
-            'trip_id' => 1
-            // 'trip_code' => (new TripIDGenerator())->generateTripID()
-        ]);
+        // DB::table('buses')->insert([
+        //     'name' => 'Azeebe',
+        //     'bus_number' => 1,
+        //     'capacity' => 50,
+        //     'trip_id' => 1
+        //     // 'trip_code' => (new TripIDGenerator())->generateTripID()
+        // ]);
     }
 
     

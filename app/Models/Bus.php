@@ -9,6 +9,14 @@ class Bus extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'capacity',
+        'bus_number',
+        'color_code',
+        'trip_id',
+    ];
+
     public function trip()
     {
         return $this->belongsTo(Trip::class);

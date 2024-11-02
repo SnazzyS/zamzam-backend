@@ -34,31 +34,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        DB::table('customers')->insert([
-            // 'umrah_id' => 'T1-101',
-            'name' => 'Mohamed Suhail',
-            'national_id' => 'A249836',
-            'date_of_birth' => '1994-12-06',
-            'island' => 'Hithaadhoo',
-            'phone_number' => 7999065,
-            'address' => 'Rihiveli',
-            'gender' => 'Male',
-            // 'trip_id' => 1
-
-        ]);
-
-        DB::table('customers')->insert([
-            // 'umrah_id' => 'T1-101',
-            'name' => 'Mohamed Ahmed',
-            'national_id' => 'A059874',
-            'date_of_birth' => '1994-12-06',
-            'island' => 'Hithaadhoo',
-            'phone_number' => 7999065,
-            'address' => 'Rihiveli',
-            'gender' => 'Male',
-            // 'trip_id' => 1
-
-        ]);
+  
     }
 
     /**
