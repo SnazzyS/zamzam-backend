@@ -23,12 +23,12 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        DB::table('trips')->insert([
-            'name' => 'Ramadan Umrah',
-            'departure_date' => '2025-01-25',
-            'price' => 40000,
-            // 'trip_code' => (new TripIDGenerator())->generateTripID()
-        ]);
+        // DB::table('trips')->insert([
+        //     'name' => 'Ramadan Umrah',
+        //     'departure_date' => '2025-01-25',
+        //     'price' => 40000,
+        //     // 'trip_code' => (new TripIDGenerator())->generateTripID()
+        // ]);
     }
 
     /**

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class BusIndexController extends Controller
 {
-    public function __invoke(Trip $trip, Request $request)
+    public function __invoke(Trip $trip)
     {
         $buses = CustomerTrip::where('trip_id', $trip->id)
             ->whereNotNull('bus_id')
@@ -32,9 +32,9 @@ class BusIndexController extends Controller
             ->groupBy('bus_id')
             ->map(function ($passengers) {
                 $busDetails = $passengers->first()->bus;
-                
+
                 $totalPassengers = $passengers->count();
-    
+
                 $passengersData = $passengers->map(function ($passenger) {
                     return [
                         'id' => $passenger->customer->id,
@@ -43,7 +43,7 @@ class BusIndexController extends Controller
                         'passport_number' => $passenger->customer->passport_number,
                     ];
                 })->values()->all();
-    
+
                 return [
                     'id' => $busDetails->id,
                     'name' => $busDetails->name,
@@ -51,7 +51,7 @@ class BusIndexController extends Controller
                     'passengers' => $passengersData
                 ];
             });
-    
+
         return response()->json([
             'trip_id' => $trip->id,
             'trip_name' => $trip->name,

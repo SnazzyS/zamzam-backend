@@ -11,6 +11,7 @@ use App\Http\Controllers\Trip\TripShowController;
 use App\Http\Controllers\Bus\BusDestroyController;
 use App\Http\Controllers\Trip\TripStoreController;
 use App\Http\Controllers\Trip\TripUpdateController;
+use App\Http\Controllers\Flight\FlightIndexController;
 use App\Http\Controllers\Customer\CustomerShowController;
 use App\Http\Controllers\Customer\CustomerStoreController;
 use App\Http\Controllers\Customer\CustomerUpdateController;
@@ -35,3 +36,6 @@ Route::get('trips/{trip:id}/bus/{bus:id}', BusShowController::class);
 Route::post('trips/{trip:id}/bus/', BusStoreController::class);
 Route::put('trips/{trip:id}/bus/{bus:id}', BusUpdateController::class);
 Route::delete('trips/{trip:id}/bus/{bus:id}', BusDestroyController::class);
+
+// flight
+Route::get('trips/{trip:id}/flight', FlightIndexController::class);

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CustomerTrip;
 use App\Models\Trip;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
@@ -28,7 +29,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CustomerTableSeeder::class,
-            BusSeederTable::class
+            BusSeederTable::class,
+            CustomerTripTableSeeder::class,
+            FlightTableSeeder::class
       
         ]);
     }

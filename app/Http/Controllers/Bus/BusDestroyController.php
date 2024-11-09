@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Bus;
 
-use App\Http\Controllers\Controller;
+use App\Models\Bus;
+use App\Models\Trip;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BusDestroyController extends Controller
 {

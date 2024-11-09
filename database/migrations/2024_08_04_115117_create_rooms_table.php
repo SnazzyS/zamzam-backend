@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('hotel_name');
+            $table->string('room_name');
             $table->integer('bed_count');
             $table->foreignId('hotel_id');
             $table->timestamps();
