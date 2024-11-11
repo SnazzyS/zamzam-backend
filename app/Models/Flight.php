@@ -9,9 +9,15 @@ class Flight extends Model
 {
     use HasFactory;
 
-    public function customers()
+    protected $fillable = [
+        'name',
+        'trip_id'
+    ];
+
+
+    public function trip()
     {
-        return $this->hasMany(Customer::class);
+        return $this->belongsTo(Trip::class);
     }
 
     public function customerTrips()

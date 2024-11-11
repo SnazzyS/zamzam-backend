@@ -11,7 +11,10 @@ use App\Http\Controllers\Trip\TripShowController;
 use App\Http\Controllers\Bus\BusDestroyController;
 use App\Http\Controllers\Trip\TripStoreController;
 use App\Http\Controllers\Trip\TripUpdateController;
+use App\Http\Controllers\Flight\FlightShowController;
 use App\Http\Controllers\Flight\FlightIndexController;
+use App\Http\Controllers\Flight\FlightStoreController;
+use App\Http\Controllers\Flight\FlightUpdateController;
 use App\Http\Controllers\Customer\CustomerShowController;
 use App\Http\Controllers\Customer\CustomerStoreController;
 use App\Http\Controllers\Customer\CustomerUpdateController;
@@ -33,9 +36,13 @@ Route::put('trips/{trip:id}/customer/{customer:id}', CustomerUpdateController::c
 // bus, have ability to attach users to bus here?
 Route::get('trips/{trip:id}/bus', BusIndexController::class);
 Route::get('trips/{trip:id}/bus/{bus:id}', BusShowController::class);
-Route::post('trips/{trip:id}/bus/', BusStoreController::class);
+Route::post('trips/{trip:id}/bus', BusStoreController::class);
 Route::put('trips/{trip:id}/bus/{bus:id}', BusUpdateController::class);
 Route::delete('trips/{trip:id}/bus/{bus:id}', BusDestroyController::class);
 
 // flight
 Route::get('trips/{trip:id}/flight', FlightIndexController::class);
+Route::get('trips/{trip:id}/flight/{flight:id}', FlightShowController::class)->scopeBindings(false);
+Route::post('trips/{trip:id}/flight', FlightStoreController::class);
+Route::put('trips/{trip:id}/flight/{flight:id}', FlightUpdateController::class);
+Route::delete('trips/{trip:id}/flight/{flight:id}', FlightUpdateController::class);

@@ -13,13 +13,6 @@ class BusShowController extends Controller
 {
     public function __invoke(Trip $trip, Bus $bus)
     {
-        // $bus = Bus::with(['customerTrips' => function ($query) use ($trip) {
-        //     $query->where('trip_id', $trip->id)
-        //         ->with(['customer:id,name,name_in_english,passport_number']);
-        // }])
-        // ->findOrFail($bus->id);
-
-
         $bus = CustomerTrip::where('trip_id', $trip->id)
             ->where('bus_id', $bus->id)
             ->with([
@@ -27,7 +20,6 @@ class BusShowController extends Controller
                 'bus:id,name',
                 ])
             ->get();
-
 
         return response()->json([
             'trip_name' => $trip->name,

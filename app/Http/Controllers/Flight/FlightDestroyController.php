@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Flight;
 
-use App\Http\Controllers\Controller;
+use App\Models\Trip;
+use App\Models\Flight;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FlightDestroyController extends Controller
 {
-    //
+    public function __invoke(Trip $trip, Flight $flight)
+    {
+        dd($flight);
+    }
 }
