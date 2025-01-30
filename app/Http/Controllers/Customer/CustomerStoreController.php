@@ -13,7 +13,6 @@ class CustomerStoreController extends Controller
 {
     public function __invoke(Trip $trip, CustomerStoreRequest $request, UmrahIDGenerator $idgenerator)
     {
-
         $customer = Customer::firstOrCreate(
             ['national_id' => $request->national_id],
             [
@@ -34,7 +33,7 @@ class CustomerStoreController extends Controller
             return response()->json(['message' => 'Customer created and attached to trip'], 201);
         }
 
-        return response()->json(['message' => 'Customer updated and attached to trip'], 200);
+        return response()->json(['message' => 'Customer created'], 200);
 
 
 

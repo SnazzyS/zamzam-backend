@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Models\Trip;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CustomerShowController extends Controller
 {
-    public function __invoke()
+    public function __invoke(Trip $trip, Customer $customer)
     {
-        $customers = Customer::all();
-
-        return response()->json($customers);
+        return response()->json($customer);
     }
 }

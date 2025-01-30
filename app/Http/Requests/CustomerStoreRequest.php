@@ -29,7 +29,7 @@ class CustomerStoreRequest extends FormRequest
            'national_id' => [
                 'required',
                 'regex:/^A\d{6}$/',
-                // Rule::unique('customers')->ignore($this->route('customer'))
+                Rule::unique('customers')->ignore($this->route('customer'))
             ],
             'date_of_birth' => ['required', 'date', 'before:today'],
             'island' => ['required', 'string'],

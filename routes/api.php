@@ -29,17 +29,16 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/dashboard', DashboardController::class);
 
-// creating trips
+//trips
 Route::get('/trips/{trip:id}', TripShowController::class);
 Route::post('/trips', TripStoreController::class);
 Route::put('/trips/{trip:id}', TripUpdateController::class);
 
-// creating customer
-Route::post('trips/{trip:id}/customer', CustomerStoreController::class);
-// Route::get('trips/{trip:id}/{customer:id}', CustomerShowController::class);
+// customers
+Route::post('trips/{trip}/customer', CustomerStoreController::class);
+Route::get('trips/{trip:id}/customer/{customer:id}', CustomerShowController::class);
 Route::put('trips/{trip:id}/customer/{customer:id}', CustomerUpdateController::class);
 Route::delete('trips/{trip}/customer/{customer}', CustomerDetachFromTripController::class);
-
 
 // attach customer to bus
 Route::post('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', CustomerBusAttachController::class);
