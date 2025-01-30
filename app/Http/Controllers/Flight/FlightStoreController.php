@@ -18,7 +18,7 @@ class FlightStoreController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Flight created successfully'
+            'message' => 'ފްލައިޓް ހެދިއްޖެ'
         ], 201);
     }
 }

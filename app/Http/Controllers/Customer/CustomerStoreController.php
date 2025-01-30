@@ -23,10 +23,7 @@ class CustomerStoreController extends Controller
                 'phone_number' => $request->phone_number,
                 'address' => $request->address,
                 'gender' => $request->gender,
-                // 'name_in_english' => $request->name_in_english,
-                // 'passport_number' => $request->passport_number,
-                // 'passport_issued_date' => $request->passport_issued_date,
-                // 'passport_expiry_date' => $request->passport_expiry_date,
+     
             ]
         );
 

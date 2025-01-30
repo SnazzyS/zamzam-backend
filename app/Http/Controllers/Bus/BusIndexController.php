@@ -44,6 +44,7 @@ class BusIndexController extends Controller
                     ];
                 })->values()->all();
 
+
                 return [
                     'id' => $busDetails->id,
                     'name' => $busDetails->name,

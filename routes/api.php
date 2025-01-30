@@ -15,9 +15,13 @@ use App\Http\Controllers\Flight\FlightShowController;
 use App\Http\Controllers\Flight\FlightIndexController;
 use App\Http\Controllers\Flight\FlightStoreController;
 use App\Http\Controllers\Flight\FlightUpdateController;
+use App\Http\Controllers\Flight\FlightDestroyController;
 use App\Http\Controllers\Customer\CustomerShowController;
 use App\Http\Controllers\Customer\CustomerStoreController;
 use App\Http\Controllers\Customer\CustomerUpdateController;
+use App\Http\Controllers\Customer\CustomerBusAttachController;
+use App\Http\Controllers\Customer\CustomerBusDetachController;
+use App\Http\Controllers\Customer\CustomerDetachFromTripController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,15 +29,22 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/dashboard', DashboardController::class);
 
+// creating trips
 Route::get('/trips/{trip:id}', TripShowController::class);
 Route::post('/trips', TripStoreController::class);
 Route::put('/trips/{trip:id}', TripUpdateController::class);
 
+// creating customer
 Route::post('trips/{trip:id}/customer', CustomerStoreController::class);
 // Route::get('trips/{trip:id}/{customer:id}', CustomerShowController::class);
 Route::put('trips/{trip:id}/customer/{customer:id}', CustomerUpdateController::class);
+Route::delete('trips/{trip}/customer/{customer}', CustomerDetachFromTripController::class);
 
-// bus, have ability to attach users to bus here?
+
+// attach customer to bus
+Route::post('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', CustomerBusAttachController::class);
+Route::delete('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', CustomerBusDetachController::class);
+
 Route::get('trips/{trip:id}/bus', BusIndexController::class);
 Route::get('trips/{trip:id}/bus/{bus:id}', BusShowController::class);
 Route::post('trips/{trip:id}/bus', BusStoreController::class);
@@ -45,4 +56,4 @@ Route::get('trips/{trip:id}/flight', FlightIndexController::class);
 Route::get('trips/{trip:id}/flight/{flight:id}', FlightShowController::class)->scopeBindings(false);
 Route::post('trips/{trip:id}/flight', FlightStoreController::class);
 Route::put('trips/{trip:id}/flight/{flight:id}', FlightUpdateController::class);
-Route::delete('trips/{trip:id}/flight/{flight:id}', FlightUpdateController::class);
+Route::delete('trips/{trip:id}/flight/{flight:id}', FlightDestroyController::class);

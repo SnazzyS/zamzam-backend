@@ -9,10 +9,20 @@ class UmrahIDGenerator
 {
     public function generateUmrahID($tripID)
     {
+        // dd($tripID);
+        $lastUmrahID = CustomerTrip::where('trip_id', $tripID)
+            ->orderBy('umrah_id', 'desc')
+            ->value('umrah_id');
 
-        $customerCount = CustomerTrip::where('trip_id', $tripID)->count();
+        // dd($lastNumber);
+        if ($lastUmrahID) {
+            $lastNumber = (int) substr($lastUmrahID, strrpos($lastUmrahID, '-') + 1);
+        } else {
+            $lastNumber = 100;
+        }
 
-        $generateUmrahID = 'T' . $tripID . '-' . (101 + $customerCount);
+        $nextNumber = $lastNumber + 1;
+        $generateUmrahID = 'T' . $tripID . '-' . $nextNumber;
 
         return $generateUmrahID;
     }

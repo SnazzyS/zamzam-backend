@@ -13,6 +13,6 @@ class TripUpdateController extends Controller
     {
         $trip->update($request->all());
 
-        return response()->json(['message' => 'Trip created successfully'], 200);
+        return response()->json(['message' => 'Trip updated successfully'], 200);
     }
 }

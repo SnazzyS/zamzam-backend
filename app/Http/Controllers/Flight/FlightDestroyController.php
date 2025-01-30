@@ -11,6 +11,10 @@ class FlightDestroyController extends Controller
 {
     public function __invoke(Trip $trip, Flight $flight)
     {
-        dd($flight);
+        $flight->delete();
+
+        return response()->json([
+            'message' => "Flight Deleted"
+        ]);
     }
 }

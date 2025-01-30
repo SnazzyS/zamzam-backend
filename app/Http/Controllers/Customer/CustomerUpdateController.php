@@ -32,8 +32,6 @@ class CustomerUpdateController extends Controller
             $data['passport_expiry_date'] = Carbon::parse($request->passport_issued_date)->addYears(5)->toDateString();
         }
 
-        //        if($data['photo_url'])
-
         $customer->update($data);
 
 
