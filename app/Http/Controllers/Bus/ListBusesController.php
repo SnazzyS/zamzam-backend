@@ -7,7 +7,7 @@ use App\Models\Trip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BusIndexController extends Controller
+class ListBusesController extends Controller
 {
     public function __invoke(Trip $trip)
     {

@@ -7,7 +7,7 @@ use App\Models\Trip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BusDestroyController extends Controller
+class DeleteBusController extends Controller
 {
     public function __invoke(Trip $trip, Bus $bus)
     {

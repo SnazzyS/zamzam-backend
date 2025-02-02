@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BusStoreRequest;
 
-class BusStoreController extends Controller
+class CreateBusController extends Controller
 {
     public function __invoke(Trip $trip, BusStoreRequest $request)
     {

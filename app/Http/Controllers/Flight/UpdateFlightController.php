@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FlightStoreRequest;
 
-class FlightUpdateController extends Controller
+class UpdateFlightController extends Controller
 {
     public function __invoke(Trip $trip, Flight $flight, FlightStoreRequest $request)
     {

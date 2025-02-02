@@ -8,7 +8,7 @@ use App\Models\CustomerTrip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class FlightShowController extends Controller
+class ViewFlightDetailsController extends Controller
 {
     public function __invoke(Trip $trip, Flight $flight)
     {

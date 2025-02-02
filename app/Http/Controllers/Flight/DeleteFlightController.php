@@ -7,7 +7,7 @@ use App\Models\Flight;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class FlightDestroyController extends Controller
+class DeleteFlightController extends Controller
 {
     public function __invoke(Trip $trip, Flight $flight)
     {

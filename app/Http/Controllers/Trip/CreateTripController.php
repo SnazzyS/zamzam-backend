@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TripStoreRequest;
 use App\Actions\Trip\TripIDGenerator;
 
-class TripStoreController extends Controller
+class CreateTripController extends Controller
 {
     public function __invoke(TripStoreRequest $request)
     {

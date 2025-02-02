@@ -9,7 +9,7 @@ use App\Models\CustomerTrip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CustomerBusAttachController extends Controller
+class AssignCustomerToBusController extends Controller
 {
     public function __invoke(Trip $trip, Customer $customer, Request $request)
     {

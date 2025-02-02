@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TripStoreRequest;
 
-class TripUpdateController extends Controller
+class UpdateTripController extends Controller
 {
     public function __invoke(TripStoreRequest $request, Trip $trip)
     {

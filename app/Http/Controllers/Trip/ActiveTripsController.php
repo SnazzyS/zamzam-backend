@@ -7,7 +7,7 @@ use App\Models\CustomerTrip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class TripShowController extends Controller
+class ActiveTripsController extends Controller
 {
     public function __invoke(Trip $trip)
     {

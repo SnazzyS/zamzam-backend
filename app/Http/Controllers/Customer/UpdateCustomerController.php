@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerStoreRequest;
 use Carbon\Carbon;
 
-class CustomerUpdateController extends Controller
+class UpdateCustomerController extends Controller
 {
     public function __invoke(Trip $trip, Customer $customer, CustomerStoreRequest $request)
     {

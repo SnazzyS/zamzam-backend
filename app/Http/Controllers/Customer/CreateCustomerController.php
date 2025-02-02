@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerStoreRequest;
 
-class CustomerStoreController extends Controller
+class CreateCustomerController extends Controller
 {
     public function __invoke(Trip $trip, CustomerStoreRequest $request, UmrahIDGenerator $idgenerator)
     {

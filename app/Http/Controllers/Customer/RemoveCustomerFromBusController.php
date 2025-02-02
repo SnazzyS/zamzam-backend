@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerTrip;
 
-class CustomerBusDetachController extends Controller
+class RemoveCustomerFromBusController extends Controller
 {
     public function __invoke(Trip $trip, Customer $customer, Request $request)
     {

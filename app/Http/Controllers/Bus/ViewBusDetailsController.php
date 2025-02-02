@@ -8,7 +8,7 @@ use App\Models\CustomerTrip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BusShowController extends Controller
+class ViewBusDetailsController extends Controller
     // show is used for single bus, not to all buses
 {
     public function __invoke(Trip $trip, Bus $bus)

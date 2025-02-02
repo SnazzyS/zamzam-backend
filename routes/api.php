@@ -3,25 +3,25 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Bus\BusShowController;
-use App\Http\Controllers\Bus\BusIndexController;
-use App\Http\Controllers\Bus\BusStoreController;
-use App\Http\Controllers\Bus\BusUpdateController;
-use App\Http\Controllers\Trip\TripShowController;
-use App\Http\Controllers\Bus\BusDestroyController;
-use App\Http\Controllers\Trip\TripStoreController;
-use App\Http\Controllers\Trip\TripUpdateController;
-use App\Http\Controllers\Flight\FlightShowController;
-use App\Http\Controllers\Flight\FlightIndexController;
-use App\Http\Controllers\Flight\FlightStoreController;
-use App\Http\Controllers\Flight\FlightUpdateController;
-use App\Http\Controllers\Flight\FlightDestroyController;
-use App\Http\Controllers\Customer\CustomerShowController;
-use App\Http\Controllers\Customer\CustomerStoreController;
-use App\Http\Controllers\Customer\CustomerUpdateController;
-use App\Http\Controllers\Customer\CustomerBusAttachController;
-use App\Http\Controllers\Customer\CustomerBusDetachController;
-use App\Http\Controllers\Customer\CustomerDetachFromTripController;
+use App\Http\Controllers\Bus\ViewBusDetailsController;
+use App\Http\Controllers\Bus\ListBusesController;
+use App\Http\Controllers\Bus\CreateBusController;
+use App\Http\Controllers\Bus\UpdateBusController;
+use App\Http\Controllers\Trip\ActiveTripsController;
+use App\Http\Controllers\Bus\DeleteBusController;
+use App\Http\Controllers\Trip\CreateTripController;
+use App\Http\Controllers\Trip\UpdateTripController;
+use App\Http\Controllers\Flight\ViewFlightDetailsController;
+use App\Http\Controllers\Flight\ListFlightsController;
+use App\Http\Controllers\Flight\CreateFlightController;
+use App\Http\Controllers\Flight\UpdateFlightController;
+use App\Http\Controllers\Flight\DeleteFlightController;
+use App\Http\Controllers\Customer\ViewCustomerDetailsController;
+use App\Http\Controllers\Customer\CreateCustomerController;
+use App\Http\Controllers\Customer\UpdateCustomerController;
+use App\Http\Controllers\Customer\AssignCustomerToBusController;
+use App\Http\Controllers\Customer\RemoveCustomerFromBusController;
+use App\Http\Controllers\Customer\RemoveCustomerFromTripController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -30,29 +30,29 @@ Route::get('/user', function (Request $request) {
 Route::get('/dashboard', DashboardController::class);
 
 //trips
-Route::get('/trips/{trip:id}', TripShowController::class);
-Route::post('/trips', TripStoreController::class);
-Route::put('/trips/{trip:id}', TripUpdateController::class);
+Route::get('/trips/{trip:id}', ActiveTripsController::class);
+Route::post('/trips', CreateTripController::class);
+Route::put('/trips/{trip}', UpdateTripController::class);
 
 // customers
-Route::post('trips/{trip}/customer', CustomerStoreController::class);
-Route::get('trips/{trip:id}/customer/{customer:id}', CustomerShowController::class);
-Route::put('trips/{trip:id}/customer/{customer:id}', CustomerUpdateController::class);
-Route::delete('trips/{trip}/customer/{customer}', CustomerDetachFromTripController::class);
+Route::post('trips/{trip}/customer', CreateCustomerController::class);
+Route::get('trips/{trip:id}/customer/{customer:id}', ViewCustomerDetailsController::class);
+Route::put('trips/{trip:id}/customer/{customer:id}', UpdateCustomerController::class);
+Route::delete('trips/{trip}/customer/{customer}', RemoveCustomerFromTripController::class);
 
 // attach customer to bus
-Route::post('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', CustomerBusAttachController::class);
-Route::delete('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', CustomerBusDetachController::class);
+Route::post('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', AssignCustomerToBusController::class);
+Route::delete('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', RemoveCustomerFromBusController::class);
 
-Route::get('trips/{trip:id}/bus', BusIndexController::class);
-Route::get('trips/{trip:id}/bus/{bus:id}', BusShowController::class);
-Route::post('trips/{trip:id}/bus', BusStoreController::class);
-Route::put('trips/{trip:id}/bus/{bus:id}', BusUpdateController::class);
-Route::delete('trips/{trip:id}/bus/{bus:id}', BusDestroyController::class);
+Route::get('trips/{trip:id}/bus', ListBusesController::class);
+Route::get('trips/{trip:id}/bus/{bus:id}', ViewBusDetailsController::class);
+Route::post('trips/{trip:id}/bus', CreateBusController::class);
+Route::put('trips/{trip:id}/bus/{bus:id}', UpdateBusController::class);
+Route::delete('trips/{trip:id}/bus/{bus:id}', DeleteBusController::class);
 
 // flight
-Route::get('trips/{trip:id}/flight', FlightIndexController::class);
-Route::get('trips/{trip:id}/flight/{flight:id}', FlightShowController::class)->scopeBindings(false);
-Route::post('trips/{trip:id}/flight', FlightStoreController::class);
-Route::put('trips/{trip:id}/flight/{flight:id}', FlightUpdateController::class);
-Route::delete('trips/{trip:id}/flight/{flight:id}', FlightDestroyController::class);
+Route::get('trips/{trip:id}/flight', ListFlightsController::class);
+Route::get('trips/{trip:id}/flight/{flight:id}', ViewFlightDetailsController::class)->scopeBindings(false);
+Route::post('trips/{trip:id}/flight', CreateFlightController::class);
+Route::put('trips/{trip:id}/flight/{flight:id}', UpdateFlightController::class);
+Route::delete('trips/{trip:id}/flight/{flight:id}', DeleteFlightController::class);
