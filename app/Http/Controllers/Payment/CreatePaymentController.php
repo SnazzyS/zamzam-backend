@@ -12,6 +12,7 @@ class CreatePaymentController extends Controller
 {
     public function __invoke(Trip $trip, Customer $customer, Request $request)
     {
+        // add valication
         // dd($request);
         // payment if done, u should make a new logic?
         // balance amount full vejje tho belun

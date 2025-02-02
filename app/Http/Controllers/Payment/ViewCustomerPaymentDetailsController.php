@@ -8,7 +8,7 @@ class ViewCustomerPaymentDetailsController extends Controller
 {
     public function __invoke(Trip $trip, Customer $customer)
     {
-        $payments = $customer->payments;
-        return response()->json($payments);
+        
+        return response()->json($customer->payments()->where('trip_id', $trip->id)->get());
     }
 }
