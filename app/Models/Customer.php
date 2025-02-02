@@ -31,4 +31,9 @@ class Customer extends Model
             ->withPivot(['bus_id', 'flight_id', 'room_id', 'umrah_id'])
             ->withTimestamps();
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

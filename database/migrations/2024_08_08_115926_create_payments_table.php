@@ -16,11 +16,11 @@ return new class extends Migration {
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('trip_id')->constrained();
             $table->string('payment_method');
-            $table->string('transfer_reference_number');
+            $table->string('transfer_reference_number')->nullable();
             $table->string('invoice_number');
-            $table->date('payment_date');
             $table->integer('discount')->default(0);
-            $table->string('reason')->nullable();
+            $table->string('details')->nullable();
+            $table->integer('balance_amount');
             $table->timestamps();
         });
     }
