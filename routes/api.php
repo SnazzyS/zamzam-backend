@@ -15,6 +15,7 @@ use App\Http\Controllers\Flight\ListFlightsController;
 use App\Http\Controllers\Flight\CreateFlightController;
 use App\Http\Controllers\Flight\DeleteFlightController;
 use App\Http\Controllers\Flight\UpdateFlightController;
+use App\Http\Controllers\Invoice\AddDiscountController;
 use App\Http\Controllers\Payment\CreatePaymentController;
 use App\Http\Controllers\Customer\CreateCustomerController;
 use App\Http\Controllers\Customer\UpdateCustomerController;
@@ -38,7 +39,10 @@ Route::put('/trips/{trip}', UpdateTripController::class);
 // customers
 Route::post('/trips/{trip}/customer/{customer}/payment', CreatePaymentController::class);
 
-// there should be a naming option for customers
+// giving discount to customer
+Route::post('/trips/{trip}/customer/{customer}/invoice/add-discount', AddDiscountController::class);
+
+// creating customer
 Route::post('trips/{trip}/customer', CreateCustomerController::class);
 Route::get('trips/{trip:id}/customer/{customer:id}', ViewCustomerDetailsController::class);
 Route::put('trips/{trip:id}/customer/{customer:id}', UpdateCustomerController::class);

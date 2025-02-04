@@ -32,8 +32,8 @@ class Customer extends Model
             ->withTimestamps();
     }
 
-    public function payments()
+    public function invoices()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Invoice::class);
     }
 }

@@ -10,14 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('customer_id')->constrained();
-            $table->unsignedBigInteger('invoice_id')->constrained();
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
             $table->integer('amount');
-            $table->string('payment_method');
-            $table->string('transfer_reference_number')->nullable();
-            $table->string('details')->nullable();
+            $table->integer('discount');
+            $table->string('invoice_number');
+            $table->integer('grand_total'); 
+            $table->integer('balance'); 
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('invoices');
     }
 };

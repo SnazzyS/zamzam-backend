@@ -30,10 +30,15 @@ class Trip extends Model
         return $this->hasMany(Flight::class);
     }
 
-    public function payments()
+    public function invoices()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Invoice::class);
     }
+
+    // public function payments()
+    // {
+    //     return $this->hasMany(Payment::class);
+    // }
 
     // public function rooms()
     // {
