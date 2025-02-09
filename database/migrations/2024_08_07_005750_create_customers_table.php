@@ -25,12 +25,6 @@ return new class extends Migration {
             $table->string('passport_number')->nullable()->unique();
             $table->string('passport_issued_date')->nullable();
             $table->string('passport_expiry_date')->nullable();
-            $table->string('photo_url')->nullable();
-            //            $table->foreignId('customer_id')->nullable()->constrained();
-            //            $table->foreignId('trip_id')->constrained();
-            //            $table->foreignId('bus_id')->nullable()->constrained();
-            //            $table->foreignId('flight_id')->nullable()->constrained();
-            //            $table->foreignId('room_id')->nullable()->constrained();
             $table->timestamps();
         });
 

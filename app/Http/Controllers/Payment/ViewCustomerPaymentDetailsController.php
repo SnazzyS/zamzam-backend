@@ -1,4 +1,5 @@
 <?php
+namespace App\Http\Controllers\Payment;
 
 use App\Models\Customer;
 use App\Models\Trip;

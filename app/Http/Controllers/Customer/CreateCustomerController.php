@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Actions\Customer\UmrahIDGenerator;
 use App\Http\Requests\CustomerStoreRequest;
+use Intervention\Image\Facades\Image;
 
 class CreateCustomerController extends Controller
 {
