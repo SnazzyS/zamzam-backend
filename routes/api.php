@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Photo\UploadPhotoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Bus\CreateBusController;
 use App\Http\Controllers\Bus\DeleteBusController;
@@ -11,6 +10,8 @@ use App\Http\Controllers\Bus\UpdateBusController;
 use App\Http\Controllers\Trip\CreateTripController;
 use App\Http\Controllers\Trip\UpdateTripController;
 use App\Http\Controllers\Trip\ActiveTripsController;
+use App\Http\Controllers\Photo\DeletePhotoController;
+use App\Http\Controllers\Photo\UploadPhotoController;
 use App\Http\Controllers\Bus\ViewBusDetailsController;
 use App\Http\Controllers\Flight\ListFlightsController;
 use App\Http\Controllers\Flight\CreateFlightController;
@@ -51,6 +52,8 @@ Route::delete('trips/{trip}/customer/{customer}', RemoveCustomerFromTripControll
 
 // upload photo
 Route::post('trips/{trip}/customer/{customer}/photo', UploadPhotoController::class);
+Route::delete('trips/{trip}/customer/{customer}/photo/{photo}', DeletePhotoController::class);
+
 
 // attach customer to bus
 Route::post('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', AssignCustomerToBusController::class);

@@ -60,7 +60,7 @@ class UploadPhotoController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Photo uploaded and processed successfully.',
+            'message' => 'ފޮޓޯ އަޕްލޯޑު ކުރެވިއްޖެ',
         ]);
 
 
