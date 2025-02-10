@@ -9,7 +9,11 @@ use App\Http\Controllers\Bus\ListBusesController;
 use App\Http\Controllers\Bus\UpdateBusController;
 use App\Http\Controllers\Trip\CreateTripController;
 use App\Http\Controllers\Trip\UpdateTripController;
+use App\Http\Controllers\Hotel\ListHotelsController;
 use App\Http\Controllers\Trip\ActiveTripsController;
+use App\Http\Controllers\Hotel\CreateHotelController;
+use App\Http\Controllers\Hotel\DeleteHotelController;
+use App\Http\Controllers\Hotel\UpdateHotelController;
 use App\Http\Controllers\Photo\DeletePhotoController;
 use App\Http\Controllers\Photo\UploadPhotoController;
 use App\Http\Controllers\Bus\ViewBusDetailsController;
@@ -53,6 +57,12 @@ Route::delete('trips/{trip}/customer/{customer}', RemoveCustomerFromTripControll
 // upload photo
 Route::post('trips/{trip}/customer/{customer}/photo', UploadPhotoController::class);
 Route::delete('trips/{trip}/customer/{customer}/photo/{photo}', DeletePhotoController::class);
+
+// hotel
+Route::get('trips/{trip}/hotel', ListHotelsController::class);
+Route::post('trips/{trip}/hotel', CreateHotelController::class);
+Route::put('trips/{trip}/hotel/{hotel}', UpdateHotelController::class);
+Route::delete('trips/{trip}/hotel/{hotel}', DeleteHotelController::class);
 
 
 // attach customer to bus

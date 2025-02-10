@@ -18,19 +18,9 @@ class Payment extends Model
     ];
 
 
-    // public function customer()
-    // {
-    //     return $this->belongsTo(Customer::class);
-    // }
-
-    // public function trip()
-    // {
-    //     return $this->belongsTo(Trip::class);
-    // }
-
     public function invoice()
     {
-        return $this->hasMany(Invoice::class);
+        return $this->belongsTo(Invoice::class);
     }
 
 }

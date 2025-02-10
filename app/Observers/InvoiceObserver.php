@@ -10,8 +10,8 @@ class InvoiceObserver
     {
         // $invoice->grand_total->update[($invoice->discount - $invoice->grand_total)];
         
-        $invoice->grand_total = $invoice->total - $invoice->discount;
-        $invoice->save();
+        // $invoice->grand_total = $invoice->total - $invoice->discount;
+        // $invoice->save();
 
 
     }

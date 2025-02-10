@@ -12,8 +12,9 @@ class PaymentObserver
      */
     public function created(Payment $payment): void
     {
+
         
-        $invoice = Invoice::findOrFail($payment->invoice_id);
+        $invoice = $payment->invoice;
         $invoice->amount = $invoice->amount + $payment->amount;
         $invoice->balance = $invoice->grand_total - $invoice->amount;
         $invoice->save();
