@@ -12,12 +12,13 @@ class CreateHotelController extends Controller
 {
     public function __invoke(Trip $trip, HotelStoreRequest $request)
     {
-        Hotel::create([
+        $hotel = Hotel::firstOrCreate([
             'name' => $request->name,
             'address' => $request->address,
             'phone_number' => $request->phone_number,
-            'trip_id' => $trip->id
         ]);
+
+        $trip->hotels()->syncWithoutDetaching($hotel->id);
 
         return response()->json([
             'message' => "ހޮޓާ ހެދިއްޖެ"

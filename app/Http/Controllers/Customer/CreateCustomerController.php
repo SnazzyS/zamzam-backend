@@ -44,8 +44,12 @@ class CreateCustomerController extends Controller
                 'amount' => 0,
                 'discount' => 0,
                 'invoice_number' => 'INV/2024/01',
-                'grand_total' => $trip->price
+                'grand_total' => $trip->price,
+                'invoiceable_id' => $trip->id,
+                'invoiceable_type' => get_class($trip)
             ]);
+
+            // dd($customer->invoices);
 
             
             return response()->json(['message' => 'Customer created and attached to trip'], 201);

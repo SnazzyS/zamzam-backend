@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Trip extends Model
 {
@@ -30,23 +31,20 @@ class Trip extends Model
         return $this->hasMany(Flight::class);
     }
 
+    // public function invoices()
+    // {
+    //     return $this->hasMany(Invoice::class);
+    // }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class, 'room_trip', 'trip_id', 'room_id')
+        ->withTimestamps();
+    }
+
     public function invoices()
     {
-        return $this->hasMany(Invoice::class);
+        return $this->morphMany(Invoice::class, 'invoiceable');
     }
 
-    public function hotels()
-    {
-        return $this->hasMany(Hotel::class);
-    }
-
-    // public function payments()
-    // {
-    //     return $this->hasMany(Payment::class);
-    // }
-
-    // public function rooms()
-    // {
-    //     return $this->hasMany(Room::class);
-    // }
 }

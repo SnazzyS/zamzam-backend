@@ -11,26 +11,22 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('buses', function (Blueprint $table) {
+        Schema::create('room_trip', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('bus_number');
-            $table->integer('capacity');
-            $table->foreignId('trip_id')->constrained();
-            $table->string('color_code')->nullable();
+            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            $table->string('hotel_name');
+            $table->foreignId('room_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-
-
+        
+        DB::statement("alter TABLE room_trip add UNIQUE unique_room_trip(room_id, trip_id)");
     }
-
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('buses');
+        Schema::dropIfExists('room_trip');
     }
 };

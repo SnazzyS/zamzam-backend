@@ -18,8 +18,9 @@ return new class extends Migration {
             $table->integer('price');
             $table->date('departure_date');
             $table->string('phone_number')->nullable();
-            $table->string('hotel_address')->nullable();
-            $table->boolean('trip_status')->default(1);
+            // $table->string('hotel_address')->nullable();
+            // $table->boolean('trip_status')->default(1);
+            $table->enum('status', ['active', 'completed', 'cancelled']);
             $table->timestamps();
         });
 

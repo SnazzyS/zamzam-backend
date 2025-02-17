@@ -17,8 +17,10 @@ return new class extends Migration {
             $table->integer('amount');
             $table->integer('discount');
             $table->string('invoice_number');
-            $table->integer('grand_total'); 
-            $table->integer('balance'); 
+            $table->integer('grand_total');
+            $table->integer('balance');
+            $table->morphs('invoiceable');
+            $table->enum('currency', ['MVR', 'USD'])->default('MVR');
             $table->timestamps();
         });
     }

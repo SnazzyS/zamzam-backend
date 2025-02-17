@@ -17,9 +17,13 @@ class Invoice extends Model
         'discount',
         'invoice_number',
         'grand_total',
-        'status'
+        'status',
+        'invoiceable_id',
+        'invoiceable_type'
     ];
 
+ 
+    
 
     public function customer()
     {
@@ -34,5 +38,10 @@ class Invoice extends Model
     public function payment()
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    public function invoiceable()
+    {
+        return $this->morphTo();
     }
 }

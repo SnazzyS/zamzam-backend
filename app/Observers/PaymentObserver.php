@@ -12,7 +12,6 @@ class PaymentObserver
      */
     public function created(Payment $payment): void
     {
-
         
         $invoice = $payment->invoice;
         $invoice->amount = $invoice->amount + $payment->amount;

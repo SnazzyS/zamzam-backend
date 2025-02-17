@@ -7,6 +7,7 @@ use App\Http\Controllers\Bus\CreateBusController;
 use App\Http\Controllers\Bus\DeleteBusController;
 use App\Http\Controllers\Bus\ListBusesController;
 use App\Http\Controllers\Bus\UpdateBusController;
+use App\Http\Controllers\Room\CreateRoomController;
 use App\Http\Controllers\Trip\CreateTripController;
 use App\Http\Controllers\Trip\UpdateTripController;
 use App\Http\Controllers\Hotel\ListHotelsController;
@@ -63,6 +64,9 @@ Route::get('trips/{trip}/hotel', ListHotelsController::class);
 Route::post('trips/{trip}/hotel', CreateHotelController::class);
 Route::put('trips/{trip}/hotel/{hotel}', UpdateHotelController::class);
 Route::delete('trips/{trip}/hotel/{hotel}', DeleteHotelController::class);
+
+// room
+Route::post('trips/{trip}/hotel/{hotel}/room', CreateRoomController::class);
 
 
 // attach customer to bus

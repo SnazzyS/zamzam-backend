@@ -13,11 +13,12 @@ class Hotel extends Model
         'name',
         'address',
         'phone_number',
-        'trip_id'
+    
     ];
 
-    public function trip()
+
+    public function rooms()
     {
-        return $this->belongsTo(Trip::class);
+        return $this->hasMany(Room::class);
     }
 }

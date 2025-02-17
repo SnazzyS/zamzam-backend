@@ -24,6 +24,7 @@ class Customer extends Model
     ];
 
 
+
     public function trips()
     {
         return $this->belongsToMany(Trip::class)
@@ -39,6 +40,11 @@ class Customer extends Model
     public function photos()
     {
         return $this->hasMany(Photo::class);
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
     }
 
 }
