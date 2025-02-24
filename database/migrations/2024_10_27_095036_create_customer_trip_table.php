@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('trip_id')->constrained()->onDelete('cascade');
             $table->foreignId('bus_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('flight_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('room_id')->nullable()->constrained()->onDelete('set null');
+            // $table->foreignId('room_id')->nullable()->constrained()->onDelete('set null');
             $table->string('umrah_id')->unique();
             $table->timestamps();
         });

@@ -20,9 +20,7 @@ class CustomerTrip extends Pivot
         'trip_id',
         'bus_id',
         'flight_id',
-        'room_id',
         'umrah_id',
-        'hotel_id'
     ];
 
     

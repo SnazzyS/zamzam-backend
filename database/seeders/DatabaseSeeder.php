@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
             BusSeederTable::class,
             CustomerTripTableSeeder::class,
             FlightTableSeeder::class,
-            HotelTableSeeder::class
+            HotelTableSeeder::class,
+            RoomTableSeeder::class,
       
         ]);
     }

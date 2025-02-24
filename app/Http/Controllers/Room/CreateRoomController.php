@@ -25,7 +25,7 @@ class CreateRoomController extends Controller
         ]);
 
         if ($request->private) {
-            dd('here');
+            dd('here, create an invoice for the customer');
             
         }
 

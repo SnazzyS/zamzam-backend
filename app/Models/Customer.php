@@ -28,7 +28,14 @@ class Customer extends Model
     public function trips()
     {
         return $this->belongsToMany(Trip::class)
-            ->withPivot(['bus_id', 'flight_id', 'room_id', 'umrah_id'])
+            ->withPivot(['bus_id', 'flight_id', 'umrah_id'])
+            ->withTimestamps();
+    }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class, 'customer_room')
+            ->withPivot('trip_id')
             ->withTimestamps();
     }
 

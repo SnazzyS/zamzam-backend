@@ -19,7 +19,7 @@ class CustomerTripTableSeeder extends Seeder
                 'trip_id' => 1,
                 'bus_id' => 1,
                 'flight_id' => null,
-                'room_id' => null,
+                // 'room_id' => null,
                 'umrah_id' => 'T-101'
             ],
             [
@@ -27,7 +27,7 @@ class CustomerTripTableSeeder extends Seeder
                 'trip_id' => 1,
                 'bus_id' => 2,
                 'flight_id' => null,
-                'room_id' => null,
+                // 'room_id' => null,
                 'umrah_id' => 'T-102'
             ],
             [
@@ -35,7 +35,7 @@ class CustomerTripTableSeeder extends Seeder
                 'trip_id' => 1,
                 'bus_id' => 1,
                 'flight_id' => null,
-                'room_id' => null,
+                // 'room_id' => null,
                 'umrah_id' => 'T-103'
             ],
         ];

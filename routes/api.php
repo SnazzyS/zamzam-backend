@@ -7,6 +7,7 @@ use App\Http\Controllers\Bus\CreateBusController;
 use App\Http\Controllers\Bus\DeleteBusController;
 use App\Http\Controllers\Bus\ListBusesController;
 use App\Http\Controllers\Bus\UpdateBusController;
+use App\Http\Controllers\Room\ListRoomsController;
 use App\Http\Controllers\Room\CreateRoomController;
 use App\Http\Controllers\Trip\CreateTripController;
 use App\Http\Controllers\Trip\UpdateTripController;
@@ -27,10 +28,12 @@ use App\Http\Controllers\Payment\CreatePaymentController;
 use App\Http\Controllers\Customer\CreateCustomerController;
 use App\Http\Controllers\Customer\UpdateCustomerController;
 use App\Http\Controllers\Flight\ViewFlightDetailsController;
+use App\Http\Controllers\Room\AssignCustomerToRoomController;
 use App\Http\Controllers\Customer\AssignCustomerToBusController;
 use App\Http\Controllers\Customer\ViewCustomerDetailsController;
 use App\Http\Controllers\Customer\RemoveCustomerFromBusController;
 use App\Http\Controllers\Customer\RemoveCustomerFromTripController;
+use App\Http\Controllers\Room\ShowCustomersWithoutRoomController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -66,7 +69,10 @@ Route::put('trips/{trip}/hotel/{hotel}', UpdateHotelController::class);
 Route::delete('trips/{trip}/hotel/{hotel}', DeleteHotelController::class);
 
 // room
-Route::post('trips/{trip}/hotel/{hotel}/room', CreateRoomController::class);
+Route::get('trips/{trip}/hotel/{hotel}/rooms', ListRoomsController::class);
+Route::post('trips/{trip}/hotel/{hotel}/rooms/create', CreateRoomController::class);
+Route::post('trips/{trip}/hotel/{hotel}/rooms/{room}/assign-customer', AssignCustomerToRoomController::class);
+Route::get('trips/{trip}/hotel/{hotel}/customers-without-room', ShowCustomersWithoutRoomController::class);
 
 
 // attach customer to bus
