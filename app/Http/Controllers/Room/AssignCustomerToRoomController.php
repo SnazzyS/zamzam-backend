@@ -7,7 +7,6 @@ use App\Models\Trip;
 use App\Models\Hotel;
 use App\Models\Customer;
 use App\Models\CustomerRoom;
-use App\Models\CustomerTrip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -17,21 +16,24 @@ class AssignCustomerToRoomController extends Controller
     {
         $customer = Customer::findOrFail($request->customer_id);
 
-        $numberOfCustomersInRoom = CustomerRoom::where('room_id', $room->id)->count();
-        
-        $roomCapacity = $room->bed_count;
+        $customerAlreadyAssigned = CustomerRoom::where('customer_id', $customer->id)
+            ->where('trip_id', $trip->id)
+            ->exists();
 
-        dd($numberOfCustomersInRoom);
-
-        if ($numberOfCustomersInRoom >= $roomCapacity) {
-            return response()->json([
-                'message' => 'Room is full',
-            ], 400);
+        if ($customerAlreadyAssigned) {
+            return response()->json(['message' => 'ކަސްޓަމަރު ހުރީ ކޮޓަރީގައި'], 400);
         }
-        // dd($roomCapacity);
 
-        // dd($room->customers());
-        
-        
+        if (CustomerRoom::where('room_id', $room->id)->count() >= $room->bed_count) {
+            return response()->json(['message' => 'ކޮޓަރި ފުރިފަ'], 400);
+        }
+
+        CustomerRoom::create([
+            'customer_id' => $customer->id,
+            'room_id' => $room->id,
+            'trip_id' => $trip->id,
+        ]);
+
+        return response()->json(['message' => 'ކަސްޓަމަރު ކޮޓަރިއަށް ކަނޑައެޅިއްޖެ'], 200);
     }
 }

@@ -30,12 +30,10 @@ class ShowCustomersWithoutRoomController extends Controller
                 ];
             });
 
-        // ->map(function ($customer) {
-        //     $customer->umrah_id = optional($customer->trips->first())->pivot->umrah_id;
-        //     unset($customer->trips);
-        //     return $customer;
-        // });
+
 
         return response()->json($customersWithoutRoom);
     }
+
+
 }

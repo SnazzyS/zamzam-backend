@@ -15,12 +15,17 @@ class CustomerRoom extends Pivot
     protected $fillable = [
         'customer_id',
         'room_id',
-        'hotel_id'
+        'trip_id'
     ];
 
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
     }
 
 }
