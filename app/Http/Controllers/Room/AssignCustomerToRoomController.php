@@ -14,6 +14,8 @@ class AssignCustomerToRoomController extends Controller
 {
     public function __invoke(Trip $trip, Hotel $hotel, Room $room, Request $request)
     {
+        // add validation?
+
         $customer = Customer::findOrFail($request->customer_id);
 
         $customerAlreadyAssigned = CustomerRoom::where('customer_id', $customer->id)

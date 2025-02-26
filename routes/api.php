@@ -33,6 +33,7 @@ use App\Http\Controllers\Customer\AssignCustomerToBusController;
 use App\Http\Controllers\Customer\ViewCustomerDetailsController;
 use App\Http\Controllers\Customer\RemoveCustomerFromBusController;
 use App\Http\Controllers\Customer\RemoveCustomerFromTripController;
+use App\Http\Controllers\Room\RemoveCustomerFromRoomController;
 use App\Http\Controllers\Room\ShowCustomersWithoutRoomController;
 
 Route::get('/user', function (Request $request) {
@@ -73,7 +74,7 @@ Route::get('trips/{trip}/hotel/{hotel}/rooms', ListRoomsController::class);
 Route::post('trips/{trip}/hotel/{hotel}/rooms/create', CreateRoomController::class);
 Route::post('trips/{trip}/hotel/{hotel}/rooms/{room}/assign-customer', AssignCustomerToRoomController::class);
 Route::get('trips/{trip}/hotel/{hotel}/customers-without-room', ShowCustomersWithoutRoomController::class);
-
+Route::delete('trips/{trip}/hotel/{hotel}/rooms/{room}/remove-customer', RemoveCustomerFromRoomController::class);
 
 // attach customer to bus
 Route::post('/trips/{trip:id}/customer/{customer:id}/bus/{bus:id}', AssignCustomerToBusController::class);
