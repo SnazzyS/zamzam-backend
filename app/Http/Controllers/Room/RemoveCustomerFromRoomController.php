@@ -15,9 +15,8 @@ class RemoveCustomerFromRoomController extends Controller
     public function __invoke(Trip $trip, Hotel $hotel, Room $room, Request $request)
     {
         // should validate? should request have customer id?
-
         $customer = Customer::findOrFail($request->customer_id);
-
+        
         CustomerRoom::where('customer_id', $customer->id)
             ->where('room_id', $room->id)
             ->where('trip_id', $trip->id)

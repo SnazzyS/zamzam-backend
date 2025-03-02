@@ -27,10 +27,4 @@ class Bus extends Model
         return $this->hasMany(CustomerTrip::class);
     }
 
-    // public function customerTrips()
-    // {
-    //     return $this->hasMany(Trip::class);
-    // }
-
-
 }

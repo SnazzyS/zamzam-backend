@@ -31,11 +31,6 @@ class Trip extends Model
         return $this->hasMany(Flight::class);
     }
 
-    // public function invoices()
-    // {
-    //     return $this->hasMany(Invoice::class);
-    // }
-
     public function rooms()
     {
         return $this->belongsToMany(Room::class, 'room_trip', 'trip_id', 'room_id')
@@ -45,6 +40,12 @@ class Trip extends Model
     public function invoices()
     {
         return $this->morphMany(Invoice::class, 'invoiceable');
+    }
+
+    public function hotels()
+    {
+        return $this->belongsToMany(Hotel::class)
+            ->withTimestamps();
     }
 
 }

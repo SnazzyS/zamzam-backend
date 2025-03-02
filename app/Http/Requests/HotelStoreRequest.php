@@ -22,7 +22,7 @@ class HotelStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:hotels',
+            // 'name' => 'required|string|unique:hotels',
             'address' => 'required|string',
             'phone_number' => 'required|numeric'
         ];

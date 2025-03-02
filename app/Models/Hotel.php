@@ -21,4 +21,10 @@ class Hotel extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function trips()
+    {
+        return $this->belongsToMany(Trip::class)
+            ->withTimestamps();
+    }
 }
