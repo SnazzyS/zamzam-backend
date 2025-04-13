@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->integer('grand_total');
             $table->integer('balance');
             $table->morphs('invoiceable');
-            $table->enum('currency', ['MVR', 'USD'])->default('MVR');
+            $table->enum('currency', ['MVR', 'USD', 'SAR'])->default('MVR');
             $table->timestamps();
         });
     }

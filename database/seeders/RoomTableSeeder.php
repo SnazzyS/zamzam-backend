@@ -16,11 +16,11 @@ class RoomTableSeeder extends Seeder
         $room = [
             [
                 'room_number' => 101,
-                'name' => 'isse room',
+                // 'name' => 'isse room',
                 'bed_count' => 4,
-                'private' => 0,
+                // 'private' => 0,
                 'hotel_id' => 1,
-                'trip_id' => 1,
+                // 'trip_id' => 1,
             ]
             ];
 

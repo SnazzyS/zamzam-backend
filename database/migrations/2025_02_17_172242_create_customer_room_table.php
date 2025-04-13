@@ -15,6 +15,10 @@ return new class extends Migration {
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
             $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            $table->boolean('private_room')->default(false);
+            $table->decimal('price', 8, 2)->nullable();
+            $table->enum('currency', ['USD', 'MVR'])->nullable();
+            // $table->foreignId('hotel_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->foreignId('activity_trip_id')->constrained('activity_trips')->onDelete('cascade');
-            $table->boolean('has_paid')->default(false);
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
     }

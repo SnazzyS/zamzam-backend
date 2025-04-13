@@ -13,13 +13,13 @@ return new class extends Migration {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->integer('room_number');
-            $table->string('name')->nullable();
+            // $table->string('name')->nullable();
             $table->integer('bed_count');
-            $table->boolean('private')->default(false);
-            $table->integer('price')->nullable();
-            $table->enum('currency', ['USD', 'MVR'])->nullable();
+            // $table->boolean('private')->default(false);
+            // $table->integer('price')->nullable();
+            // $table->enum('currency', ['USD', 'MVR'])->nullable();
             $table->foreignId('hotel_id')->constrained()->onDelete('cascade');
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('trip_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
