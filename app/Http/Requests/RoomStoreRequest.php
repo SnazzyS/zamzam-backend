@@ -25,18 +25,9 @@ class RoomStoreRequest extends FormRequest
         $tripId = $this->route('trip')->id;
 
         return [
-            'room_number' =>[
-                        'integer',
-                        'required',
-                        Rule::unique('rooms')->where(function ($query) use ($tripId) {
-                            return $query->where('trip_id', $tripId);
-                        })],
-            'name' => 'string',
-            'private' => 'boolean',
+            'room_number' => 'integer|required|unique:rooms',
             'bed_count' => 'integer|required',
-            'price' => 'required_if:private,true',
-            'currency' => 'required_if:private,true|in:USD,MVR',
-            'customer_id'=> 'required_if:private,true|exists:customers,id',
+            'hotel_id'=> 'required|exists:hotels,id',
 
         ];
         

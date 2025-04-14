@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Hotel;
 
-use App\Models\Trip;
+use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ListHotelsController extends Controller
 {
-    public function __invoke(Trip $trip)
+    public function __invoke(Hotel $hotels)
     {
-        return response()->json($trip->load('hotels'));
+       
+        return response()->json($hotels->get(), 200);
     }
 }

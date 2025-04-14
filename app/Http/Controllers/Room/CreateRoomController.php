@@ -15,21 +15,9 @@ class CreateRoomController extends Controller
 
         $room = $hotel->rooms()->create([
             'room_number' => $request->room_number,
-            'name' => $request->name,
             'bed_count' => $request->bed_count,
-            'private' => $request->private,
-            'price' => $request->price,
-            'currency' => $request->currency,
             'hotel_id' => $hotel->id,
-            'trip_id' => $trip->id
         ]);
-
-        if ($request->private) {
-            dd('here, create an invoice for the customer');
-            
-        }
-
-      
 
         return response()->json($room, 201);
     }

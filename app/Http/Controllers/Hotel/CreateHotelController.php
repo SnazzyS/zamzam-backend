@@ -19,17 +19,7 @@ class CreateHotelController extends Controller
             'phone_number' => $request->phone_number,
         ]);
 
-        $hotelExistsInTrip = HotelTrip::where('hotel_id', $hotel->id)
-        ->where('trip_id', $trip->id)
-        ->exists();
-
-        if (!$hotelExistsInTrip) {
-            HotelTrip::create([
-                'hotel_id' => $hotel->id,
-                'trip_id' => $trip->id
-            ]);
-        }
-
+    
         return response()->json([
             'message' => "ހޮޓާ ހެދިއްޖެ"
         ], 201);
