@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'MVWaheed';
+    src: url('../fonts/MVWaheed.otf') format('opentype');
+    font-display: swap;
+}
+
+/*
+ * Note: For Dhivehi text, MVWaheed should be used.
+ * Ensure MVWaheed.otf exists in resources/fonts/.
+ */
+
+/* Base styles */
+body {
+    font-family: 'Inter', 'MVWaheed', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f5f9;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+    text-align: right;
+}
+
+/* Smooth transitions */
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

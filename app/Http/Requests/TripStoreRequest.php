@@ -24,12 +24,17 @@ class TripStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:500', 'unique:trips'],
+            'name' => [
+                'required',
+                'string',
+                'max:500',
+                'unique:trips,name' . ($this->trip ? ',' . $this->trip->id : '')
+            ],
             'price' => ['required' , 'integer'],
             'departure_date' => ['required', 'date'],
             'phone_number' => ['integer'],
             'hotel_address' => ['string']
-            
+
         ];
     }
 }
