@@ -32,8 +32,8 @@ class TripStoreRequest extends FormRequest
             ],
             'price' => ['required' , 'integer'],
             'departure_date' => ['required', 'date'],
-            'phone_number' => ['integer'],
-            'hotel_address' => ['string']
+            'phone_number' => ['nullable', 'integer'],
+            'hotel_address' => ['nullable', 'string']
 
         ];
     }

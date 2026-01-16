@@ -67,3 +67,10 @@ export const tkGetChar = (char) => {
 
     return keyMap[char] || char;
 };
+
+export const toDhivehi = (value) => {
+    return value
+        .split('')
+        .map((char) => tkGetChar(char))
+        .join('');
+};

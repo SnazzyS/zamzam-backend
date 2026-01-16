@@ -1,6 +1,7 @@
 <script setup>
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import { tkGetChar, toDhivehi } from '../utils/lattinMapping';
 
 const page = usePage();
 const currentUrl = computed(() => page.url);
@@ -42,6 +43,40 @@ const submitCreate = () => {
             closeCreateModal();
         },
     });
+};
+
+const handleDhivehiInput = (event, form, field) => {
+    const mapped = toDhivehi(event.target.value);
+    if (mapped !== event.target.value) {
+        event.target.value = mapped;
+    }
+    form[field] = mapped;
+};
+
+const handleDhivehiKeydown = (event, form, field) => {
+    if (event.isComposing || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+    }
+
+    const key = event.key;
+    if (key.length !== 1) {
+        return;
+    }
+
+    const mapped = tkGetChar(key);
+    if (mapped === key) {
+        return;
+    }
+
+    event.preventDefault();
+    const input = event.target;
+    const start = input.selectionStart ?? 0;
+    const end = input.selectionEnd ?? 0;
+    const nextValue = `${input.value.slice(0, start)}${mapped}${input.value.slice(end)}`;
+    input.value = nextValue;
+    const nextPos = start + mapped.length;
+    input.setSelectionRange(nextPos, nextPos);
+    form[field] = nextValue;
 };
 </script>
 
@@ -119,9 +154,12 @@ const submitCreate = () => {
                     <input
                         id="create-name"
                         type="text"
-                        v-model="createForm.name"
-                        dir="ltr"
-                        class="w-full rounded-lg border px-3 py-2 text-sm text-slate-900 transition focus:outline-none focus:ring-2"
+                        :value="createForm.name"
+                        dir="rtl"
+                        lang="dv"
+                        class="w-full rounded-lg border px-3 py-2 text-sm text-slate-900 transition focus:outline-none focus:ring-2 text-right"
+                        @keydown="handleDhivehiKeydown($event, createForm, 'name')"
+                        @input="handleDhivehiInput($event, createForm, 'name')"
                         :class="createForm.errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-indigo-500 focus:ring-indigo-200'"
                         required
                     >

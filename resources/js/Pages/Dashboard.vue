@@ -1,6 +1,7 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import { tkGetChar, toDhivehi } from '../utils/lattinMapping';
 
 const props = defineProps({
     trips: Array,
@@ -89,6 +90,40 @@ const submitEdit = () => {
             closeEditModal();
         },
     });
+};
+
+const handleDhivehiInput = (event, targetForm, field) => {
+    const mapped = toDhivehi(event.target.value);
+    if (mapped !== event.target.value) {
+        event.target.value = mapped;
+    }
+    targetForm[field] = mapped;
+};
+
+const handleDhivehiKeydown = (event, targetForm, field) => {
+    if (event.isComposing || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+    }
+
+    const key = event.key;
+    if (key.length !== 1) {
+        return;
+    }
+
+    const mapped = tkGetChar(key);
+    if (mapped === key) {
+        return;
+    }
+
+    event.preventDefault();
+    const input = event.target;
+    const start = input.selectionStart ?? 0;
+    const end = input.selectionEnd ?? 0;
+    const nextValue = `${input.value.slice(0, start)}${mapped}${input.value.slice(end)}`;
+    input.value = nextValue;
+    const nextPos = start + mapped.length;
+    input.setSelectionRange(nextPos, nextPos);
+    targetForm[field] = nextValue;
 };
 </script>
 
@@ -204,7 +239,7 @@ const submitEdit = () => {
                 >
                     <Link
                         :href="`/trips/${trip.id}`"
-                        class="relative flex h-full flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50 p-5 pr-12 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-100 hover:shadow-sm"
+                        class="relative flex h-full flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50 p-5 pr-20 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-100 hover:shadow-sm"
                     >
                         <!-- Active Indicator -->
                         <div class="absolute left-4 top-4 h-3 w-3" v-if="isActive(trip)">
@@ -238,12 +273,10 @@ const submitEdit = () => {
                     <!-- Edit Button -->
                     <button
                         @click.stop.prevent="openEditModal(trip)"
-                        class="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 shadow-sm transition hover:border-slate-300 hover:text-slate-600"
+                        class="absolute right-3 top-3 z-10 inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700"
                         title="ދަތުރު އެޑިޓް"
                     >
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                        </svg>
+                        އެޑިޓް
                     </button>
                 </div>
             </div>
@@ -275,14 +308,30 @@ const submitEdit = () => {
                         <input
                             id="name"
                             type="text"
-                            v-model="form.name"
+                            :value="form.name"
                             dir="rtl"
                             lang="dv"
-                            class="w-full rounded-lg border px-3 py-2 text-sm text-slate-900 transition focus:outline-none focus:ring-2"
+                            class="w-full rounded-lg border px-3 py-2 text-sm text-slate-900 transition focus:outline-none focus:ring-2 text-right"
+                            @keydown="handleDhivehiKeydown($event, form, 'name')"
+                            @input="handleDhivehiInput($event, form, 'name')"
                             :class="form.errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-indigo-500 focus:ring-indigo-200'"
                             required
                         >
                         <p v-if="form.errors.name" class="text-xs text-red-500 text-left" dir="ltr">{{ form.errors.name }}</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="departure_date" class="text-sm font-medium text-slate-700 text-right">ފުރާ ތާރީޚު</label>
+                        <input
+                            id="departure_date"
+                            type="date"
+                            v-model="form.departure_date"
+                            dir="ltr"
+                            class="w-full rounded-lg border px-3 py-2 text-sm text-slate-900 transition focus:outline-none focus:ring-2"
+                            :class="form.errors.departure_date ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-indigo-500 focus:ring-indigo-200'"
+                            required
+                        >
+                        <p v-if="form.errors.departure_date" class="text-xs text-red-500 text-left" dir="ltr">{{ form.errors.departure_date }}</p>
                     </div>
 
                     <div class="space-y-2">
