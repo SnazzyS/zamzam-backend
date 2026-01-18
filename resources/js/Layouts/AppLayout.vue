@@ -100,7 +100,7 @@ const handleDhivehiKeydown = (event, form, field) => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-slate-100" dir="rtl">
+    <div class="min-h-screen bg-slate-50" dir="rtl">
         <Navbar />
         <div class="mx-auto flex max-w-[1400px] flex-col gap-6 p-6 lg:flex-row">
             <aside v-if="hasTripSidebar" class="w-full lg:w-56">
@@ -110,7 +110,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                             <button
                                 v-if="item.action === 'register'"
                                 type="button"
-                                class="flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+                                class="flex w-full items-center rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
                                 @click="openRegisterModal"
                             >
                                 {{ item.name }}
@@ -119,10 +119,10 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 v-else
                                 :href="item.href"
                                 :class="[
-                                    'flex items-center rounded-lg px-3 py-2 text-sm font-medium transition',
+                                    'flex items-center rounded-lg px-3 py-2 text-sm font-semibold transition',
                                     isActive(item.href)
                                         ? 'bg-slate-900 text-white'
-                                        : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700',
+                                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
                                 ]"
                             >
                                 {{ item.name }}
@@ -143,7 +143,7 @@ const handleDhivehiKeydown = (event, form, field) => {
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
         @click.self="closeRegisterModal"
     >
-        <div class="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-2xl">
+        <div class="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl">
             <div class="mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
                 <h3 class="text-xl font-semibold text-slate-900">ކަސްޓަމަރު ރަގިސްޓަރ</h3>
                 <button type="button" @click="closeRegisterModal" class="rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
@@ -155,13 +155,13 @@ const handleDhivehiKeydown = (event, form, field) => {
 
             <form @submit.prevent="submitRegister" class="grid gap-4 md:grid-cols-2">
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">name</label>
+                    <label class="text-xs font-semibold text-slate-500">ނަން</label>
                     <input
                         :value="registerForm.name"
                         type="text"
                         dir="rtl"
                         lang="dv"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-right text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         @keydown="handleDhivehiKeydown($event, registerForm, 'name')"
                         @input="handleDhivehiInput($event, registerForm, 'name')"
                         required
@@ -169,36 +169,36 @@ const handleDhivehiKeydown = (event, form, field) => {
                     <p v-if="registerForm.errors.name" class="text-xs text-red-500">{{ registerForm.errors.name }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500" dir="ltr">national_id</label>
+                    <label class="text-xs font-semibold text-slate-500" dir="rtl">ނޭޝަނަލް އައިޑީ</label>
                     <input
                         v-model="registerForm.national_id"
                         type="text"
                         dir="ltr"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         placeholder="A123456"
                         required
                     >
                     <p v-if="registerForm.errors.national_id" class="text-xs text-red-500">{{ registerForm.errors.national_id }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">date_of_birth</label>
+                    <label class="text-xs font-semibold text-slate-500">އުފަން ތާރީޚު</label>
                     <input
                         v-model="registerForm.date_of_birth"
                         type="date"
                         dir="ltr"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="registerForm.errors.date_of_birth" class="text-xs text-red-500">{{ registerForm.errors.date_of_birth }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">island</label>
+                    <label class="text-xs font-semibold text-slate-500">ރަށް</label>
                     <input
                         :value="registerForm.island"
                         type="text"
                         dir="rtl"
                         lang="dv"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-right text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         @keydown="handleDhivehiKeydown($event, registerForm, 'island')"
                         @input="handleDhivehiInput($event, registerForm, 'island')"
                         required
@@ -206,24 +206,24 @@ const handleDhivehiKeydown = (event, form, field) => {
                     <p v-if="registerForm.errors.island" class="text-xs text-red-500">{{ registerForm.errors.island }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">phone_number</label>
+                    <label class="text-xs font-semibold text-slate-500">ފޯން ނަންބަރު</label>
                     <input
                         v-model="registerForm.phone_number"
                         type="number"
                         dir="ltr"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="registerForm.errors.phone_number" class="text-xs text-red-500">{{ registerForm.errors.phone_number }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">address</label>
+                    <label class="text-xs font-semibold text-slate-500">އެޑްރެސް</label>
                     <input
                         :value="registerForm.address"
                         type="text"
                         dir="rtl"
                         lang="dv"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-right text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         @keydown="handleDhivehiKeydown($event, registerForm, 'address')"
                         @input="handleDhivehiInput($event, registerForm, 'address')"
                         required
@@ -231,26 +231,26 @@ const handleDhivehiKeydown = (event, form, field) => {
                     <p v-if="registerForm.errors.address" class="text-xs text-red-500">{{ registerForm.errors.address }}</p>
                 </div>
                 <div class="space-y-1 md:col-span-2">
-                    <label class="text-xs font-medium text-slate-500">gender</label>
+                    <label class="text-xs font-semibold text-slate-500">ޖިންސު</label>
                     <select
                         v-model="registerForm.gender"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
-                        <option value="" disabled>Choose</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        <option value="" disabled>ހޮވާ</option>
+                        <option value="Male">ފިރިހެން</option>
+                        <option value="Female">އަންހެން</option>
                     </select>
                     <p v-if="registerForm.errors.gender" class="text-xs text-red-500">{{ registerForm.errors.gender }}</p>
                 </div>
 
                 <div class="md:col-span-2 flex items-center justify-end gap-3 pt-2">
-                    <button type="button" @click="closeRegisterModal" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-600">
+                    <button type="button" @click="closeRegisterModal" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
                         ކެންސަލް
                     </button>
                     <button
                         type="submit"
-                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                         :disabled="registerForm.processing"
                     >
                         {{ registerForm.processing ? 'ރަގިސްޓަރ ކުރަނީ...' : 'ރަގިސްޓަރ' }}

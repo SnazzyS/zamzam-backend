@@ -24,12 +24,12 @@ const detachHotel = (hotelId) => {
 </script>
 
 <template>
-    <Head title="Trip Hotels" />
+    <Head title="ދަތުރުގެ ހޮޓާތައް" />
 
     <main class="space-y-6">
         <div class="space-y-1">
-            <h1 class="text-2xl font-semibold text-slate-900">Trip Hotels</h1>
-            <p class="text-sm text-slate-500">Select which hotels belong to this trip.</p>
+            <h1 class="text-2xl font-semibold text-slate-900">ދަތުރުގެ ހޮޓާތައް</h1>
+            <p class="text-sm text-slate-500">މި ދަތުރުގައި ހިމެނޭ ހޮޓާތައް ހޮވާލާ</p>
         </div>
 
         <div v-if="hotels.length" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -48,19 +48,19 @@ const detachHotel = (hotelId) => {
                         class="rounded-full px-2 py-1 text-xs font-semibold"
                         :class="isAttached(hotel.id) ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'"
                     >
-                        {{ isAttached(hotel.id) ? 'Attached' : 'Not attached' }}
+                        {{ isAttached(hotel.id) ? 'އެޅުއްވާލެވިފަ' : 'ނެތް' }}
                     </span>
                 </div>
 
                 <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
-                    <span>{{ hotel.rooms_count }} rooms</span>
+                    <span>{{ hotel.rooms_count }} ރޫމް</span>
                 </div>
 
                 <div class="mt-4 flex flex-wrap items-center gap-2">
                     <button
                         v-if="!isAttached(hotel.id)"
                         type="button"
-                        class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
+                        class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800"
                         @click="attachHotel(hotel.id)"
                     >
                         އެޅުއްވާލާ
@@ -68,7 +68,7 @@ const detachHotel = (hotelId) => {
                     <button
                         v-else
                         type="button"
-                        class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+                        class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
                         @click="detachHotel(hotel.id)"
                     >
                         ނެގުން
@@ -76,7 +76,7 @@ const detachHotel = (hotelId) => {
                     <Link
                         v-if="isAttached(hotel.id)"
                         :href="route('trips.hotels.rooms.index', [trip.id, hotel.id])"
-                        class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+                        class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
                     >
                         ރޫމްތައް
                     </Link>
@@ -84,8 +84,8 @@ const detachHotel = (hotelId) => {
             </div>
         </div>
 
-        <div v-else class="rounded-xl border border-dashed border-slate-200 bg-white p-10 text-center text-sm text-slate-400">
-            No hotels created yet. Create hotels from the navbar.
+        <div v-else class="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-sm text-slate-400">
+            ހޮޓާ ނެތް. ނަވަ ހޮޓާއެއް މެނޫއިން ހެދާލާ
         </div>
     </main>
 </template>

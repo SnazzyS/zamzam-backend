@@ -58,7 +58,7 @@ const submitEditHotel = () => {
 };
 
 const deleteHotel = (hotelId) => {
-    if (!confirm('Delete this hotel?')) {
+    if (!confirm('މި ހޮޓާ ޑިލީޓް ކުރަމުން؟')) {
         return;
     }
 
@@ -136,7 +136,7 @@ const submitEditRoom = () => {
 };
 
 const deleteRoom = (room) => {
-    if (!confirm('Delete this room?')) {
+    if (!confirm('މި ރޫމް ޑިލީޓް ކުރަމުން؟')) {
         return;
     }
 
@@ -152,38 +152,38 @@ const deleteRoom = (room) => {
     <main class="space-y-6">
         <div class="space-y-1">
             <h1 class="text-2xl font-semibold text-slate-900">ހޮޓާ ހެދުން</h1>
-            <p class="text-sm text-slate-500">Create hotels and manage rooms.</p>
+            <p class="text-sm text-slate-500">ހޮޓާތައް ހެދާލާ ރޫމްތައް ބެލުމަށް</p>
         </div>
 
         <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="text-lg font-semibold text-slate-900">Create Hotel</h2>
+            <h2 class="text-lg font-semibold text-slate-900">ހޮޓާ ހެދުން</h2>
             <form @submit.prevent="submitHotel" class="mt-4 grid gap-4 md:grid-cols-3">
                 <div class="space-y-1 md:col-span-1">
-                    <label class="text-xs font-medium text-slate-500">Name</label>
+                    <label class="text-xs font-semibold text-slate-500">ނަން</label>
                     <input
                         v-model="hotelForm.name"
                         type="text"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="hotelForm.errors.name" class="text-xs text-red-500">{{ hotelForm.errors.name }}</p>
                 </div>
                 <div class="space-y-1 md:col-span-1">
-                    <label class="text-xs font-medium text-slate-500">Address</label>
+                    <label class="text-xs font-semibold text-slate-500">އެޑްރެސް</label>
                     <input
                         v-model="hotelForm.address"
                         type="text"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="hotelForm.errors.address" class="text-xs text-red-500">{{ hotelForm.errors.address }}</p>
                 </div>
                 <div class="space-y-1 md:col-span-1">
-                    <label class="text-xs font-medium text-slate-500">Phone</label>
+                    <label class="text-xs font-semibold text-slate-500">ފޯން ނަންބަރު</label>
                     <input
                         v-model="hotelForm.phone_number"
                         type="number"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="hotelForm.errors.phone_number" class="text-xs text-red-500">{{ hotelForm.errors.phone_number }}</p>
@@ -191,10 +191,10 @@ const deleteRoom = (room) => {
                 <div class="md:col-span-3 flex justify-end">
                     <button
                         type="submit"
-                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                         :disabled="hotelForm.processing"
                     >
-                        {{ hotelForm.processing ? 'Saving...' : 'Create Hotel' }}
+                        {{ hotelForm.processing ? 'ރައްކާލަމުން...' : 'ހޮޓާ ހެދާ' }}
                     </button>
                 </div>
             </form>
@@ -215,40 +215,40 @@ const deleteRoom = (room) => {
                     <div class="flex gap-2">
                         <button
                             type="button"
-                            class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+                            class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
                             @click="openEditHotel(hotel)"
                         >
-                            Edit
+                            އެޑިޓް
                         </button>
                         <button
                             type="button"
                             class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-500 transition hover:bg-red-50"
                             @click="deleteHotel(hotel.id)"
                         >
-                            Delete
+                            ޑިލީޓް
                         </button>
                     </div>
                 </div>
 
                 <div class="mt-4">
                     <div class="flex items-center justify-between">
-                        <h4 class="text-sm font-semibold text-slate-700">Rooms</h4>
+                        <h4 class="text-sm font-semibold text-slate-700">ރޫމްތައް</h4>
                         <button
                             type="button"
-                            class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
+                            class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800"
                             @click="openCreateRoom(hotel)"
                         >
-                            Add Room
+                            ރޫމް ހެދާ
                         </button>
                     </div>
 
                     <div v-if="hotel.rooms.length" class="mt-3 overflow-hidden rounded-lg border border-slate-200">
                         <table class="min-w-full divide-y divide-slate-200 text-sm">
-                            <thead class="bg-slate-50 text-slate-600">
+                            <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
                                 <tr>
-                                    <th class="px-3 py-2 text-right font-medium">Room</th>
-                                    <th class="px-3 py-2 text-right font-medium">Beds</th>
-                                    <th class="px-3 py-2 text-right font-medium">Action</th>
+                                    <th class="px-3 py-2 text-right">ރޫމް</th>
+                                    <th class="px-3 py-2 text-right">ބެޑް ގަނޑު</th>
+                                    <th class="px-3 py-2 text-right">އެކްޝަން</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
@@ -259,17 +259,17 @@ const deleteRoom = (room) => {
                                         <div class="flex justify-end gap-2">
                                             <button
                                                 type="button"
-                                                class="text-xs font-semibold text-slate-500 transition hover:text-slate-700"
+                                                class="text-xs font-semibold text-slate-600 transition hover:text-slate-900"
                                                 @click="openEditRoom(room)"
                                             >
-                                                Edit
+                                                އެޑިޓް
                                             </button>
                                             <button
                                                 type="button"
                                                 class="text-xs font-semibold text-red-500 transition hover:text-red-600"
                                                 @click="deleteRoom(room)"
                                             >
-                                                Delete
+                                                ޑިލީޓް
                                             </button>
                                         </div>
                                     </td>
@@ -277,13 +277,13 @@ const deleteRoom = (room) => {
                             </tbody>
                         </table>
                     </div>
-                    <p v-else class="mt-3 text-xs text-slate-400">No rooms yet.</p>
+                    <p v-else class="mt-3 text-xs text-slate-400">ރޫމް ނެތް</p>
                 </div>
             </div>
         </section>
 
-        <div v-else class="rounded-xl border border-dashed border-slate-200 bg-white p-10 text-center text-sm text-slate-400">
-            No hotels created yet.
+        <div v-else class="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-sm text-slate-400">
+            ހޮޓާ ނެތް. ނަވަ ހޮޓާއެއް ހެދާލާ
         </div>
     </main>
 
@@ -292,9 +292,9 @@ const deleteRoom = (room) => {
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
         @click.self="closeEditHotel"
     >
-        <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+        <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
             <div class="mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
-                <h3 class="text-xl font-semibold text-slate-900">Edit Hotel</h3>
+                <h3 class="text-xl font-semibold text-slate-900">ހޮޓާ އެޑިޓް</h3>
                 <button type="button" @click="closeEditHotel" class="rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -304,46 +304,46 @@ const deleteRoom = (room) => {
 
             <form @submit.prevent="submitEditHotel" class="space-y-4">
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">Name</label>
+                    <label class="text-xs font-semibold text-slate-500">ނަން</label>
                     <input
                         v-model="editHotelForm.name"
                         type="text"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="editHotelForm.errors.name" class="text-xs text-red-500">{{ editHotelForm.errors.name }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">Address</label>
+                    <label class="text-xs font-semibold text-slate-500">އެޑްރެސް</label>
                     <input
                         v-model="editHotelForm.address"
                         type="text"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="editHotelForm.errors.address" class="text-xs text-red-500">{{ editHotelForm.errors.address }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">Phone</label>
+                    <label class="text-xs font-semibold text-slate-500">ފޯން ނަންބަރު</label>
                     <input
                         v-model="editHotelForm.phone_number"
                         type="number"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="editHotelForm.errors.phone_number" class="text-xs text-red-500">{{ editHotelForm.errors.phone_number }}</p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" @click="closeEditHotel" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-600">
-                        Cancel
+                    <button type="button" @click="closeEditHotel" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                        ކެންސަލް
                     </button>
                     <button
                         type="submit"
-                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                         :disabled="editHotelForm.processing"
                     >
-                        {{ editHotelForm.processing ? 'Saving...' : 'Save' }}
+                        {{ editHotelForm.processing ? 'ރައްކާލަމުން...' : 'ރައްކާލާ' }}
                     </button>
                 </div>
             </form>
@@ -355,9 +355,9 @@ const deleteRoom = (room) => {
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
         @click.self="closeCreateRoom"
     >
-        <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+        <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
             <div class="mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
-                <h3 class="text-xl font-semibold text-slate-900">Add Room</h3>
+                <h3 class="text-xl font-semibold text-slate-900">ރޫމް ހެދުން</h3>
                 <button type="button" @click="closeCreateRoom" class="rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -367,37 +367,37 @@ const deleteRoom = (room) => {
 
             <form @submit.prevent="submitCreateRoom" class="space-y-4">
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">Room Number</label>
+                    <label class="text-xs font-semibold text-slate-500">ރޫމް ނަންބަރު</label>
                     <input
                         v-model="roomForm.room_number"
                         type="number"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="roomForm.errors.room_number" class="text-xs text-red-500">{{ roomForm.errors.room_number }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">Bed Count</label>
+                    <label class="text-xs font-semibold text-slate-500">ބެޑް ގަނޑު</label>
                     <input
                         v-model="roomForm.bed_count"
                         type="number"
                         min="1"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="roomForm.errors.bed_count" class="text-xs text-red-500">{{ roomForm.errors.bed_count }}</p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" @click="closeCreateRoom" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-600">
-                        Cancel
+                    <button type="button" @click="closeCreateRoom" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                        ކެންސަލް
                     </button>
                     <button
                         type="submit"
-                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                         :disabled="roomForm.processing"
                     >
-                        {{ roomForm.processing ? 'Saving...' : 'Add Room' }}
+                        {{ roomForm.processing ? 'ރައްކާލަމުން...' : 'ރޫމް ހެދާ' }}
                     </button>
                 </div>
             </form>
@@ -409,9 +409,9 @@ const deleteRoom = (room) => {
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
         @click.self="closeEditRoom"
     >
-        <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+        <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
             <div class="mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
-                <h3 class="text-xl font-semibold text-slate-900">Edit Room</h3>
+                <h3 class="text-xl font-semibold text-slate-900">ރޫމް އެޑިޓް</h3>
                 <button type="button" @click="closeEditRoom" class="rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -421,37 +421,37 @@ const deleteRoom = (room) => {
 
             <form @submit.prevent="submitEditRoom" class="space-y-4">
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">Room Number</label>
+                    <label class="text-xs font-semibold text-slate-500">ރޫމް ނަންބަރު</label>
                     <input
                         v-model="editRoomForm.room_number"
                         type="number"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="editRoomForm.errors.room_number" class="text-xs text-red-500">{{ editRoomForm.errors.room_number }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-medium text-slate-500">Bed Count</label>
+                    <label class="text-xs font-semibold text-slate-500">ބެޑް ގަނޑު</label>
                     <input
                         v-model="editRoomForm.bed_count"
                         type="number"
                         min="1"
-                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-300"
+                        class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                         required
                     >
                     <p v-if="editRoomForm.errors.bed_count" class="text-xs text-red-500">{{ editRoomForm.errors.bed_count }}</p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" @click="closeEditRoom" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-600">
-                        Cancel
+                    <button type="button" @click="closeEditRoom" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                        ކެންސަލް
                     </button>
                     <button
                         type="submit"
-                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                         :disabled="editRoomForm.processing"
                     >
-                        {{ editRoomForm.processing ? 'Saving...' : 'Save' }}
+                        {{ editRoomForm.processing ? 'ރައްކާލަމުން...' : 'ރައްކާލާ' }}
                     </button>
                 </div>
             </form>
