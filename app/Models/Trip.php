@@ -17,8 +17,13 @@ class Trip extends Model
     public function customers()
     {
         return $this->belongsToMany(Customer::class)
-            ->withPivot(['bus_id', 'flight_id', 'umrah_id'])
+            ->withPivot(['bus_id', 'flight_id', 'umrah_id', 'group_id'])
             ->withTimestamps();
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(TripGroup::class);
     }
 
     public function buses()

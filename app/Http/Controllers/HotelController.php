@@ -6,17 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Models\Hotel;
 use App\Models\Trip;
 use App\Http\Requests\HotelStoreRequest;
+use App\Models\CustomerRoom;
 use Inertia\Inertia;
 
 class HotelController extends Controller
 {
     public function index(Trip $trip)
     {
-        $hotels = Hotel::query()->get();
+        $hotels = Hotel::query()
+            ->withCount('rooms')
+            ->orderBy('name')
+            ->get();
+
+        $attachedHotelIds = $trip->hotels()
+            ->pluck('hotels.id')
+            ->values();
 
         return Inertia::render('Trips/Hotels/Index', [
             'trip' => $trip,
             'hotels' => $hotels,
+            'attachedHotelIds' => $attachedHotelIds,
         ]);
     }
 
@@ -59,5 +68,42 @@ class HotelController extends Controller
         return redirect()
             ->back()
             ->with('success', 'ހޮޓާ ޑިލީޓް ކުރެވިއްޖެ');
+    }
+
+    public function attach(Trip $trip, Hotel $hotel)
+    {
+        $trip->hotels()->syncWithoutDetaching([$hotel->id]);
+
+        $rooms = $hotel->rooms()->pluck('id')->all();
+        if (!empty($rooms)) {
+            $pivotData = [];
+            foreach ($rooms as $roomId) {
+                $pivotData[$roomId] = ['hotel_name' => $hotel->name];
+            }
+            $trip->rooms()->syncWithoutDetaching($pivotData);
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'ހޮޓާ ދަތުރަށް އެޅުއްވާލައިފި');
+    }
+
+    public function detach(Trip $trip, Hotel $hotel)
+    {
+        $roomIds = $hotel->rooms()->pluck('id')->all();
+
+        if (!empty($roomIds)) {
+            CustomerRoom::where('trip_id', $trip->id)
+                ->whereIn('room_id', $roomIds)
+                ->delete();
+
+            $trip->rooms()->detach($roomIds);
+        }
+
+        $trip->hotels()->detach($hotel->id);
+
+        return redirect()
+            ->back()
+            ->with('success', 'ހޮޓާ ދަތުރުން ނެގިއްޖެ');
     }
 }

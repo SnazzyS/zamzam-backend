@@ -21,6 +21,7 @@ class CustomerTrip extends Pivot
         'bus_id',
         'flight_id',
         'umrah_id',
+        'group_id',
     ];
 
     
@@ -42,6 +43,11 @@ class CustomerTrip extends Pivot
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(TripGroup::class, 'group_id');
     }
 
      

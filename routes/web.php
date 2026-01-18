@@ -5,11 +5,13 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\HotelManagementController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\TripGroupController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,6 +26,15 @@ Route::get('/login', function () {
 // Dashboard - no auth required for now
 Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
+// Hotel Management
+Route::get('/hotels', [HotelManagementController::class, 'index'])->name('hotels.index');
+Route::post('/hotels', [HotelManagementController::class, 'store'])->name('hotels.store');
+Route::put('/hotels/{hotel}', [HotelManagementController::class, 'update'])->name('hotels.update');
+Route::delete('/hotels/{hotel}', [HotelManagementController::class, 'destroy'])->name('hotels.destroy');
+Route::post('/hotels/{hotel}/rooms', [HotelManagementController::class, 'storeRoom'])->name('hotels.rooms.store');
+Route::put('/hotels/{hotel}/rooms/{room}', [HotelManagementController::class, 'updateRoom'])->name('hotels.rooms.update');
+Route::delete('/hotels/{hotel}/rooms/{room}', [HotelManagementController::class, 'destroyRoom'])->name('hotels.rooms.destroy');
+
 // Trips
 Route::resource('trips', TripController::class)->only(['show', 'store', 'update']);
 
@@ -37,6 +48,8 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
 
     // Hotels
     Route::resource('hotels', HotelController::class);
+    Route::post('hotels/{hotel}/attach', [HotelController::class, 'attach'])->name('hotels.attach');
+    Route::delete('hotels/{hotel}/detach', [HotelController::class, 'detach'])->name('hotels.detach');
 
     // Hotel Rooms (Nested under Hotel)
     Route::prefix('hotels/{hotel}')->name('hotels.')->group(function () {
@@ -54,6 +67,7 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
     // Customer Custom Actions (Bus Assignment)
     Route::post('customers/{customer}/assign-bus', [CustomerController::class, 'assignBus'])->name('customers.assign-bus');
     Route::delete('customers/{customer}/detach-bus', [CustomerController::class, 'detachBus'])->name('customers.detach-bus');
+    Route::put('customers/{customer}/assign-group', [CustomerController::class, 'assignGroup'])->name('customers.assign-group');
 
     Route::prefix('customers/{customer}')->name('customers.')->group(function () {
         // Payments
@@ -66,4 +80,7 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
         Route::post('invoice/add-discount', [InvoiceController::class, 'addDiscount'])->name('invoice.add-discount');
         Route::post('invoice/remove-discount', [InvoiceController::class, 'removeDiscount'])->name('invoice.remove-discount');
     });
+
+    // Groups
+    Route::post('groups', [TripGroupController::class, 'store'])->name('groups.store');
 });

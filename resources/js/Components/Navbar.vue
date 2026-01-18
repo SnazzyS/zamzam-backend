@@ -9,6 +9,7 @@ const currentUrl = computed(() => page.url);
 const navItems = [
     { name: 'ޑޭޝްބޯޑޫ', href: '/dashboard' },
     { name: 'ދަތުރެއް ހެދުން', action: 'createTrip' },
+    { name: 'ހޮޓާ ހެދުން', href: '/hotels' },
     { name: 'މާލީ ހިސާބު', href: '/finance' },
 ];
 

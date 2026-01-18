@@ -12,7 +12,14 @@ class TripController extends Controller
     public function show(Trip $trip)
     {
         return Inertia::render('Trips/Show', [
-            'trip' => $trip->load('customers'),
+            'trip' => $trip->load([
+                'customers' => function ($query) {
+                    $query->orderBy('name');
+                },
+                'groups' => function ($query) {
+                    $query->orderBy('type')->orderBy('name');
+                },
+            ]),
         ]);
     }
 

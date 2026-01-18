@@ -16,11 +16,26 @@ class RoomController extends Controller
 {
     public function index(Trip $trip, Hotel $hotel)
     {
-        $rooms = $hotel->rooms()->where('trip_id', $trip->id)->get();
+        $rooms = $trip->rooms()
+            ->where('rooms.hotel_id', $hotel->id)
+            ->with(['customers' => function ($query) use ($trip) {
+                $query->where('customer_room.trip_id', $trip->id)
+                    ->orderBy('name');
+            }])
+            ->orderBy('rooms.room_number')
+            ->get();
+
+        $availableCustomers = $trip->customers()
+            ->whereDoesntHave('rooms', function ($query) use ($trip) {
+                $query->where('customer_room.trip_id', $trip->id);
+            })
+            ->orderBy('name')
+            ->get(['customers.id', 'customers.name', 'customers.national_id']);
         return Inertia::render('Trips/Hotels/Rooms/Index', [
             'trip' => $trip,
             'hotel' => $hotel,
             'rooms' => $rooms,
+            'availableCustomers' => $availableCustomers,
         ]);
     }
 
@@ -39,7 +54,31 @@ class RoomController extends Controller
 
     public function assignCustomer(Trip $trip, Hotel $hotel, Room $room, Request $request)
     {
+        if ($room->hotel_id !== $hotel->id) {
+            abort(404);
+        }
+
+        $roomAttached = $trip->rooms()
+            ->where('rooms.id', $room->id)
+            ->exists();
+
+        if (!$roomAttached) {
+            return redirect()
+                ->back()
+                ->withErrors(['assignCustomer' => 'މި ރޫމް ދަތުރަށް ނުވަނީ އެޅުއްވާލައި']);
+        }
+
         $customer = Customer::findOrFail($request->customer_id);
+
+        $customerOnTrip = $trip->customers()
+            ->where('customers.id', $customer->id)
+            ->exists();
+
+        if (!$customerOnTrip) {
+            return redirect()
+                ->back()
+                ->withErrors(['assignCustomer' => 'މި ކަސްޓަމަރު ދަތުރުގައި ނެތް']);
+        }
 
         $customerAlreadyAssigned = CustomerRoom::where('customer_id', $customer->id)
             ->where('trip_id', $trip->id)
@@ -51,7 +90,7 @@ class RoomController extends Controller
                 ->withErrors(['assignCustomer' => 'ކަސްޓަމަރު ހުރީ ކޮޓަރީގައި']);
         }
 
-        if (CustomerRoom::where('room_id', $room->id)->count() >= $room->bed_count) {
+        if (CustomerRoom::where('room_id', $room->id)->where('trip_id', $trip->id)->count() >= $room->bed_count) {
             return redirect()
                 ->back()
                 ->withErrors(['assignCustomer' => 'ކޮޓަރި ފުރިފަ']);
@@ -70,6 +109,10 @@ class RoomController extends Controller
 
     public function removeCustomer(Trip $trip, Hotel $hotel, Room $room, Request $request)
     {
+        if ($room->hotel_id !== $hotel->id) {
+            abort(404);
+        }
+
         $customer = Customer::findOrFail($request->customer_id);
 
         CustomerRoom::where('customer_id', $customer->id)

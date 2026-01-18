@@ -37,7 +37,9 @@ class Room extends Model
 
     public function customers()
     {
-        return $this->hasMany(Customer::class);
+        return $this->belongsToMany(Customer::class, 'customer_room')
+            ->withPivot('trip_id')
+            ->withTimestamps();
     }
 
     public function invoices()

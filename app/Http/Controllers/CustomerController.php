@@ -12,6 +12,7 @@ use App\Models\Invoice;
 use App\Models\Trip;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
@@ -132,6 +133,28 @@ class CustomerController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Customer detached from bus');
+    }
+
+    public function assignGroup(Trip $trip, Customer $customer, Request $request)
+    {
+        $data = $request->validate([
+            'group_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('trip_groups', 'id')->where('trip_id', $trip->id),
+            ],
+        ]);
+
+        CustomerTrip::where([
+            'customer_id' => $customer->id,
+            'trip_id' => $trip->id,
+        ])->update([
+            'group_id' => $data['group_id'] ?? null,
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Customer group updated');
     }
 
     // From SearchCustomerController - appears unused but preserved
