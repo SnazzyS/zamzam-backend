@@ -24,13 +24,13 @@ const detachHotel = (hotelId) => {
 </script>
 
 <template>
-    <Head title="ދަތުރުގެ ހޮޓާތައް" />
+    <Head title="Trip Hotels" />
 
     <main class="space-y-8">
         <!-- Page Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">ދަތުރުގެ ހޮޓާތައް</h1>
-            <p class="mt-1 text-slate-500">މި ދަތުރުގައި ހިމެނޭ ހޮޓާތައް ހޮވާލާ</p>
+            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Trip Hotels</h1>
+            <p class="mt-1 text-slate-500">Select hotels for this trip</p>
         </div>
 
         <!-- Hotels Grid -->
@@ -51,7 +51,7 @@ const detachHotel = (hotelId) => {
                         ]"
                     >
                         <span v-if="isAttached(hotel.id)" class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                        {{ isAttached(hotel.id) ? 'އެޅުއްވާލެވިފަ' : 'ނެތް' }}
+                        {{ isAttached(hotel.id) ? 'Attached' : 'Not attached' }}
                     </span>
                 </div>
 
@@ -67,7 +67,7 @@ const detachHotel = (hotelId) => {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                     </div>
-                    <span>{{ hotel.rooms_count }} ރޫމް</span>
+                    <span>{{ hotel.rooms_count }} rooms</span>
                 </div>
 
                 <div class="mt-5 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5">
@@ -77,7 +77,7 @@ const detachHotel = (hotelId) => {
                         class="flex-1 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
                         @click="attachHotel(hotel.id)"
                     >
-                        އެޅުއްވާލާ
+                        Attach
                     </button>
                     <button
                         v-else
@@ -85,14 +85,14 @@ const detachHotel = (hotelId) => {
                         class="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
                         @click="detachHotel(hotel.id)"
                     >
-                        ނެގުން
+                        Detach
                     </button>
                     <Link
                         v-if="isAttached(hotel.id)"
                         :href="route('trips.hotels.rooms.index', [trip.id, hotel.id])"
                         class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-center text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
                     >
-                        ރޫމްތައް
+                        Rooms
                     </Link>
                 </div>
             </div>
@@ -105,8 +105,8 @@ const detachHotel = (hotelId) => {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
             </div>
-            <h3 class="text-base font-medium text-slate-800 mb-1">ހޮޓާ ނެތް</h3>
-            <p class="text-sm text-slate-500">ނަވަ ހޮޓާއެއް މެނޫއިން ހެދާލާ</p>
+            <h3 class="text-base font-medium text-slate-800 mb-1">No Hotels</h3>
+            <p class="text-sm text-slate-500">Create a new hotel from the menu</p>
         </div>
     </main>
 </template>

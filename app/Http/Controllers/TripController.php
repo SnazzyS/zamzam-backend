@@ -14,10 +14,10 @@ class TripController extends Controller
         return Inertia::render('Trips/Show', [
             'trip' => $trip->load([
                 'customers' => function ($query) {
-                    $query->orderBy('name');
+                    $query->orderBy('customer_trip.created_at');
                 },
                 'groups' => function ($query) {
-                    $query->orderBy('type')->orderBy('name');
+                    $query->orderBy('created_at');
                 },
             ]),
         ]);

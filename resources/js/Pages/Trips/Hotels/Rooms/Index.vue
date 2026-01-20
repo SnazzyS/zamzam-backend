@@ -47,12 +47,12 @@ const removeCustomer = (roomId, customerId) => {
 </script>
 
 <template>
-    <Head title="ހޮޓާގެ ރޫމްތައް" />
+    <Head title="Hotel Rooms" />
 
     <main class="space-y-6">
         <div class="space-y-1">
-            <h1 class="text-2xl font-semibold text-slate-900">{{ hotel?.name || 'ހޮޓާގެ ރޫމްތައް' }}</h1>
-            <p class="text-sm text-slate-500">މި ހޮޓާގެ ރޫމްތައްގައި ދަތުރުގެ ކަސްޓަމަރުން އެޅުން</p>
+            <h1 class="text-2xl font-semibold text-slate-900">{{ hotel?.name || 'Hotel Rooms' }}</h1>
+            <p class="text-sm text-slate-500">Assign trip customers to rooms in this hotel</p>
         </div>
 
         <div
@@ -70,11 +70,11 @@ const removeCustomer = (roomId, customerId) => {
             >
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold text-slate-900">ރޫމް {{ room.room_number }}</h2>
-                        <p class="text-xs text-slate-500">ބެޑް ގަނޑު: {{ room.bed_count }}</p>
+                        <h2 class="text-lg font-semibold text-slate-900">Room {{ room.room_number }}</h2>
+                        <p class="text-xs text-slate-500">Bed count: {{ room.bed_count }}</p>
                     </div>
                     <div class="text-xs text-slate-500">
-                        {{ room.customers.length }} / {{ room.bed_count }} ފުރިފަ
+                        {{ room.customers.length }} / {{ room.bed_count }} occupied
                     </div>
                 </div>
 
@@ -86,7 +86,7 @@ const removeCustomer = (roomId, customerId) => {
                             @change="assignCustomer(room.id, $event.target.value)"
                         >
                             <option value="" selected disabled>
-                                {{ room.customers.length >= room.bed_count ? 'ރޫމް ފުރިފަ' : 'ކަސްޓަމަރު އެޅުން' }}
+                                {{ room.customers.length >= room.bed_count ? 'Room full' : 'Assign customer' }}
                             </option>
                             <option v-for="customer in availableCustomersList" :key="customer.id" :value="customer.id">
                                 {{ customer.name }} ({{ customer.national_id }})
@@ -98,28 +98,28 @@ const removeCustomer = (roomId, customerId) => {
                         <table class="min-w-full divide-y divide-slate-200 text-sm">
                             <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
                                 <tr>
-                                    <th class="px-3 py-2 text-right">ނަން</th>
-                                    <th class="px-3 py-2 text-left" dir="ltr">ނޭޝަނަލް އައިޑީ</th>
-                                    <th class="px-3 py-2 text-right">އެކްޝަން</th>
+                                    <th class="px-3 py-2 text-left">Name</th>
+                                    <th class="px-3 py-2 text-left">National ID</th>
+                                    <th class="px-3 py-2 text-left">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
                                 <tr v-for="customer in room.customers" :key="customer.id">
-                                    <td class="px-3 py-2 text-right">{{ customer.name }}</td>
-                                    <td class="px-3 py-2 text-left" dir="ltr">{{ customer.national_id }}</td>
-                                    <td class="px-3 py-2 text-right">
+                                    <td class="px-3 py-2" dir="rtl">{{ customer.name }}</td>
+                                    <td class="px-3 py-2">{{ customer.national_id }}</td>
+                                    <td class="px-3 py-2">
                                         <button
                                             type="button"
                                             class="text-xs font-semibold text-slate-600 transition hover:text-slate-900 disabled:opacity-50"
                                             :disabled="removingRoomId === room.id"
                                             @click="removeCustomer(room.id, customer.id)"
                                         >
-                                            ނެގުން
+                                            Remove
                                         </button>
                                     </td>
                                 </tr>
                                 <tr v-if="room.customers.length === 0">
-                                    <td class="px-3 py-4 text-center text-slate-400" colspan="3">ކަސްޓަމަރު ނެތް</td>
+                                    <td class="px-3 py-4 text-center text-slate-400" colspan="3">No customers assigned</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -129,7 +129,7 @@ const removeCustomer = (roomId, customerId) => {
         </div>
 
         <div v-else class="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-sm text-slate-400">
-            މި ދަތުރަށް ރޫމް ނެތް
+            No rooms for this trip
         </div>
     </main>
 </template>

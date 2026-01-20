@@ -19,20 +19,21 @@ class PhotoController extends Controller
         $photoType = $request->input('type');
         $fileName = time() . '_' . uniqid() . '.jpg';
 
-        if (!Storage::disk('local')->exists('photos')) {
-            Storage::disk('local')->makeDirectory('photos');
+        if (!Storage::disk('public')->exists('photos')) {
+            Storage::disk('public')->makeDirectory('photos');
         }
 
         $manager = new ImageManager(new Driver());
         $image = $manager->read($file);
 
         switch ($photoType) {
-            case 'profile_photo':
+            case 'profile':
             case 'transfer_slip':
                 $resizeWidth = 500;
                 break;
-            case 'passport_photo':
-            case 'agreement_photo':
+            case 'passport':
+            case 'agreement':
+            case 'invoice':
                 $resizeWidth = 1000;
                 break;
             default:
@@ -41,13 +42,12 @@ class PhotoController extends Controller
 
         $image->scale(width: $resizeWidth);
 
-        $destinationPath = Storage::disk('local')->path('photos/' . $fileName);
+        $destinationPath = Storage::disk('public')->path('photos/' . $fileName);
         $image->save($destinationPath);
 
         Photo::create([
-            'trip_id' => $trip->id,
             'customer_id' => $customer->id,
-            'type' => 'profile_photo', // Warning: Original hardcoded this to 'profile_photo'? Keeping original.
+            'type' => $photoType,
             'file_name' => $fileName,
             'mime_type' => $file->getClientMimeType(),
             'path' => 'photos/' . $fileName,
@@ -60,8 +60,8 @@ class PhotoController extends Controller
 
     public function destroy(Trip $trip, Customer $customer, Photo $photo)
     {
-        if (Storage::disk('local')->exists($photo->path)) {
-            Storage::disk('local')->delete($photo->path);
+        if (Storage::disk('public')->exists($photo->path)) {
+            Storage::disk('public')->delete($photo->path);
         }
 
         $photo->delete();

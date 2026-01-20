@@ -12,14 +12,14 @@ class TripGroupController extends Controller
     {
         $data = $request->validate([
             'name' => ['nullable', 'string', 'max:255'],
-            'type' => ['required', Rule::in(['family', 'group'])],
+            'type' => ['nullable', Rule::in(['group'])],
         ]);
 
-        $name = $data['name'] ?: $this->defaultGroupName($trip, $data['type']);
+        $name = $data['name'] ?: $this->defaultGroupName($trip);
 
         $group = $trip->groups()->create([
             'name' => $name,
-            'type' => $data['type'],
+            'type' => 'group',
         ]);
 
         return redirect()
@@ -27,14 +27,10 @@ class TripGroupController extends Controller
             ->with('success', 'Group created successfully');
     }
 
-    private function defaultGroupName(Trip $trip, string $type): string
+    private function defaultGroupName(Trip $trip): string
     {
-        $count = $trip->groups()->where('type', $type)->count();
-        $label = match ($type) {
-            'family' => 'Family',
-            default => 'Group',
-        };
+        $count = $trip->groups()->count();
 
-        return $label . ' ' . ($count + 1);
+        return 'G' . ($count + 1);
     }
 }

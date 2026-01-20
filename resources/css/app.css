@@ -19,6 +19,21 @@ body {
     background-color: #f8fafc;
 }
 
+input,
+textarea,
+select {
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-style: normal;
+}
+
+input[dir="rtl"],
+textarea[dir="rtl"],
+select[dir="rtl"],
+[lang="dv"] {
+    font-family: 'MVWaheed', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-style: normal;
+}
+
 /* RTL Support */
 [dir="rtl"] {
     text-align: right;

@@ -60,9 +60,16 @@ class CustomerController extends Controller
 
     public function show(Trip $trip, Customer $customer)
     {
+        $customer->load('photos');
+        $tripCustomer = CustomerTrip::where([
+            'trip_id' => $trip->id,
+            'customer_id' => $customer->id,
+        ])->first();
+
         return Inertia::render('Trips/Customers/Show', [
             'trip' => $trip,
             'customer' => $customer,
+            'tripCustomer' => $tripCustomer,
         ]);
     }
 
