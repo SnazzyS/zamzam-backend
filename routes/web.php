@@ -82,5 +82,8 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
     });
 
     // Groups
+    Route::get('groups', [TripGroupController::class, 'index'])->name('groups.index');
     Route::post('groups', [TripGroupController::class, 'store'])->name('groups.store');
+    Route::put('groups/{group}', [TripGroupController::class, 'update'])->name('groups.update');
+    Route::delete('groups/{group}', [TripGroupController::class, 'destroy'])->name('groups.destroy');
 });

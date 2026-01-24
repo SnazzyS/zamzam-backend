@@ -14,11 +14,12 @@ const sidebarItems = computed(() => {
     }
 
     return [
-        { name: 'Home', href: route('trips.show', tripId.value), icon: 'home' },
-        { name: 'Register', action: 'register', icon: 'user-plus' },
-        { name: 'Hotels', href: route('trips.hotels.index', tripId.value), icon: 'building' },
-        { name: 'Flights', href: route('trips.flights.index', tripId.value), icon: 'plane' },
-        { name: 'Buses', href: route('trips.buses.index', tripId.value), icon: 'bus' },
+        { name: 'ހޯމް', href: route('trips.show', tripId.value), icon: 'home' },
+        { name: 'ރެޖިސްޓަރ', action: 'register', icon: 'user-plus' },
+        { name: 'ގްރޫޕްތައް', href: route('trips.groups.index', tripId.value), icon: 'users' },
+        { name: 'ހޮޓާ', href: route('trips.hotels.index', tripId.value), icon: 'building' },
+        { name: 'ފްލައިޓް', href: route('trips.flights.index', tripId.value), icon: 'plane' },
+        { name: 'ބަސް', href: route('trips.buses.index', tripId.value), icon: 'bus' },
     ];
 });
 
@@ -112,7 +113,7 @@ const handleDhivehiKeydown = (event, form, field) => {
             </main>
 
             <aside v-if="hasTripSidebar" class="w-full lg:w-56">
-                <div class="sticky top-20 rounded-xl border border-slate-200 bg-white p-2">
+                <div class="sticky top-20 rounded-xl border border-slate-200 bg-white p-2" dir="rtl" lang="dv">
                     <nav class="space-y-1">
                         <template v-for="item in sidebarItems" :key="item.name">
                             <button
@@ -157,6 +158,10 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <!-- Bus Icon -->
                                     <svg v-else-if="item.icon === 'bus'" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8M8 11h8m-8 4h2m4 0h2M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    <!-- Users Icon -->
+                                    <svg v-else-if="item.icon === 'users'" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
                                 </div>
                                 {{ item.name }}
