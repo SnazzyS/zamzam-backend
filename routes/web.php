@@ -42,9 +42,13 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
 
     // Buses
     Route::resource('buses', BusController::class);
+    Route::post('buses/{bus}/assign-customer', [BusController::class, 'assignCustomer'])->name('buses.assign-customer');
+    Route::delete('buses/{bus}/remove-customer', [BusController::class, 'removeCustomer'])->name('buses.remove-customer');
 
     // Flights
     Route::resource('flights', FlightController::class);
+    Route::post('flights/{flight}/assign-customer', [FlightController::class, 'assignCustomer'])->name('flights.assign-customer');
+    Route::delete('flights/{flight}/remove-customer', [FlightController::class, 'removeCustomer'])->name('flights.remove-customer');
 
     // Hotels
     Route::resource('hotels', HotelController::class);
@@ -62,6 +66,7 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
     });
 
     // Customers
+    Route::post('customers/search', [CustomerController::class, 'searchByNationalId'])->name('customers.search');
     Route::resource('customers', CustomerController::class);
 
     // Customer Custom Actions (Bus Assignment)

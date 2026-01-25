@@ -22,7 +22,22 @@ class FlightStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:255'],
+            'departure_date' => ['nullable', 'date'],
+            'departure_time' => ['nullable', 'date_format:H:i'],
+            'return_date' => ['nullable', 'date', 'after_or_equal:departure_date'],
+            'return_time' => ['nullable', 'date_format:H:i'],
+            'departure_flight_number' => ['nullable', 'string', 'max:50'],
+            'departure_transit_flight_number' => ['nullable', 'string', 'max:50'],
+            'return_flight_number' => ['nullable', 'string', 'max:50'],
+            'return_transit_flight_number' => ['nullable', 'string', 'max:50'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'return_date.after_or_equal' => 'Return date cannot be before departure date.',
         ];
     }
 }

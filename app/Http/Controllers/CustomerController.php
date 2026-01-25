@@ -164,11 +164,42 @@ class CustomerController extends Controller
             ->with('success', 'Customer group updated');
     }
 
-    // From SearchCustomerController - appears unused but preserved
-    public function search(Customer $customer)
+    /**
+     * Search for a customer by national ID.
+     * Returns customer data if found, used for auto-fill in registration.
+     */
+    public function searchByNationalId(Trip $trip, Request $request)
     {
-        return redirect()
-            ->back()
-            ->with('error', 'Search not implemented');
+        $request->validate([
+            'national_id' => ['required', 'string'],
+        ]);
+
+        $customer = Customer::where('national_id', $request->national_id)->first();
+
+        if (!$customer) {
+            return response()->json([
+                'found' => false,
+                'customer' => null,
+                'already_attached' => false,
+            ]);
+        }
+
+        // Check if customer is already attached to this trip
+        $alreadyAttached = $customer->trips()->where('trip_id', $trip->id)->exists();
+
+        return response()->json([
+            'found' => true,
+            'customer' => [
+                'id' => $customer->id,
+                'name' => $customer->name,
+                'national_id' => $customer->national_id,
+                'date_of_birth' => $customer->date_of_birth,
+                'island' => $customer->island,
+                'phone_number' => $customer->phone_number,
+                'address' => $customer->address,
+                'gender' => $customer->gender,
+            ],
+            'already_attached' => $alreadyAttached,
+        ]);
     }
 }

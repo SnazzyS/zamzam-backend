@@ -26,11 +26,12 @@ class CustomerStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-           'national_id' => [
+           'national_id' => array_filter([
                 'required',
                 'regex:/^A\d{6}$/',
-                Rule::unique('customers')->ignore($this->route('customer'))
-            ],
+                // Only enforce unique on update, store uses firstOrCreate to handle existing customers
+                $this->route('customer') ? Rule::unique('customers')->ignore($this->route('customer')) : null,
+            ]),
             'date_of_birth' => ['required', 'date', 'before:today'],
             'island' => ['required', 'string'],
             'phone_number' => ['required', 'integer'],

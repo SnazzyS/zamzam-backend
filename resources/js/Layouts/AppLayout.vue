@@ -1,8 +1,9 @@
 <script setup>
 import Navbar from '@/Components/Navbar.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { Link, useForm, usePage, router } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
 import { tkGetChar, toDhivehi } from '../utils/lattinMapping';
+import axios from 'axios';
 
 const page = usePage();
 const tripId = computed(() => page.props?.trip?.id);
@@ -44,18 +45,101 @@ const registerForm = useForm({
     gender: '',
 });
 
+// Customer search state
+const isSearching = ref(false);
+const existingCustomer = ref(null);
+const alreadyAttached = ref(false);
+const nationalIdInput = ref('');
+let searchTimeout = null;
+
 const openRegisterModal = () => {
     showRegisterModal.value = true;
+    existingCustomer.value = null;
+    alreadyAttached.value = false;
+    nationalIdInput.value = '';
 };
 
 const closeRegisterModal = () => {
     showRegisterModal.value = false;
     registerForm.reset();
     registerForm.clearErrors();
+    existingCustomer.value = null;
+    alreadyAttached.value = false;
+    nationalIdInput.value = '';
 };
+
+// Search for existing customer when national_id changes
+const searchCustomer = async (nationalId) => {
+    if (!tripId.value || !nationalId || nationalId.length < 5) {
+        existingCustomer.value = null;
+        alreadyAttached.value = false;
+        return;
+    }
+
+    isSearching.value = true;
+    try {
+        const response = await axios.post(route('trips.customers.search', tripId.value), {
+            national_id: nationalId,
+        });
+
+        const data = response.data;
+
+        if (data.found) {
+            existingCustomer.value = data.customer;
+            alreadyAttached.value = data.already_attached;
+
+            // Auto-fill the form with existing customer data
+            registerForm.name = data.customer.name || '';
+            registerForm.date_of_birth = data.customer.date_of_birth || '';
+            registerForm.island = data.customer.island || '';
+            registerForm.phone_number = data.customer.phone_number || '';
+            registerForm.address = data.customer.address || '';
+            registerForm.gender = data.customer.gender || '';
+        } else {
+            existingCustomer.value = null;
+            alreadyAttached.value = false;
+        }
+    } catch (error) {
+        console.error('Error searching customer:', error);
+        existingCustomer.value = null;
+        alreadyAttached.value = false;
+    } finally {
+        isSearching.value = false;
+    }
+};
+
+// Watch national_id with debounce
+watch(nationalIdInput, (newValue) => {
+    // Sync to form
+    registerForm.national_id = newValue;
+
+    // Clear existing customer if input changes after auto-fill
+    if (existingCustomer.value && newValue !== existingCustomer.value.national_id) {
+        existingCustomer.value = null;
+        alreadyAttached.value = false;
+        // Clear auto-filled values
+        registerForm.name = '';
+        registerForm.date_of_birth = '';
+        registerForm.island = '';
+        registerForm.phone_number = '';
+        registerForm.address = '';
+        registerForm.gender = '';
+    }
+
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+    searchTimeout = setTimeout(() => {
+        searchCustomer(newValue);
+    }, 500);
+});
 
 const submitRegister = () => {
     if (!tripId.value) {
+        return;
+    }
+
+    if (alreadyAttached.value) {
         return;
     }
 
@@ -199,7 +283,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900" dir="rtl" lang="dv">ކަސްޓަމަރު ރެޖިސްޓަރ</h3>
-                                    <p class="text-sm text-slate-500" dir="rtl" lang="dv">މި ދަތުރަށް އައު ކަސްޓަމަރެއް ރެޖިސްޓަރ ކުރޭ</p>
+                                    <p class="text-sm text-slate-500" dir="rtl" lang="dv">
+                                        <span v-if="existingCustomer && !alreadyAttached">ކުރިން ރެޖިސްޓަރ ކޮށްފައިވާ ކަސްޓަމަރެއް - މި ދަތުރަށް އެޓޭޗް ކުރެވޭނެ</span>
+                                        <span v-else-if="alreadyAttached">މި ކަސްޓަމަރު މި ދަތުރުގައި މިހާރުވެސް ރެޖިސްޓަރ ކުރެވިފައި</span>
+                                        <span v-else>މި ދަތުރަށް އައު ކަސްޓަމަރެއް ރެޖިސްޓަރ ކުރޭ</span>
+                                    </p>
                                 </div>
                                 <button
                                     type="button"
@@ -221,22 +309,41 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         dir="rtl"
                                         lang="dv"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="existingCustomer && 'bg-slate-50'"
                                         @keydown="handleDhivehiKeydown($event, registerForm, 'name')"
                                         @input="handleDhivehiInput($event, registerForm, 'name')"
+                                        :readonly="!!existingCustomer"
                                         required
                                     >
-                                    <p v-if="registerForm.errors.name" class="text-xs text-red-500 mt-1" dir="ltr" lang="dv">{{ registerForm.errors.name }}</p>
+                                    <p v-if="registerForm.errors.name" class="text-xs text-red-500 mt-1">{{ registerForm.errors.name }}</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">އައިޑީ ކާޑު ނަންބަރު</label>
-                                    <input
-                                        v-model="registerForm.national_id"
-                                        type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
-                                        placeholder="A123456"
-                                        required
-                                    >
-                                    <p v-if="registerForm.errors.national_id" class="text-xs text-red-500 mt-1" dir="ltr" lang="dv">{{ registerForm.errors.national_id }}</p>
+                                    <div class="relative">
+                                        <input
+                                            v-model="nationalIdInput"
+                                            type="text"
+                                            class="w-full rounded-lg border px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2"
+                                            :class="[
+                                                alreadyAttached
+                                                    ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                                                    : existingCustomer
+                                                        ? 'border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500/20'
+                                                        : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/20'
+                                            ]"
+                                            placeholder="A123456"
+                                            required
+                                        >
+                                        <div v-if="isSearching" class="absolute left-3 top-1/2 -translate-y-1/2">
+                                            <svg class="h-4 w-4 animate-spin text-slate-400" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p v-if="registerForm.errors.national_id" class="text-xs text-red-500 mt-1">{{ registerForm.errors.national_id }}</p>
+                                    <p v-else-if="alreadyAttached" class="text-xs text-red-500 mt-1" dir="rtl" lang="dv">މި ކަސްޓަމަރު މި ދަތުރުގައި މިހާރުވެސް ރެޖިސްޓަރ ކުރެވިފައި</p>
+                                    <p v-else-if="existingCustomer" class="text-xs text-emerald-600 mt-1" dir="rtl" lang="dv">ކަސްޓަމަރު ފެނިއްޖެ - ފޯމް އޮޓޯއިން ފުރިއްޖެ</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">އުފަން ތާރީޚް</label>
@@ -244,9 +351,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         v-model="registerForm.date_of_birth"
                                         type="date"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="existingCustomer && 'bg-slate-50'"
+                                        :readonly="!!existingCustomer"
                                         required
                                     >
-                                    <p v-if="registerForm.errors.date_of_birth" class="text-xs text-red-500 mt-1" dir="ltr" lang="dv">{{ registerForm.errors.date_of_birth }}</p>
+                                    <p v-if="registerForm.errors.date_of_birth" class="text-xs text-red-500 mt-1">{{ registerForm.errors.date_of_birth }}</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ރަށް</label>
@@ -256,11 +365,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         dir="rtl"
                                         lang="dv"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="existingCustomer && 'bg-slate-50'"
                                         @keydown="handleDhivehiKeydown($event, registerForm, 'island')"
                                         @input="handleDhivehiInput($event, registerForm, 'island')"
+                                        :readonly="!!existingCustomer"
                                         required
                                     >
-                                    <p v-if="registerForm.errors.island" class="text-xs text-red-500 mt-1" dir="ltr" lang="dv">{{ registerForm.errors.island }}</p>
+                                    <p v-if="registerForm.errors.island" class="text-xs text-red-500 mt-1">{{ registerForm.errors.island }}</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ފޯނު ނަންބަރު</label>
@@ -268,9 +379,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         v-model="registerForm.phone_number"
                                         type="number"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="existingCustomer && 'bg-slate-50'"
+                                        :readonly="!!existingCustomer"
                                         required
                                     >
-                                    <p v-if="registerForm.errors.phone_number" class="text-xs text-red-500 mt-1" dir="ltr" lang="dv">{{ registerForm.errors.phone_number }}</p>
+                                    <p v-if="registerForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ registerForm.errors.phone_number }}</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">އެޑްރެސް</label>
@@ -280,11 +393,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         dir="rtl"
                                         lang="dv"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="existingCustomer && 'bg-slate-50'"
                                         @keydown="handleDhivehiKeydown($event, registerForm, 'address')"
                                         @input="handleDhivehiInput($event, registerForm, 'address')"
+                                        :readonly="!!existingCustomer"
                                         required
                                     >
-                                    <p v-if="registerForm.errors.address" class="text-xs text-red-500 mt-1" dir="ltr" lang="dv">{{ registerForm.errors.address }}</p>
+                                    <p v-if="registerForm.errors.address" class="text-xs text-red-500 mt-1">{{ registerForm.errors.address }}</p>
                                 </div>
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ޖިންސް</label>
@@ -293,13 +408,15 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         dir="rtl"
                                         lang="dv"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="existingCustomer && 'bg-slate-50'"
+                                        :disabled="!!existingCustomer"
                                         required
                                     >
                                         <option value="" disabled>ޙިޔާރުކުރޭ</option>
                                         <option value="Male">ފިރިހާ</option>
                                         <option value="Female">އަންހެން</option>
                                     </select>
-                                    <p v-if="registerForm.errors.gender" class="text-xs text-red-500 mt-1" dir="ltr" lang="dv">{{ registerForm.errors.gender }}</p>
+                                    <p v-if="registerForm.errors.gender" class="text-xs text-red-500 mt-1">{{ registerForm.errors.gender }}</p>
                                 </div>
 
                                 <div class="md:col-span-2 flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
@@ -314,12 +431,15 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
-                                        :disabled="registerForm.processing"
+                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        :disabled="registerForm.processing || alreadyAttached"
                                         dir="rtl"
                                         lang="dv"
                                     >
-                                        {{ registerForm.processing ? 'ރެޖިސްޓަރ ކުރަނީ...' : 'ރެޖިސްޓަރ' }}
+                                        <span v-if="registerForm.processing">ރެޖިސްޓަރ ކުރަނީ...</span>
+                                        <span v-else-if="alreadyAttached">މިހާރުވެސް ރެޖިސްޓަރ ކުރެވިފައި</span>
+                                        <span v-else-if="existingCustomer">ދަތުރަށް އެޓޭޗް ކުރޭ</span>
+                                        <span v-else>ރެޖިސްޓަރ</span>
                                     </button>
                                 </div>
                             </form>

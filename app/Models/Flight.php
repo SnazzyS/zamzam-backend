@@ -11,7 +11,20 @@ class Flight extends Model
 
     protected $fillable = [
         'name',
-        'trip_id'
+        'trip_id',
+        'departure_date',
+        'departure_time',
+        'return_date',
+        'return_time',
+        'departure_flight_number',
+        'departure_transit_flight_number',
+        'return_flight_number',
+        'return_transit_flight_number',
+    ];
+
+    protected $casts = [
+        'departure_date' => 'date',
+        'return_date' => 'date',
     ];
 
 
