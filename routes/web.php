@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BulkPaymentController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
@@ -44,11 +45,13 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
     Route::resource('buses', BusController::class);
     Route::post('buses/{bus}/assign-customer', [BusController::class, 'assignCustomer'])->name('buses.assign-customer');
     Route::delete('buses/{bus}/remove-customer', [BusController::class, 'removeCustomer'])->name('buses.remove-customer');
+    Route::get('buses/{bus}/passenger-list', [BusController::class, 'passengerList'])->name('buses.passenger-list');
 
     // Flights
     Route::resource('flights', FlightController::class);
     Route::post('flights/{flight}/assign-customer', [FlightController::class, 'assignCustomer'])->name('flights.assign-customer');
     Route::delete('flights/{flight}/remove-customer', [FlightController::class, 'removeCustomer'])->name('flights.remove-customer');
+    Route::get('flights/{flight}/passenger-list', [FlightController::class, 'passengerList'])->name('flights.passenger-list');
 
     // Hotels
     Route::resource('hotels', HotelController::class);
@@ -76,7 +79,7 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
 
     Route::prefix('customers/{customer}')->name('customers.')->group(function () {
         // Payments
-        Route::resource('payments', PaymentController::class)->only(['index', 'store']);
+        Route::resource('payments', PaymentController::class)->only(['index', 'store', 'show']);
 
         // Photos
         Route::resource('photos', PhotoController::class)->only(['store', 'destroy']);
@@ -91,4 +94,8 @@ Route::prefix('trips/{trip}')->name('trips.')->group(function () {
     Route::post('groups', [TripGroupController::class, 'store'])->name('groups.store');
     Route::put('groups/{group}', [TripGroupController::class, 'update'])->name('groups.update');
     Route::delete('groups/{group}', [TripGroupController::class, 'destroy'])->name('groups.destroy');
+
+    // Bulk Payments
+    Route::post('bulk-payments', [BulkPaymentController::class, 'store'])->name('bulk-payments.store');
+    Route::get('bulk-payments/{batchId}', [BulkPaymentController::class, 'showBatch'])->name('bulk-payments.show');
 });

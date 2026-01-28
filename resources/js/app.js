@@ -14,7 +14,10 @@ createInertiaApp({
     resolve: (name) => {
         const page = resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
         page.then((module) => {
-            module.default.layout = module.default.layout || AppLayout;
+            // Only apply default layout if not explicitly set (allows layout: null for standalone pages)
+            if (module.default.layout === undefined) {
+                module.default.layout = AppLayout;
+            }
         });
         return page;
     },

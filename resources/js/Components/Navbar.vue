@@ -7,10 +7,10 @@ const page = usePage();
 const currentUrl = computed(() => page.url);
 
 const navItems = [
-    { name: 'ޑޭޝްބޯޑް', href: '/dashboard', icon: 'home' },
-    { name: 'ދަތުރެއް ހެދުން', action: 'createTrip', icon: 'plus' },
-    { name: 'ހޮޓާ', href: '/hotels', icon: 'building' },
-    { name: 'ހިސާބު ކިތާބު', href: '/finance', icon: 'chart' },
+    { name: 'Dashboard', href: '/dashboard', icon: 'home' },
+    { name: 'Create Trip', action: 'createTrip', icon: 'plus' },
+    { name: 'Hotels', href: '/hotels', icon: 'building' },
+    { name: 'Finance', href: '/finance', icon: 'chart' },
 ];
 
 const showCreateModal = ref(false);
@@ -82,7 +82,7 @@ const handleDhivehiKeydown = (event, form, field) => {
 </script>
 
 <template>
-    <nav class="sticky top-0 z-50 border-b border-slate-200 bg-white" dir="rtl" lang="dv">
+    <nav class="sticky top-0 z-50 border-b border-slate-200 bg-white">
         <div class="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
             <!-- Logo -->
             <div class="flex items-center gap-3">
@@ -93,7 +93,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                         <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
-                <span class="font-semibold text-slate-900">ޒަމްޒަމް</span>
+                <span class="font-semibold text-slate-900">Zam Zam</span>
             </div>
 
             <!-- Navigation Links -->
@@ -176,11 +176,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                         leave-from-class="opacity-100 scale-100"
                         leave-to-class="opacity-0 scale-95"
                     >
-                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl" dir="rtl" lang="dv">
+                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
-                                    <h3 class="text-lg font-semibold text-slate-900">ދަތުރެއް ހެދުން</h3>
-                                    <p class="text-sm text-slate-500">އައު ދަތުރެއް އިތުރުކުރޭ</p>
+                                    <h3 class="text-lg font-semibold text-slate-900">Create Trip</h3>
+                                    <p class="text-sm text-slate-500">Add a new trip</p>
                                 </div>
                                 <button
                                     type="button"
@@ -195,16 +195,12 @@ const handleDhivehiKeydown = (event, form, field) => {
 
                             <form @submit.prevent="submitCreate" class="space-y-4">
                                 <div>
-                                    <label for="create-name" class="block text-sm font-medium text-slate-700 mb-1.5">ދަތުރުގެ ނަން</label>
+                                    <label for="create-name" class="block text-sm font-medium text-slate-700 mb-1.5">Trip Name</label>
                                     <input
                                         id="create-name"
                                         type="text"
-                                        :value="createForm.name"
-                                        dir="rtl"
-                                        lang="dv"
+                                        v-model="createForm.name"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
-                                        @keydown="handleDhivehiKeydown($event, createForm, 'name')"
-                                        @input="handleDhivehiInput($event, createForm, 'name')"
                                         :class="createForm.errors.name && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -212,7 +208,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 </div>
 
                                 <div>
-                                    <label for="create-departure-date" class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ފުރާ ތާރީޚް</label>
+                                    <label for="create-departure-date" class="block text-sm font-medium text-slate-700 mb-1.5">Departure Date</label>
                                     <input
                                         id="create-departure-date"
                                         type="date"
@@ -225,7 +221,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 </div>
 
                                 <div>
-                                    <label for="create-price" class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">އަގު (MVR)</label>
+                                    <label for="create-price" class="block text-sm font-medium text-slate-700 mb-1.5">Price (MVR)</label>
                                     <input
                                         id="create-price"
                                         type="number"
@@ -242,19 +238,15 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="button"
                                         @click="closeCreateModal"
                                         class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
-                                        dir="rtl"
-                                        lang="dv"
                                     >
-                                        ކެންސަލް
+                                        Cancel
                                     </button>
                                     <button
                                         type="submit"
                                         class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
                                         :disabled="createForm.processing"
-                                        dir="rtl"
-                                        lang="dv"
                                     >
-                                        {{ createForm.processing ? 'ތައްޔާރު ކުރަނީ...' : 'ދަތުރެއް ހެދުން' }}
+                                        {{ createForm.processing ? 'Creating...' : 'Create Trip' }}
                                     </button>
                                 </div>
                             </form>

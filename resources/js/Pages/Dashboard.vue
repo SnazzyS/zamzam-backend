@@ -114,7 +114,7 @@ const handleDhivehiKeydown = (event, form, field) => {
     <Head title="Dashboard" />
     <div class="space-y-6 font-sans antialiased">
         <!-- Stats Cards -->
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" dir="rtl" lang="dv">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div class="rounded-xl border border-slate-200 bg-white p-5">
                 <div class="flex items-center justify-between">
                     <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-100">
@@ -122,8 +122,8 @@ const handleDhivehiKeydown = (event, form, field) => {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <div class="text-left">
-                        <p class="text-sm text-slate-500">ޖުމްލަ ދަތުރު</p>
+                    <div class="text-right">
+                        <p class="text-sm text-slate-500">Total Trips</p>
                         <p class="text-2xl font-semibold text-slate-900">{{ stats.totalTrips }}</p>
                     </div>
                 </div>
@@ -136,8 +136,8 @@ const handleDhivehiKeydown = (event, form, field) => {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <div class="text-left">
-                        <p class="text-sm text-slate-500">ހިނގަމުންދާ ދަތުރު</p>
+                    <div class="text-right">
+                        <p class="text-sm text-slate-500">Active Trips</p>
                         <p class="text-2xl font-semibold text-slate-900">{{ stats.activeTrips }}</p>
                     </div>
                 </div>
@@ -150,33 +150,20 @@ const handleDhivehiKeydown = (event, form, field) => {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </div>
-                    <div class="text-left">
-                        <p class="text-sm text-slate-500">ޖުމްލަ ކަސްޓަމަރުން</p>
+                    <div class="text-right">
+                        <p class="text-sm text-slate-500">Total Customers</p>
                         <p class="text-2xl font-semibold text-slate-900">{{ stats.totalCustomers }}</p>
                     </div>
                 </div>
             </div>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-5">
-                <div class="flex items-center justify-between">
-                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100">
-                        <svg class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div class="text-left">
-                        <p class="text-sm text-slate-500">ޖުމްލަ އާމްދަނީ</p>
-                        <p class="text-2xl font-semibold text-slate-900">{{ formatCurrency(stats.totalRevenue) }}</p>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Trips Section -->
-        <div class="rounded-xl border border-slate-200 bg-white" dir="rtl" lang="dv">
+        <div class="rounded-xl border border-slate-200 bg-white">
             <!-- Header with Filter -->
             <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
-                <h2 class="text-lg font-semibold text-slate-900">ދަތުރުތައް</h2>
+                <h2 class="text-lg font-semibold text-slate-900">Trips</h2>
                 <div class="flex items-center gap-1 rounded-lg bg-slate-100 p-1">
                     <button
                         type="button"
@@ -188,7 +175,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 : 'text-slate-600 hover:text-slate-900'
                         ]"
                     >
-                        ހިނގަމުންދާ
+                        Active
                     </button>
                     <button
                         type="button"
@@ -200,7 +187,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 : 'text-slate-600 hover:text-slate-900'
                         ]"
                     >
-                        ހުރިހާ
+                        All
                     </button>
                 </div>
             </div>
@@ -221,7 +208,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 <h3 class="font-semibold text-slate-900 group-hover:text-violet-600">{{ trip.name }}</h3>
                                 <div class="flex items-center gap-2">
                                     <span :class="['inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap', getStatusBadge(trip.status)]">
-                                        {{ trip.status === 'active' ? 'ހިނގަމުންދާ' : trip.status }}
+                                        {{ trip.status === 'active' ? 'Active' : trip.status }}
                                     </span>
                                     <button
                                         type="button"
@@ -248,7 +235,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
-                                    <span>{{ trip.customers_count }} <span lang="dv">ކަސްޓަމަރުން</span></span>
+                                    <span>{{ trip.customers_count }} customers</span>
                                 </div>
 
                                 <div class="flex items-center gap-2 text-slate-500">
@@ -269,9 +256,9 @@ const handleDhivehiKeydown = (event, form, field) => {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <p class="font-medium text-slate-900">ދަތުރެއް ނެތް</p>
+                    <p class="font-medium text-slate-900">No Trips</p>
                     <p class="mt-1 text-sm text-slate-500">
-                        {{ activeFilter === 'active' ? 'މިވަގުތު ހިނގަމުންދާ ދަތުރެއް ނެތް' : 'އަދި އެއްވެސް ދަތުރެއް ހެދިފައި ނެތް' }}
+                        {{ activeFilter === 'active' ? 'No active trips at the moment' : 'No trips created yet' }}
                     </p>
                 </div>
             </div>
@@ -300,11 +287,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                         leave-from-class="opacity-100 scale-100"
                         leave-to-class="opacity-0 scale-95"
                     >
-                        <div v-if="showEditModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl" dir="rtl" lang="dv">
+                        <div v-if="showEditModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
-                                    <h3 class="text-lg font-semibold text-slate-900">ދަތުރު އެޑިޓް ކުރޭ</h3>
-                                    <p class="text-sm text-slate-500">ދަތުރުގެ ތަފްޞީލް ބަދަލުކުރޭ</p>
+                                    <h3 class="text-lg font-semibold text-slate-900">Edit Trip</h3>
+                                    <p class="text-sm text-slate-500">Update trip details</p>
                                 </div>
                                 <button
                                     type="button"
@@ -319,14 +306,12 @@ const handleDhivehiKeydown = (event, form, field) => {
 
                             <form @submit.prevent="submitEdit" class="space-y-4">
                                 <div>
-                                    <label for="edit-name" class="block text-sm font-medium text-slate-700 mb-1.5">ދަތުރުގެ ނަން</label>
+                                    <label for="edit-name" class="block text-sm font-medium text-slate-700 mb-1.5">Trip Name</label>
                                     <input
                                         id="edit-name"
                                         type="text"
-                                        :value="editForm.name"
+                                        v-model="editForm.name"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
-                                        @keydown="handleDhivehiKeydown($event, editForm, 'name')"
-                                        @input="handleDhivehiInput($event, editForm, 'name')"
                                         :class="editForm.errors.name && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -334,12 +319,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 </div>
 
                                 <div>
-                                    <label for="edit-departure-date" class="block text-sm font-medium text-slate-700 mb-1.5">ފުރާ ތާރީޚް</label>
+                                    <label for="edit-departure-date" class="block text-sm font-medium text-slate-700 mb-1.5">Departure Date</label>
                                     <input
                                         id="edit-departure-date"
                                         type="date"
                                         v-model="editForm.departure_date"
-                                        dir="ltr"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                                         :class="editForm.errors.departure_date && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
@@ -348,12 +332,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 </div>
 
                                 <div>
-                                    <label for="edit-price" class="block text-sm font-medium text-slate-700 mb-1.5">އަގު (MVR)</label>
+                                    <label for="edit-price" class="block text-sm font-medium text-slate-700 mb-1.5">Price (MVR)</label>
                                     <input
                                         id="edit-price"
                                         type="number"
                                         v-model="editForm.price"
-                                        dir="ltr"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                                         :class="editForm.errors.price && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
@@ -361,20 +344,20 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <p v-if="editForm.errors.price" class="text-xs text-red-500 mt-1">{{ editForm.errors.price }}</p>
                                 </div>
 
-                                <div class="flex items-center justify-start gap-3 pt-4 border-t border-slate-100">
-                                    <button
-                                        type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
-                                        :disabled="editForm.processing"
-                                    >
-                                        {{ editForm.processing ? 'ރައްކާ ކުރަނީ...' : 'ބަދަލު ރައްކާކުރޭ' }}
-                                    </button>
+                                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                                     <button
                                         type="button"
                                         @click="closeEditModal"
                                         class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
-                                        ކެންސަލް
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        :disabled="editForm.processing"
+                                    >
+                                        {{ editForm.processing ? 'Saving...' : 'Save Changes' }}
                                     </button>
                                 </div>
                             </form>

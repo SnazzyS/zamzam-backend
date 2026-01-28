@@ -3,6 +3,7 @@ import Navbar from '@/Components/Navbar.vue';
 import { Link, useForm, usePage, router } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 import { tkGetChar, toDhivehi } from '../utils/lattinMapping';
+import { searchIslands, getIslandOptions } from '../utils/maldivesIslands';
 import axios from 'axios';
 
 const page = usePage();
@@ -15,12 +16,12 @@ const sidebarItems = computed(() => {
     }
 
     return [
-        { name: 'ހޯމް', href: route('trips.show', tripId.value), icon: 'home' },
-        { name: 'ރެޖިސްޓަރ', action: 'register', icon: 'user-plus' },
-        { name: 'ގްރޫޕްތައް', href: route('trips.groups.index', tripId.value), icon: 'users' },
-        { name: 'ހޮޓާ', href: route('trips.hotels.index', tripId.value), icon: 'building' },
-        { name: 'ފްލައިޓް', href: route('trips.flights.index', tripId.value), icon: 'plane' },
-        { name: 'ބަސް', href: route('trips.buses.index', tripId.value), icon: 'bus' },
+        { name: 'Home', href: route('trips.show', tripId.value), icon: 'home' },
+        { name: 'Register', action: 'register', icon: 'user-plus' },
+        { name: 'Groups', href: route('trips.groups.index', tripId.value), icon: 'users' },
+        { name: 'Hotels', href: route('trips.hotels.index', tripId.value), icon: 'building' },
+        { name: 'Flights', href: route('trips.flights.index', tripId.value), icon: 'plane' },
+        { name: 'Buses', href: route('trips.buses.index', tripId.value), icon: 'bus' },
     ];
 });
 
@@ -43,6 +44,7 @@ const registerForm = useForm({
     phone_number: '',
     address: '',
     gender: '',
+    customer_type: 'customer',
 });
 
 // Customer search state
@@ -52,11 +54,36 @@ const alreadyAttached = ref(false);
 const nationalIdInput = ref('');
 let searchTimeout = null;
 
+// Island dropdown state
+const islandSearch = ref('');
+const islandDropdownOpen = ref(false);
+const filteredIslands = computed(() => searchIslands(islandSearch.value));
+
+const selectIsland = (island) => {
+    registerForm.island = island.value;
+    islandSearch.value = island.label;
+    islandDropdownOpen.value = false;
+};
+
+const openIslandDropdown = () => {
+    if (!existingCustomer.value) {
+        islandDropdownOpen.value = true;
+    }
+};
+
+const closeIslandDropdown = () => {
+    setTimeout(() => {
+        islandDropdownOpen.value = false;
+    }, 200);
+};
+
 const openRegisterModal = () => {
     showRegisterModal.value = true;
     existingCustomer.value = null;
     alreadyAttached.value = false;
     nationalIdInput.value = '';
+    islandSearch.value = '';
+    islandDropdownOpen.value = false;
 };
 
 const closeRegisterModal = () => {
@@ -66,6 +93,8 @@ const closeRegisterModal = () => {
     existingCustomer.value = null;
     alreadyAttached.value = false;
     nationalIdInput.value = '';
+    islandSearch.value = '';
+    islandDropdownOpen.value = false;
 };
 
 // Search for existing customer when national_id changes
@@ -95,6 +124,12 @@ const searchCustomer = async (nationalId) => {
             registerForm.phone_number = data.customer.phone_number || '';
             registerForm.address = data.customer.address || '';
             registerForm.gender = data.customer.gender || '';
+
+            // Set island search display
+            if (data.customer.island) {
+                const islandOption = getIslandOptions().find(i => i.value === data.customer.island);
+                islandSearch.value = islandOption ? islandOption.label : data.customer.island;
+            }
         } else {
             existingCustomer.value = null;
             alreadyAttached.value = false;
@@ -123,6 +158,7 @@ watch(nationalIdInput, (newValue) => {
         registerForm.island = '';
         registerForm.phone_number = '';
         registerForm.address = '';
+        islandSearch.value = '';
         registerForm.gender = '';
     }
 
@@ -197,7 +233,7 @@ const handleDhivehiKeydown = (event, form, field) => {
             </main>
 
             <aside v-if="hasTripSidebar" class="w-full lg:w-56">
-                <div class="sticky top-20 rounded-xl border border-slate-200 bg-white p-2" dir="rtl" lang="dv">
+                <div class="sticky top-20 rounded-xl border border-slate-200 bg-white p-2">
                     <nav class="space-y-1">
                         <template v-for="item in sidebarItems" :key="item.name">
                             <button
@@ -282,11 +318,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                         <div v-if="showRegisterModal" class="relative w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
-                                    <h3 class="text-lg font-semibold text-slate-900" dir="rtl" lang="dv">ކަސްޓަމަރު ރެޖިސްޓަރ</h3>
-                                    <p class="text-sm text-slate-500" dir="rtl" lang="dv">
-                                        <span v-if="existingCustomer && !alreadyAttached">ކުރިން ރެޖިސްޓަރ ކޮށްފައިވާ ކަސްޓަމަރެއް - މި ދަތުރަށް އެޓޭޗް ކުރެވޭނެ</span>
-                                        <span v-else-if="alreadyAttached">މި ކަސްޓަމަރު މި ދަތުރުގައި މިހާރުވެސް ރެޖިސްޓަރ ކުރެވިފައި</span>
-                                        <span v-else>މި ދަތުރަށް އައު ކަސްޓަމަރެއް ރެޖިސްޓަރ ކުރޭ</span>
+                                    <h3 class="text-lg font-semibold text-slate-900">Register Customer</h3>
+                                    <p class="text-sm text-slate-500">
+                                        <span v-if="existingCustomer && !alreadyAttached">Existing customer found - can be attached to this trip</span>
+                                        <span v-else-if="alreadyAttached">This customer is already registered for this trip</span>
+                                        <span v-else>Register a new customer for this trip</span>
                                     </p>
                                 </div>
                                 <button
@@ -302,7 +338,7 @@ const handleDhivehiKeydown = (event, form, field) => {
 
                             <form @submit.prevent="submitRegister" class="grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ނަން</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Name in Dhivehi</label>
                                     <input
                                         :value="registerForm.name"
                                         type="text"
@@ -318,7 +354,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <p v-if="registerForm.errors.name" class="text-xs text-red-500 mt-1">{{ registerForm.errors.name }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">އައިޑީ ކާޑު ނަންބަރު</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">National ID</label>
                                     <div class="relative">
                                         <input
                                             v-model="nationalIdInput"
@@ -342,11 +378,11 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         </div>
                                     </div>
                                     <p v-if="registerForm.errors.national_id" class="text-xs text-red-500 mt-1">{{ registerForm.errors.national_id }}</p>
-                                    <p v-else-if="alreadyAttached" class="text-xs text-red-500 mt-1" dir="rtl" lang="dv">މި ކަސްޓަމަރު މި ދަތުރުގައި މިހާރުވެސް ރެޖިސްޓަރ ކުރެވިފައި</p>
-                                    <p v-else-if="existingCustomer" class="text-xs text-emerald-600 mt-1" dir="rtl" lang="dv">ކަސްޓަމަރު ފެނިއްޖެ - ފޯމް އޮޓޯއިން ފުރިއްޖެ</p>
+                                    <p v-else-if="alreadyAttached" class="text-xs text-red-500 mt-1">This customer is already registered for this trip</p>
+                                    <p v-else-if="existingCustomer" class="text-xs text-emerald-600 mt-1">Customer found - form auto-filled</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">އުފަން ތާރީޚް</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Date of Birth</label>
                                     <input
                                         v-model="registerForm.date_of_birth"
                                         type="date"
@@ -357,24 +393,41 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     >
                                     <p v-if="registerForm.errors.date_of_birth" class="text-xs text-red-500 mt-1">{{ registerForm.errors.date_of_birth }}</p>
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ރަށް</label>
+                                <div class="relative">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Island</label>
                                     <input
-                                        :value="registerForm.island"
+                                        v-model="islandSearch"
                                         type="text"
-                                        dir="rtl"
-                                        lang="dv"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                                         :class="existingCustomer && 'bg-slate-50'"
-                                        @keydown="handleDhivehiKeydown($event, registerForm, 'island')"
-                                        @input="handleDhivehiInput($event, registerForm, 'island')"
+                                        placeholder="Search island..."
+                                        @focus="openIslandDropdown"
+                                        @blur="closeIslandDropdown"
                                         :readonly="!!existingCustomer"
-                                        required
+                                        autocomplete="off"
                                     >
+                                    <!-- Dropdown -->
+                                    <div
+                                        v-if="islandDropdownOpen && !existingCustomer"
+                                        class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+                                    >
+                                        <button
+                                            v-for="island in filteredIslands"
+                                            :key="island.value"
+                                            type="button"
+                                            class="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+                                            @mousedown.prevent="selectIsland(island)"
+                                        >
+                                            {{ island.label }}
+                                        </button>
+                                        <div v-if="filteredIslands.length === 0" class="px-3 py-2 text-sm text-slate-400">
+                                            No islands found
+                                        </div>
+                                    </div>
                                     <p v-if="registerForm.errors.island" class="text-xs text-red-500 mt-1">{{ registerForm.errors.island }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ފޯނު ނަންބަރު</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
                                     <input
                                         v-model="registerForm.phone_number"
                                         type="number"
@@ -386,7 +439,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <p v-if="registerForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ registerForm.errors.phone_number }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">އެޑްރެސް</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Address</label>
                                     <input
                                         :value="registerForm.address"
                                         type="text"
@@ -401,22 +454,44 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     >
                                     <p v-if="registerForm.errors.address" class="text-xs text-red-500 mt-1">{{ registerForm.errors.address }}</p>
                                 </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5" dir="rtl" lang="dv">ޖިންސް</label>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Gender</label>
                                     <select
                                         v-model="registerForm.gender"
-                                        dir="rtl"
-                                        lang="dv"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         :disabled="!!existingCustomer"
                                         required
                                     >
-                                        <option value="" disabled>ޙިޔާރުކުރޭ</option>
-                                        <option value="Male">ފިރިހާ</option>
-                                        <option value="Female">އަންހެން</option>
+                                        <option value="" disabled>Select</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                     <p v-if="registerForm.errors.gender" class="text-xs text-red-500 mt-1">{{ registerForm.errors.gender }}</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Type</label>
+                                    <div class="flex gap-4">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                v-model="registerForm.customer_type"
+                                                value="customer"
+                                                class="text-violet-600 focus:ring-violet-500"
+                                            >
+                                            <span class="text-sm text-slate-700">Customer</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                v-model="registerForm.customer_type"
+                                                value="staff"
+                                                class="text-violet-600 focus:ring-violet-500"
+                                            >
+                                            <span class="text-sm text-slate-700">Staff</span>
+                                        </label>
+                                    </div>
+                                    <p v-if="registerForm.customer_type === 'staff'" class="text-xs text-orange-600 mt-1">Staff members do not require payment</p>
                                 </div>
 
                                 <div class="md:col-span-2 flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
@@ -424,22 +499,18 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="button"
                                         @click="closeRegisterModal"
                                         class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
-                                        dir="rtl"
-                                        lang="dv"
                                     >
-                                        ކެންސަލް
+                                        Cancel
                                     </button>
                                     <button
                                         type="submit"
                                         class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed"
                                         :disabled="registerForm.processing || alreadyAttached"
-                                        dir="rtl"
-                                        lang="dv"
                                     >
-                                        <span v-if="registerForm.processing">ރެޖިސްޓަރ ކުރަނީ...</span>
-                                        <span v-else-if="alreadyAttached">މިހާރުވެސް ރެޖިސްޓަރ ކުރެވިފައި</span>
-                                        <span v-else-if="existingCustomer">ދަތުރަށް އެޓޭޗް ކުރޭ</span>
-                                        <span v-else>ރެޖިސްޓަރ</span>
+                                        <span v-if="registerForm.processing">Registering...</span>
+                                        <span v-else-if="alreadyAttached">Already Registered</span>
+                                        <span v-else-if="existingCustomer">Attach to Trip</span>
+                                        <span v-else>Register</span>
                                     </button>
                                 </div>
                             </form>

@@ -15,6 +15,7 @@ class Payment extends Model
         'payment_method',
         'transfer_reference_number',
         'details',
+        'batch_id',
     ];
 
 

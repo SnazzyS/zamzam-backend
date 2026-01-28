@@ -161,4 +161,30 @@ class BusController extends Controller
             ->back()
             ->with('success', 'Customer removed from bus');
     }
+
+    /**
+     * Printable passenger list for a bus
+     */
+    public function passengerList(Trip $trip, Bus $bus)
+    {
+        $passengers = CustomerTrip::where('trip_id', $trip->id)
+            ->where('bus_id', $bus->id)
+            ->with('customer:id,name,national_id,phone_number,island')
+            ->orderBy('umrah_id')
+            ->get()
+            ->map(fn($ct) => [
+                'id' => $ct->customer->id,
+                'umrah_id' => $ct->umrah_id,
+                'name' => $ct->customer->name,
+                'national_id' => $ct->customer->national_id,
+                'phone_number' => $ct->customer->phone_number,
+                'island' => $ct->customer->island,
+            ]);
+
+        return Inertia::render('Trips/Buses/PassengerList', [
+            'trip' => $trip,
+            'bus' => $bus,
+            'passengers' => $passengers,
+        ]);
+    }
 }

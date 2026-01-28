@@ -32,25 +32,31 @@ class CustomerController extends Controller
         );
 
         if (!$customer->trips->contains($trip->id)) {
+            $customerType = $request->input('customer_type', 'customer');
+
             $customer->trips()->attach($trip->id, [
-                'umrah_id' => $idgenerator->generateUmrahID($trip->id)
+                'umrah_id' => $idgenerator->generateUmrahID($trip->id),
+                'customer_type' => $customerType,
             ]);
 
-            Invoice::create([
-                'customer_id' => $customer->id,
-                'trip_id' => $trip->id,
-                'balance' => $trip->price,
-                'amount' => 0,
-                'discount' => 0,
-                'invoice_number' => 'INV/2024/01', // This static string was in the original code, keeping it.
-                'grand_total' => $trip->price,
-                'invoiceable_id' => $trip->id,
-                'invoiceable_type' => get_class($trip)
-            ]);
+            // Only create invoice for customers, not staff
+            if ($customerType === 'customer') {
+                Invoice::create([
+                    'customer_id' => $customer->id,
+                    'trip_id' => $trip->id,
+                    'balance' => $trip->price,
+                    'amount' => 0,
+                    'discount' => 0,
+                    'invoice_number' => 'INV/2024/01',
+                    'grand_total' => $trip->price,
+                    'invoiceable_id' => $trip->id,
+                    'invoiceable_type' => get_class($trip)
+                ]);
+            }
 
             return redirect()
                 ->to("/trips/{$trip->id}")
-                ->with('success', 'Customer created and attached to trip');
+                ->with('success', $customerType === 'staff' ? 'ސްޓާފް އެޓޭޗް ކުރެވިއްޖެ' : 'ކަސްޓަމަރު ރެޖިސްޓަރ ކުރެވިއްޖެ');
         }
 
         return redirect()
@@ -66,10 +72,37 @@ class CustomerController extends Controller
             'customer_id' => $customer->id,
         ])->first();
 
+        $isStaff = $tripCustomer?->customer_type === 'staff';
+
+        // Get invoice for this customer and trip (staff don't have invoices)
+        $invoice = null;
+        $payments = collect();
+        $totalPaid = 0;
+        $balance = 0;
+
+        if (!$isStaff) {
+            $invoice = Invoice::where('trip_id', $trip->id)
+                ->where('customer_id', $customer->id)
+                ->first();
+
+            $payments = $invoice ? $invoice->payments()->orderBy('created_at', 'desc')->get() : collect();
+            $totalPaid = $payments->sum('amount');
+            $balance = $invoice ? ($invoice->grand_total - $invoice->discount - $totalPaid) : $trip->price;
+        }
+
         return Inertia::render('Trips/Customers/Show', [
             'trip' => $trip,
             'customer' => $customer,
             'tripCustomer' => $tripCustomer,
+            'invoice' => $invoice,
+            'payments' => $payments,
+            'isStaff' => $isStaff,
+            'paymentSummary' => [
+                'tripPrice' => $trip->price,
+                'discount' => $invoice->discount ?? 0,
+                'totalPaid' => $totalPaid,
+                'balance' => $balance,
+            ],
         ]);
     }
 
@@ -95,6 +128,38 @@ class CustomerController extends Controller
         }
 
         $customer->update($data);
+
+        // Handle customer_type change
+        $newCustomerType = $request->input('customer_type');
+        if ($newCustomerType) {
+            $tripCustomer = CustomerTrip::where([
+                'trip_id' => $trip->id,
+                'customer_id' => $customer->id,
+            ])->first();
+
+            if ($tripCustomer && $tripCustomer->customer_type !== $newCustomerType) {
+                $tripCustomer->update(['customer_type' => $newCustomerType]);
+
+                // If changing from staff to customer, create invoice if doesn't exist
+                if ($newCustomerType === 'customer') {
+                    Invoice::firstOrCreate(
+                        [
+                            'trip_id' => $trip->id,
+                            'customer_id' => $customer->id,
+                        ],
+                        [
+                            'balance' => $trip->price,
+                            'amount' => 0,
+                            'discount' => 0,
+                            'invoice_number' => 'INV/' . date('Y') . '/' . $customer->id,
+                            'grand_total' => $trip->price,
+                            'invoiceable_id' => $trip->id,
+                            'invoiceable_type' => Trip::class,
+                        ]
+                    );
+                }
+            }
+        }
 
         return redirect()
             ->back()

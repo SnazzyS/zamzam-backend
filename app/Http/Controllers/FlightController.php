@@ -171,4 +171,34 @@ class FlightController extends Controller
             ->back()
             ->with('success', 'Customer removed from flight');
     }
+
+    /**
+     * Printable passenger list for a flight with customizable columns
+     */
+    public function passengerList(Trip $trip, Flight $flight)
+    {
+        $passengers = CustomerTrip::where('trip_id', $trip->id)
+            ->where('flight_id', $flight->id)
+            ->with('customer:id,name,name_in_english,national_id,passport_number,phone_number,date_of_birth,island,gender')
+            ->orderBy('umrah_id')
+            ->get()
+            ->map(fn($ct) => [
+                'id' => $ct->customer->id,
+                'umrah_id' => $ct->umrah_id,
+                'name' => $ct->customer->name,
+                'name_in_english' => $ct->customer->name_in_english,
+                'national_id' => $ct->customer->national_id,
+                'passport_number' => $ct->customer->passport_number,
+                'phone_number' => $ct->customer->phone_number,
+                'date_of_birth' => $ct->customer->date_of_birth,
+                'island' => $ct->customer->island,
+                'gender' => $ct->customer->gender,
+            ]);
+
+        return Inertia::render('Trips/Flights/PassengerList', [
+            'trip' => $trip,
+            'flight' => $flight,
+            'passengers' => $passengers,
+        ]);
+    }
 }

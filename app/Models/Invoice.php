@@ -35,9 +35,19 @@ class Invoice extends Model
         return $this->belongsTo(Trip::class);
     }
 
-    public function payment()
+    public function payments()
     {
-        return $this->belongsTo(Payment::class);
+        return $this->hasMany(Payment::class);
+    }
+
+    public function getTotalPaidAttribute()
+    {
+        return $this->payments()->sum('amount');
+    }
+
+    public function getBalanceRemainingAttribute()
+    {
+        return $this->grand_total - $this->discount - $this->total_paid;
     }
 
     public function invoiceable()
