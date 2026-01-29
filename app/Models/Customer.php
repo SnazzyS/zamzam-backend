@@ -21,6 +21,12 @@ class Customer extends Model
         'passport_number',
         'passport_issued_date',
         'passport_expiry_date',
+        'is_foreigner',
+        'country',
+    ];
+
+    protected $casts = [
+        'is_foreigner' => 'boolean',
     ];
 
 

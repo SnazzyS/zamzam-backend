@@ -84,7 +84,7 @@ class TripController extends Controller
         $trip = Trip::create($request->all());
 
         return redirect()
-            ->to("/trips/{$trip->id}")
+            ->to("/office/trips/{$trip->id}")
             ->with('success', 'Trip created successfully');
     }
 

@@ -19,15 +19,25 @@ class CustomerController extends Controller
 {
     public function store(Trip $trip, CustomerStoreRequest $request, UmrahIDGenerator $idgenerator)
     {
+        // Determine unique identifier based on foreigner status
+        $isForeigner = $request->boolean('is_foreigner', false);
+        $uniqueKey = $isForeigner
+            ? ['passport_number' => $request->passport_number]
+            : ['national_id' => $request->national_id];
+
         $customer = Customer::firstOrCreate(
-            ['national_id' => $request->national_id],
+            $uniqueKey,
             [
                 'name' => $request->name,
                 'date_of_birth' => $request->date_of_birth,
-                'island' => $request->island,
+                'island' => $isForeigner ? null : $request->island,
                 'phone_number' => $request->phone_number,
                 'address' => $request->address,
                 'gender' => $request->gender,
+                'is_foreigner' => $isForeigner,
+                'country' => $isForeigner ? $request->country : null,
+                'national_id' => $isForeigner ? null : $request->national_id,
+                'passport_number' => $request->passport_number,
             ]
         );
 
@@ -55,7 +65,7 @@ class CustomerController extends Controller
             }
 
             return redirect()
-                ->to("/trips/{$trip->id}")
+                ->to("/office/trips/{$trip->id}")
                 ->with('success', $customerType === 'staff' ? 'ސްޓާފް އެޓޭޗް ކުރެވިއްޖެ' : 'ކަސްޓަމަރު ރެޖިސްޓަރ ކުރެވިއްޖެ');
         }
 
@@ -108,17 +118,21 @@ class CustomerController extends Controller
 
     public function update(Trip $trip, Customer $customer, CustomerStoreRequest $request)
     {
+        $isForeigner = $request->boolean('is_foreigner', false);
+
         $data = [
             'name' => $request->name,
-            'id_card' => $request->id_card,
+            'national_id' => $isForeigner ? null : $request->national_id,
             'date_of_birth' => $request->date_of_birth,
-            'island' => $request->island,
+            'island' => $isForeigner ? null : $request->island,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'gender' => $request->gender,
             'name_in_english' => $request->name_in_english,
             'passport_number' => $request->passport_number,
             'passport_issued_date' => $request->passport_issued_date,
+            'is_foreigner' => $isForeigner,
+            'country' => $isForeigner ? $request->country : null,
         ];
 
         if ($request->filled('passport_expiry_date')) {

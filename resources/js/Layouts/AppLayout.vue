@@ -4,6 +4,7 @@ import { Link, useForm, usePage, router } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 import { tkGetChar, toDhivehi } from '../utils/lattinMapping';
 import { searchIslands, getIslandOptions } from '../utils/maldivesIslands';
+import { searchCountries, getCountryOptions } from '../utils/countries';
 import axios from 'axios';
 
 const page = usePage();
@@ -36,15 +37,20 @@ const normalizePath = (href) => {
 const isActive = (href) => normalizePath(href) === page.url;
 
 const showRegisterModal = ref(false);
+const isForeigner = ref(false);
+
 const registerForm = useForm({
     name: '',
     national_id: '',
+    passport_number: '',
     date_of_birth: '',
     island: '',
+    country: '',
     phone_number: '',
     address: '',
     gender: '',
     customer_type: 'customer',
+    is_foreigner: false,
 });
 
 // Customer search state
@@ -52,6 +58,7 @@ const isSearching = ref(false);
 const existingCustomer = ref(null);
 const alreadyAttached = ref(false);
 const nationalIdInput = ref('');
+const passportInput = ref('');
 let searchTimeout = null;
 
 // Island dropdown state
@@ -59,10 +66,21 @@ const islandSearch = ref('');
 const islandDropdownOpen = ref(false);
 const filteredIslands = computed(() => searchIslands(islandSearch.value));
 
+// Country dropdown state
+const countrySearch = ref('');
+const countryDropdownOpen = ref(false);
+const filteredCountries = computed(() => searchCountries(countrySearch.value));
+
 const selectIsland = (island) => {
     registerForm.island = island.value;
     islandSearch.value = island.label;
     islandDropdownOpen.value = false;
+};
+
+const selectCountry = (country) => {
+    registerForm.country = country.value;
+    countrySearch.value = country.label;
+    countryDropdownOpen.value = false;
 };
 
 const openIslandDropdown = () => {
@@ -77,13 +95,29 @@ const closeIslandDropdown = () => {
     }, 200);
 };
 
+const openCountryDropdown = () => {
+    if (!existingCustomer.value) {
+        countryDropdownOpen.value = true;
+    }
+};
+
+const closeCountryDropdown = () => {
+    setTimeout(() => {
+        countryDropdownOpen.value = false;
+    }, 200);
+};
+
 const openRegisterModal = () => {
     showRegisterModal.value = true;
     existingCustomer.value = null;
     alreadyAttached.value = false;
     nationalIdInput.value = '';
+    passportInput.value = '';
     islandSearch.value = '';
+    countrySearch.value = '';
     islandDropdownOpen.value = false;
+    countryDropdownOpen.value = false;
+    isForeigner.value = false;
 };
 
 const closeRegisterModal = () => {
@@ -93,13 +127,34 @@ const closeRegisterModal = () => {
     existingCustomer.value = null;
     alreadyAttached.value = false;
     nationalIdInput.value = '';
+    passportInput.value = '';
     islandSearch.value = '';
+    countrySearch.value = '';
     islandDropdownOpen.value = false;
+    countryDropdownOpen.value = false;
+    isForeigner.value = false;
 };
 
-// Search for existing customer when national_id changes
-const searchCustomer = async (nationalId) => {
-    if (!tripId.value || !nationalId || nationalId.length < 5) {
+// Watch foreigner toggle
+watch(isForeigner, (newValue) => {
+    registerForm.is_foreigner = newValue;
+    // Clear location fields when switching
+    if (newValue) {
+        registerForm.island = '';
+        registerForm.national_id = '';
+        islandSearch.value = '';
+        nationalIdInput.value = '';
+    } else {
+        registerForm.country = '';
+        registerForm.passport_number = '';
+        countrySearch.value = '';
+        passportInput.value = '';
+    }
+});
+
+// Search for existing customer when national_id or passport changes
+const searchCustomer = async (identifier, isForeignerSearch) => {
+    if (!tripId.value || !identifier || identifier.length < 5) {
         existingCustomer.value = null;
         alreadyAttached.value = false;
         return;
@@ -108,7 +163,7 @@ const searchCustomer = async (nationalId) => {
     isSearching.value = true;
     try {
         const response = await axios.post(route('trips.customers.search', tripId.value), {
-            national_id: nationalId,
+            national_id: identifier,
         });
 
         const data = response.data;
@@ -120,15 +175,24 @@ const searchCustomer = async (nationalId) => {
             // Auto-fill the form with existing customer data
             registerForm.name = data.customer.name || '';
             registerForm.date_of_birth = data.customer.date_of_birth || '';
-            registerForm.island = data.customer.island || '';
             registerForm.phone_number = data.customer.phone_number || '';
             registerForm.address = data.customer.address || '';
             registerForm.gender = data.customer.gender || '';
 
-            // Set island search display
-            if (data.customer.island) {
+            if (data.customer.is_foreigner) {
+                isForeigner.value = true;
+                registerForm.country = data.customer.country || '';
+                registerForm.passport_number = data.customer.passport_number || '';
+                passportInput.value = data.customer.passport_number || '';
+                const countryOption = getCountryOptions().find(c => c.value === data.customer.country);
+                countrySearch.value = countryOption ? countryOption.label : data.customer.country || '';
+            } else {
+                isForeigner.value = false;
+                registerForm.island = data.customer.island || '';
+                registerForm.national_id = data.customer.national_id || '';
+                nationalIdInput.value = data.customer.national_id || '';
                 const islandOption = getIslandOptions().find(i => i.value === data.customer.island);
-                islandSearch.value = islandOption ? islandOption.label : data.customer.island;
+                islandSearch.value = islandOption ? islandOption.label : data.customer.island || '';
             }
         } else {
             existingCustomer.value = null;
@@ -145,14 +209,11 @@ const searchCustomer = async (nationalId) => {
 
 // Watch national_id with debounce
 watch(nationalIdInput, (newValue) => {
-    // Sync to form
     registerForm.national_id = newValue;
 
-    // Clear existing customer if input changes after auto-fill
     if (existingCustomer.value && newValue !== existingCustomer.value.national_id) {
         existingCustomer.value = null;
         alreadyAttached.value = false;
-        // Clear auto-filled values
         registerForm.name = '';
         registerForm.date_of_birth = '';
         registerForm.island = '';
@@ -166,7 +227,31 @@ watch(nationalIdInput, (newValue) => {
         clearTimeout(searchTimeout);
     }
     searchTimeout = setTimeout(() => {
-        searchCustomer(newValue);
+        searchCustomer(newValue, false);
+    }, 500);
+});
+
+// Watch passport with debounce
+watch(passportInput, (newValue) => {
+    registerForm.passport_number = newValue;
+
+    if (existingCustomer.value && newValue !== existingCustomer.value.passport_number) {
+        existingCustomer.value = null;
+        alreadyAttached.value = false;
+        registerForm.name = '';
+        registerForm.date_of_birth = '';
+        registerForm.country = '';
+        registerForm.phone_number = '';
+        registerForm.address = '';
+        countrySearch.value = '';
+        registerForm.gender = '';
+    }
+
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+    searchTimeout = setTimeout(() => {
+        searchCustomer(newValue, true);
     }, 500);
 });
 
@@ -336,9 +421,41 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 </button>
                             </div>
 
+                            <!-- Local/Foreigner Toggle -->
+                            <div class="mb-4 flex items-center gap-2 rounded-lg bg-slate-100 p-1">
+                                <button
+                                    type="button"
+                                    @click="isForeigner = false"
+                                    :class="[
+                                        'flex-1 rounded-md px-4 py-2 text-sm font-medium transition',
+                                        !isForeigner
+                                            ? 'bg-white text-slate-900 shadow-sm'
+                                            : 'text-slate-600 hover:text-slate-900'
+                                    ]"
+                                    :disabled="!!existingCustomer"
+                                >
+                                    Local
+                                </button>
+                                <button
+                                    type="button"
+                                    @click="isForeigner = true"
+                                    :class="[
+                                        'flex-1 rounded-md px-4 py-2 text-sm font-medium transition',
+                                        isForeigner
+                                            ? 'bg-white text-slate-900 shadow-sm'
+                                            : 'text-slate-600 hover:text-slate-900'
+                                    ]"
+                                    :disabled="!!existingCustomer"
+                                >
+                                    Foreigner
+                                </button>
+                            </div>
+
                             <form @submit.prevent="submitRegister" class="grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Name in Dhivehi</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                        Name in Dhivehi
+                                    </label>
                                     <input
                                         :value="registerForm.name"
                                         type="text"
@@ -353,10 +470,30 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     >
                                     <p v-if="registerForm.errors.name" class="text-xs text-red-500 mt-1">{{ registerForm.errors.name }}</p>
                                 </div>
+
+                                <!-- National ID (Local) or Passport (Foreigner) -->
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">National ID</label>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                        {{ isForeigner ? 'Passport Number' : 'National ID' }}
+                                    </label>
                                     <div class="relative">
                                         <input
+                                            v-if="isForeigner"
+                                            v-model="passportInput"
+                                            type="text"
+                                            class="w-full rounded-lg border px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2"
+                                            :class="[
+                                                alreadyAttached
+                                                    ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                                                    : existingCustomer
+                                                        ? 'border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500/20'
+                                                        : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/20'
+                                            ]"
+                                            placeholder="Passport number"
+                                            required
+                                        >
+                                        <input
+                                            v-else
                                             v-model="nationalIdInput"
                                             type="text"
                                             class="w-full rounded-lg border px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2"
@@ -370,17 +507,19 @@ const handleDhivehiKeydown = (event, form, field) => {
                                             placeholder="A123456"
                                             required
                                         >
-                                        <div v-if="isSearching" class="absolute left-3 top-1/2 -translate-y-1/2">
+                                        <div v-if="isSearching" class="absolute right-3 top-1/2 -translate-y-1/2">
                                             <svg class="h-4 w-4 animate-spin text-slate-400" fill="none" viewBox="0 0 24 24">
                                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                             </svg>
                                         </div>
                                     </div>
-                                    <p v-if="registerForm.errors.national_id" class="text-xs text-red-500 mt-1">{{ registerForm.errors.national_id }}</p>
-                                    <p v-else-if="alreadyAttached" class="text-xs text-red-500 mt-1">This customer is already registered for this trip</p>
+                                    <p v-if="registerForm.errors.national_id && !isForeigner" class="text-xs text-red-500 mt-1">{{ registerForm.errors.national_id }}</p>
+                                    <p v-if="registerForm.errors.passport_number && isForeigner" class="text-xs text-red-500 mt-1">{{ registerForm.errors.passport_number }}</p>
+                                    <p v-if="alreadyAttached" class="text-xs text-red-500 mt-1">This customer is already registered for this trip</p>
                                     <p v-else-if="existingCustomer" class="text-xs text-emerald-600 mt-1">Customer found - form auto-filled</p>
                                 </div>
+
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Date of Birth</label>
                                     <input
@@ -393,44 +532,89 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     >
                                     <p v-if="registerForm.errors.date_of_birth" class="text-xs text-red-500 mt-1">{{ registerForm.errors.date_of_birth }}</p>
                                 </div>
+
+                                <!-- Island (Local) or Country (Foreigner) -->
                                 <div class="relative">
-                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Island</label>
-                                    <input
-                                        v-model="islandSearch"
-                                        type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
-                                        :class="existingCustomer && 'bg-slate-50'"
-                                        placeholder="Search island..."
-                                        @focus="openIslandDropdown"
-                                        @blur="closeIslandDropdown"
-                                        :readonly="!!existingCustomer"
-                                        autocomplete="off"
-                                    >
-                                    <!-- Dropdown -->
-                                    <div
-                                        v-if="islandDropdownOpen && !existingCustomer"
-                                        class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
-                                    >
-                                        <button
-                                            v-for="island in filteredIslands"
-                                            :key="island.value"
-                                            type="button"
-                                            class="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700"
-                                            @mousedown.prevent="selectIsland(island)"
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                        {{ isForeigner ? 'Country' : 'Island' }}
+                                    </label>
+
+                                    <!-- Country dropdown for foreigners -->
+                                    <template v-if="isForeigner">
+                                        <input
+                                            v-model="countrySearch"
+                                            type="text"
+                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            :class="existingCustomer && 'bg-slate-50'"
+                                            placeholder="Search country..."
+                                            @focus="openCountryDropdown"
+                                            @blur="closeCountryDropdown"
+                                            :readonly="!!existingCustomer"
+                                            autocomplete="off"
                                         >
-                                            {{ island.label }}
-                                        </button>
-                                        <div v-if="filteredIslands.length === 0" class="px-3 py-2 text-sm text-slate-400">
-                                            No islands found
+                                        <div
+                                            v-if="countryDropdownOpen && !existingCustomer"
+                                            class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+                                        >
+                                            <button
+                                                v-for="country in filteredCountries"
+                                                :key="country.value"
+                                                type="button"
+                                                class="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+                                                @mousedown.prevent="selectCountry(country)"
+                                            >
+                                                {{ country.label }}
+                                            </button>
+                                            <div v-if="filteredCountries.length === 0" class="px-3 py-2 text-sm text-slate-400">
+                                                No countries found
+                                            </div>
                                         </div>
-                                    </div>
-                                    <p v-if="registerForm.errors.island" class="text-xs text-red-500 mt-1">{{ registerForm.errors.island }}</p>
+                                        <p v-if="registerForm.errors.country" class="text-xs text-red-500 mt-1">{{ registerForm.errors.country }}</p>
+                                    </template>
+
+                                    <!-- Island dropdown for locals (Dhivehi) -->
+                                    <template v-else>
+                                        <input
+                                            v-model="islandSearch"
+                                            type="text"
+                                            dir="rtl"
+                                            lang="dv"
+                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            :class="existingCustomer && 'bg-slate-50'"
+                                            placeholder="ރަށް ހޯދާ..."
+                                            @focus="openIslandDropdown"
+                                            @blur="closeIslandDropdown"
+                                            :readonly="!!existingCustomer"
+                                            autocomplete="off"
+                                        >
+                                        <div
+                                            v-if="islandDropdownOpen && !existingCustomer"
+                                            class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+                                        >
+                                            <button
+                                                v-for="island in filteredIslands"
+                                                :key="island.value"
+                                                type="button"
+                                                dir="rtl"
+                                                lang="dv"
+                                                class="w-full px-3 py-2 text-right text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+                                                @mousedown.prevent="selectIsland(island)"
+                                            >
+                                                {{ island.label }}
+                                            </button>
+                                            <div v-if="filteredIslands.length === 0" class="px-3 py-2 text-sm text-slate-400 text-right" dir="rtl" lang="dv">
+                                                ރަށެއް ނުފެނުނު
+                                            </div>
+                                        </div>
+                                        <p v-if="registerForm.errors.island" class="text-xs text-red-500 mt-1">{{ registerForm.errors.island }}</p>
+                                    </template>
                                 </div>
+
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
                                     <input
                                         v-model="registerForm.phone_number"
-                                        type="number"
+                                        type="text"
                                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         :readonly="!!existingCustomer"
@@ -438,9 +622,20 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     >
                                     <p v-if="registerForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ registerForm.errors.phone_number }}</p>
                                 </div>
+
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Address</label>
                                     <input
+                                        v-if="isForeigner"
+                                        v-model="registerForm.address"
+                                        type="text"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="existingCustomer && 'bg-slate-50'"
+                                        :readonly="!!existingCustomer"
+                                        required
+                                    >
+                                    <input
+                                        v-else
                                         :value="registerForm.address"
                                         type="text"
                                         dir="rtl"
@@ -454,6 +649,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     >
                                     <p v-if="registerForm.errors.address" class="text-xs text-red-500 mt-1">{{ registerForm.errors.address }}</p>
                                 </div>
+
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Gender</label>
                                     <select
@@ -469,6 +665,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     </select>
                                     <p v-if="registerForm.errors.gender" class="text-xs text-red-500 mt-1">{{ registerForm.errors.gender }}</p>
                                 </div>
+
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Type</label>
                                     <div class="flex gap-4">

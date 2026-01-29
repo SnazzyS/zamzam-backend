@@ -176,17 +176,17 @@ const submitBulkPayment = () => {
 
     <main class="space-y-6">
         <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">{{ trip?.name || 'Trip' }}</h1>
-                <p class="mt-1 text-slate-500" dir="rtl" lang="dv">ކަސްޓަމަރު ލިސްޓް</p>
-            </div>
             <button
                 type="button"
                 class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
                 @click="openBulkPaymentModal"
             >
-                <span dir="rtl" lang="dv">ފައިސާ ބަލައިގަތުން</span>
+                Accept Bulk Payments
             </button>
+            <div class="text-right">
+                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">{{ trip?.name || 'Trip' }}</h1>
+                <p class="mt-1 text-slate-500" dir="rtl" lang="dv">ކަސްޓަމަރު ލިސްޓް</p>
+            </div>
         </div>
 
         <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">

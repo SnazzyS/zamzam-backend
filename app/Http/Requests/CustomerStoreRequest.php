@@ -24,21 +24,29 @@ class CustomerStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $isForeigner = $this->boolean('is_foreigner', false);
+
         return [
             'name' => ['required', 'string', 'max:255'],
-           'national_id' => array_filter([
-                'required',
-                'regex:/^A\d{6}$/',
+            'is_foreigner' => ['boolean'],
+            // National ID required only for locals
+            'national_id' => array_filter([
+                $isForeigner ? 'nullable' : 'required',
+                $isForeigner ? null : 'regex:/^A\d{6}$/',
                 // Only enforce unique on update, store uses firstOrCreate to handle existing customers
                 $this->route('customer') ? Rule::unique('customers')->ignore($this->route('customer')) : null,
             ]),
+            // Island required only for locals
+            'island' => [$isForeigner ? 'nullable' : 'required', 'string'],
+            // Country required only for foreigners
+            'country' => [$isForeigner ? 'required' : 'nullable', 'string', 'max:2'],
             'date_of_birth' => ['required', 'date', 'before:today'],
-            'island' => ['required', 'string'],
             'phone_number' => ['required', 'integer'],
             'address' => ['required', 'string'],
             'gender' => ['required', Rule::in(['Male', 'Female'])],
             'name_in_english' => ['nullable', 'string'],
-            'passport_number' => ['nullable', 'string'],
+            // Passport number required for foreigners
+            'passport_number' => [$isForeigner ? 'required' : 'nullable', 'string'],
             'passport_issued_date' => ['nullable', 'date'],
             'passport_expiry_date' => ['nullable', 'date', 'after:passport_issued_date'],
         ];

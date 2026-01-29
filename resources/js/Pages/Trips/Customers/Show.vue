@@ -2,6 +2,8 @@
 import { Head, Link, useForm, usePage, router } from '@inertiajs/vue3';
 import { ref, computed, watch } from 'vue';
 import { tkGetChar, toDhivehi } from '../../../utils/lattinMapping';
+import { searchIslands, getIslandOptions } from '../../../utils/maldivesIslands';
+import { searchCountries, getCountryOptions } from '../../../utils/countries';
 
 const props = defineProps({
     trip: Object,
@@ -29,6 +31,59 @@ const showEditModal = ref(false);
 const showPaymentModal = ref(false);
 const showDiscountModal = ref(false);
 
+// Determine if customer is foreigner based on existing data
+const isForeigner = ref(props.customer?.is_foreigner ?? false);
+
+// Island dropdown state
+const showIslandDropdown = ref(false);
+const islandSearch = ref('');
+const filteredIslands = computed(() => searchIslands(islandSearch.value));
+
+// Country dropdown state
+const showCountryDropdown = ref(false);
+const countrySearch = ref('');
+const filteredCountries = computed(() => searchCountries(countrySearch.value));
+
+// Get display label for selected island
+const selectedIslandLabel = computed(() => {
+    if (!editForm.island) return '';
+    const islands = getIslandOptions();
+    const found = islands.find(i => i.value === editForm.island);
+    return found ? found.label : editForm.island;
+});
+
+// Get display label for selected country
+const selectedCountryLabel = computed(() => {
+    if (!editForm.country) return '';
+    const countries = getCountryOptions();
+    const found = countries.find(c => c.value === editForm.country);
+    return found ? found.label : editForm.country;
+});
+
+const selectIsland = (island) => {
+    editForm.island = island.value;
+    showIslandDropdown.value = false;
+    islandSearch.value = '';
+};
+
+const selectCountry = (country) => {
+    editForm.country = country.value;
+    showCountryDropdown.value = false;
+    countrySearch.value = '';
+};
+
+// Watch for foreigner toggle changes
+watch(isForeigner, (newValue) => {
+    editForm.is_foreigner = newValue;
+    if (newValue) {
+        // Switching to foreigner - clear island
+        editForm.island = '';
+    } else {
+        // Switching to local - clear country
+        editForm.country = '';
+    }
+});
+
 const editForm = useForm({
     name: props.customer?.name ?? '',
     national_id: props.customer?.national_id ?? '',
@@ -42,6 +97,8 @@ const editForm = useForm({
     passport_issued_date: props.customer?.passport_issued_date ?? '',
     passport_expiry_date: props.customer?.passport_expiry_date ?? '',
     customer_type: props.tripCustomer?.customer_type ?? 'customer',
+    is_foreigner: props.customer?.is_foreigner ?? false,
+    country: props.customer?.country ?? '',
 });
 
 const paymentForm = useForm({
@@ -69,6 +126,13 @@ const resetEditForm = () => {
     editForm.passport_issued_date = props.customer?.passport_issued_date ?? '';
     editForm.passport_expiry_date = props.customer?.passport_expiry_date ?? '';
     editForm.customer_type = props.tripCustomer?.customer_type ?? 'customer';
+    editForm.is_foreigner = props.customer?.is_foreigner ?? false;
+    editForm.country = props.customer?.country ?? '';
+    isForeigner.value = props.customer?.is_foreigner ?? false;
+    islandSearch.value = '';
+    countrySearch.value = '';
+    showIslandDropdown.value = false;
+    showCountryDropdown.value = false;
     editForm.clearErrors();
 };
 
@@ -504,15 +568,22 @@ const openReceipt = (paymentId) => {
                         <dt class="text-sm text-slate-500">ނަން</dt>
                         <dd class="mt-1 text-base text-slate-900">{{ customer?.name || '-' }}</dd>
                     </div>
-                    <div>
+                    <!-- National ID for locals -->
+                    <div v-if="!customer?.is_foreigner">
                         <dt class="text-sm text-slate-500">އައިޑީ ކާޑު ނަންބަރު</dt>
                         <dd class="mt-1 text-base font-mono text-slate-900" dir="ltr">{{ customer?.national_id || '-' }}</dd>
+                    </div>
+                    <!-- Country for foreigners -->
+                    <div v-if="customer?.is_foreigner">
+                        <dt class="text-sm text-slate-500">ޤައުމު</dt>
+                        <dd class="mt-1 text-base text-slate-900" dir="ltr">{{ customer?.country || '-' }}</dd>
                     </div>
                     <div>
                         <dt class="text-sm text-slate-500">އެޑްރެސް</dt>
                         <dd class="mt-1 text-base text-slate-900">{{ customer?.address || '-' }}</dd>
                     </div>
-                    <div>
+                    <!-- Island for locals -->
+                    <div v-if="!customer?.is_foreigner">
                         <dt class="text-sm text-slate-500">ރަށް</dt>
                         <dd class="mt-1 text-base text-slate-900">{{ customer?.island || '-' }}</dd>
                     </div>
@@ -565,6 +636,29 @@ const openReceipt = (paymentId) => {
                             </div>
 
                             <form @submit.prevent="submitEdit" class="grid gap-4 md:grid-cols-2">
+                                <!-- Local/Foreigner Toggle -->
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Customer Type</label>
+                                    <div class="flex items-center gap-2 rounded-lg bg-slate-100 p-1 w-fit">
+                                        <button
+                                            type="button"
+                                            @click="isForeigner = false"
+                                            class="rounded-md px-4 py-1.5 text-sm font-medium transition-all"
+                                            :class="!isForeigner ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'"
+                                        >
+                                            Local
+                                        </button>
+                                        <button
+                                            type="button"
+                                            @click="isForeigner = true"
+                                            class="rounded-md px-4 py-1.5 text-sm font-medium transition-all"
+                                            :class="isForeigner ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'"
+                                        >
+                                            Foreigner
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
                                     <input
@@ -579,7 +673,8 @@ const openReceipt = (paymentId) => {
                                     >
                                     <p v-if="editForm.errors.name" class="text-xs text-red-500 mt-1">{{ editForm.errors.name }}</p>
                                 </div>
-                                <div>
+                                <!-- National ID (for locals) -->
+                                <div v-if="!isForeigner">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">National ID</label>
                                     <input
                                         v-model="editForm.national_id"
@@ -588,6 +683,17 @@ const openReceipt = (paymentId) => {
                                         required
                                     >
                                     <p v-if="editForm.errors.national_id" class="text-xs text-red-500 mt-1">{{ editForm.errors.national_id }}</p>
+                                </div>
+                                <!-- Passport Number (for foreigners - moved here) -->
+                                <div v-if="isForeigner">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Passport Number</label>
+                                    <input
+                                        v-model="editForm.passport_number"
+                                        type="text"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        required
+                                    >
+                                    <p v-if="editForm.errors.passport_number" class="text-xs text-red-500 mt-1">{{ editForm.errors.passport_number }}</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Date of Birth</label>
@@ -599,19 +705,93 @@ const openReceipt = (paymentId) => {
                                     >
                                     <p v-if="editForm.errors.date_of_birth" class="text-xs text-red-500 mt-1">{{ editForm.errors.date_of_birth }}</p>
                                 </div>
-                                <div>
+                                <!-- Island dropdown (for locals) -->
+                                <div v-if="!isForeigner" class="relative">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Island</label>
-                                    <input
-                                        :value="editForm.island"
-                                        type="text"
+                                    <button
+                                        type="button"
+                                        @click="showIslandDropdown = !showIslandDropdown"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
-                                        @keydown="handleDhivehiKeydown($event, editForm, 'island')"
-                                        @input="handleDhivehiInput($event, editForm, 'island')"
-                                        required
                                     >
+                                        <span :class="editForm.island ? 'text-slate-900' : 'text-slate-400'">
+                                            {{ selectedIslandLabel || 'ރަށް އިޚްތިޔާރުކުރައްވާ' }}
+                                        </span>
+                                    </button>
+                                    <!-- Island dropdown list -->
+                                    <div
+                                        v-if="showIslandDropdown"
+                                        class="absolute z-50 mt-1 w-full rounded-lg border border-slate-200 bg-white shadow-lg max-h-60 overflow-hidden"
+                                    >
+                                        <div class="p-2 border-b border-slate-100">
+                                            <input
+                                                v-model="islandSearch"
+                                                type="text"
+                                                dir="rtl"
+                                                lang="dv"
+                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+                                                placeholder="ރަށް ހޯދާ..."
+                                                @click.stop
+                                            >
+                                        </div>
+                                        <div class="max-h-48 overflow-y-auto">
+                                            <button
+                                                v-for="island in filteredIslands"
+                                                :key="island.value"
+                                                type="button"
+                                                @click="selectIsland(island)"
+                                                class="w-full px-3 py-2 text-right text-sm hover:bg-violet-50 transition-colors"
+                                                dir="rtl"
+                                                lang="dv"
+                                                :class="editForm.island === island.value ? 'bg-violet-100 text-violet-700' : 'text-slate-700'"
+                                            >
+                                                {{ island.label }}
+                                            </button>
+                                        </div>
+                                    </div>
                                     <p v-if="editForm.errors.island" class="text-xs text-red-500 mt-1">{{ editForm.errors.island }}</p>
+                                </div>
+                                <!-- Country dropdown (for foreigners) -->
+                                <div v-if="isForeigner" class="relative">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Country</label>
+                                    <button
+                                        type="button"
+                                        @click="showCountryDropdown = !showCountryDropdown"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                    >
+                                        <span :class="editForm.country ? 'text-slate-900' : 'text-slate-400'">
+                                            {{ selectedCountryLabel || 'Select country' }}
+                                        </span>
+                                    </button>
+                                    <!-- Country dropdown list -->
+                                    <div
+                                        v-if="showCountryDropdown"
+                                        class="absolute z-50 mt-1 w-full rounded-lg border border-slate-200 bg-white shadow-lg max-h-60 overflow-hidden"
+                                    >
+                                        <div class="p-2 border-b border-slate-100">
+                                            <input
+                                                v-model="countrySearch"
+                                                type="text"
+                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+                                                placeholder="Search country..."
+                                                @click.stop
+                                            >
+                                        </div>
+                                        <div class="max-h-48 overflow-y-auto">
+                                            <button
+                                                v-for="country in filteredCountries"
+                                                :key="country.value"
+                                                type="button"
+                                                @click="selectCountry(country)"
+                                                class="w-full px-3 py-2 text-left text-sm hover:bg-violet-50 transition-colors"
+                                                :class="editForm.country === country.value ? 'bg-violet-100 text-violet-700' : 'text-slate-700'"
+                                            >
+                                                {{ country.label }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p v-if="editForm.errors.country" class="text-xs text-red-500 mt-1">{{ editForm.errors.country }}</p>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
@@ -659,7 +839,8 @@ const openReceipt = (paymentId) => {
                                     >
                                     <p v-if="editForm.errors.name_in_english" class="text-xs text-red-500 mt-1">{{ editForm.errors.name_in_english }}</p>
                                 </div>
-                                <div>
+                                <!-- Passport Number for locals (foreigners have it at the top) -->
+                                <div v-if="!isForeigner">
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Passport Number</label>
                                     <input
                                         v-model="editForm.passport_number"
