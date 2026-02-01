@@ -102,8 +102,15 @@ class TripController extends Controller
 
     public function idCards(Trip $trip)
     {
+        // Get optional customer IDs filter from query parameter
+        $customerIds = request()->query('customers');
+        $filterIds = $customerIds ? explode(',', $customerIds) : null;
+
         $trip->load([
-            'customers' => function ($query) {
+            'customers' => function ($query) use ($filterIds) {
+                if ($filterIds) {
+                    $query->whereIn('customers.id', $filterIds);
+                }
                 $query->with(['photos', 'rooms' => function ($q) use ($query) {
                     // We'll filter by trip_id in the map
                 }])->orderBy('customer_trip.created_at');

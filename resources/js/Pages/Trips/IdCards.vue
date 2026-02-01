@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { Head } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import QrcodeVue from 'qrcode.vue';
 
 const props = defineProps({
@@ -16,15 +16,52 @@ const props = defineProps({
     companySettings: Object,
 });
 
+// Selection state - by default all customers are selected
+const selectedIds = ref(new Set(props.customers.map(c => c.id)));
+const showSelectionPanel = ref(false);
+
+// Check URL for pre-selected customers
+onMounted(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const customersParam = urlParams.get('customers');
+    if (customersParam) {
+        const ids = customersParam.split(',').map(id => parseInt(id)).filter(id => !isNaN(id));
+        selectedIds.value = new Set(ids);
+    }
+});
+
+// Filtered customers based on selection
+const filteredCustomers = computed(() => {
+    return props.customers.filter(c => selectedIds.value.has(c.id));
+});
+
 // Split customers into pages (4 cards per page: 2 columns x 2 rows on landscape A4)
 const cardsPerPage = 4;
 const pages = computed(() => {
     const result = [];
-    for (let i = 0; i < props.customers.length; i += cardsPerPage) {
-        result.push(props.customers.slice(i, i + cardsPerPage));
+    for (let i = 0; i < filteredCustomers.value.length; i += cardsPerPage) {
+        result.push(filteredCustomers.value.slice(i, i + cardsPerPage));
     }
     return result;
 });
+
+const toggleCustomer = (customerId) => {
+    const newSet = new Set(selectedIds.value);
+    if (newSet.has(customerId)) {
+        newSet.delete(customerId);
+    } else {
+        newSet.add(customerId);
+    }
+    selectedIds.value = newSet;
+};
+
+const selectAll = () => {
+    selectedIds.value = new Set(props.customers.map(c => c.id));
+};
+
+const deselectAll = () => {
+    selectedIds.value = new Set();
+};
 
 const printCards = () => {
     window.print();
@@ -41,22 +78,35 @@ const getQrUrl = (customer) => {
 
     <!-- Print Controls (hidden when printing) -->
     <div class="print:hidden bg-slate-100 p-4 sticky top-0 z-10 border-b border-slate-200">
-        <div class="max-w-[210mm] mx-auto flex items-center justify-between">
+        <div class="max-w-[297mm] mx-auto flex items-center justify-between">
             <div>
                 <h1 class="text-lg font-bold text-slate-800">Umrah ID Cards</h1>
-                <p class="text-sm text-slate-500">{{ trip.name }} - {{ customers.length }} cards</p>
+                <p class="text-sm text-slate-500">
+                    {{ trip.name }} - {{ filteredCustomers.length }} of {{ customers.length }} selected
+                </p>
             </div>
             <div class="flex items-center gap-3">
                 <a
                     :href="route('trips.show', trip.id)"
-                    class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                    class="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
                 >
                     Back to Trip
                 </a>
                 <button
                     type="button"
+                    @click="showSelectionPanel = !showSelectionPanel"
+                    class="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                >
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Select Customers
+                </button>
+                <button
+                    type="button"
                     @click="printCards"
-                    class="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+                    :disabled="filteredCustomers.length === 0"
+                    class="inline-flex items-center gap-2 rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -67,8 +117,53 @@ const getQrUrl = (customer) => {
         </div>
     </div>
 
+    <!-- Selection Panel (hidden when printing) -->
+    <div v-if="showSelectionPanel" class="print:hidden bg-white border-b border-slate-200">
+        <div class="max-w-[297mm] mx-auto p-4">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-sm font-semibold text-slate-700">Select customers to generate ID cards</h2>
+                <div class="flex items-center gap-2">
+                    <button
+                        type="button"
+                        @click="selectAll"
+                        class="text-xs font-medium text-blue-600 hover:text-blue-700"
+                    >
+                        Select All
+                    </button>
+                    <span class="text-slate-300">|</span>
+                    <button
+                        type="button"
+                        @click="deselectAll"
+                        class="text-xs font-medium text-slate-500 hover:text-slate-700"
+                    >
+                        Deselect All
+                    </button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                <label
+                    v-for="customer in customers"
+                    :key="customer.id"
+                    class="flex items-center gap-2 p-2 rounded-md border cursor-pointer transition-colors"
+                    :class="selectedIds.has(customer.id) ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:bg-slate-50'"
+                >
+                    <input
+                        type="checkbox"
+                        :checked="selectedIds.has(customer.id)"
+                        @change="toggleCustomer(customer.id)"
+                        class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    >
+                    <div class="flex-1 min-w-0">
+                        <div class="text-xs font-medium text-slate-900 truncate">{{ customer.umrah_id || '-' }}</div>
+                        <div class="text-xs text-slate-500 truncate">{{ customer.name_in_english || customer.name }}</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+
     <!-- Cards Pages -->
-    <div class="bg-slate-200 print:bg-white">
+    <div v-if="filteredCustomers.length > 0" class="bg-slate-200 print:bg-white">
         <div
             v-for="(pageCustomers, pageIndex) in pages"
             :key="pageIndex"
@@ -181,6 +276,9 @@ const getQrUrl = (customer) => {
     <!-- Empty state -->
     <div v-if="customers.length === 0" class="print:hidden p-8 text-center">
         <p class="text-slate-500">No customers in this trip</p>
+    </div>
+    <div v-else-if="filteredCustomers.length === 0" class="print:hidden p-8 text-center">
+        <p class="text-slate-500">No customers selected. Click "Select Customers" to choose which ID cards to generate.</p>
     </div>
 </template>
 

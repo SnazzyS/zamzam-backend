@@ -369,18 +369,10 @@ const openReceipt = (paymentId) => {
 };
 
 const deletePhoto = (photoId) => {
-    if (!photoId) {
-        alert('No photo ID provided');
-        return;
-    }
+    if (!photoId) return;
+    if (!confirm('Are you sure you want to remove this photo?')) return;
     router.delete(route('trips.customers.photos.destroy', [props.trip.id, props.customer.id, photoId]), {
         preserveScroll: true,
-        onSuccess: () => {
-            alert('Photo deleted successfully');
-        },
-        onError: (errors) => {
-            alert('Error deleting photo: ' + JSON.stringify(errors));
-        },
     });
 };
 
