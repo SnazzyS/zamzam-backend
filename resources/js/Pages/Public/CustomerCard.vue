@@ -39,35 +39,27 @@ const formatTime = (timeString) => {
         <div class="max-w-md mx-auto">
             <!-- Header -->
             <div class="text-center mb-6">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-violet-600 rounded-2xl mb-4">
-                    <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7L12 12L22 7L12 2Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2 17L12 22L22 17" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2 12L12 17L22 12" />
-                    </svg>
-                </div>
+                <img
+                    src="/images/logo.png"
+                    alt="Zam Zam H&U Travel"
+                    class="w-20 h-20 mx-auto mb-4 object-contain"
+                >
                 <h1 class="text-2xl font-bold text-slate-800">Zam Zam H&U Travel</h1>
                 <p class="text-slate-500 mt-1">{{ trip.name }}</p>
             </div>
 
             <!-- Customer Info Card -->
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-4">
-                <div class="bg-violet-600 px-6 py-4">
-                    <div class="text-violet-200 text-sm font-medium">Umrah ID</div>
+                <div class="bg-slate-600 px-6 py-4">
+                    <div class="text-slate-300 text-sm font-medium">Umrah ID</div>
                     <div class="text-white text-3xl font-bold">{{ customer.umrah_id || '-' }}</div>
                 </div>
                 <div class="px-6 py-5">
                     <div class="text-xl font-semibold text-slate-800">{{ customer.name_in_english || customer.name }}</div>
                     <div class="text-slate-500 mt-1">{{ customer.name }}</div>
-                    <div class="mt-4 grid grid-cols-2 gap-4">
-                        <div>
-                            <div class="text-xs text-slate-400 uppercase tracking-wide">Passport</div>
-                            <div class="text-slate-700 font-medium">{{ customer.passport_number || '-' }}</div>
-                        </div>
-                        <div>
-                            <div class="text-xs text-slate-400 uppercase tracking-wide">Phone</div>
-                            <div class="text-slate-700 font-medium">{{ trip.phone_number || customer.phone_number || '-' }}</div>
-                        </div>
+                    <div class="mt-4">
+                        <div class="text-xs text-slate-400 uppercase tracking-wide">Passport</div>
+                        <div class="text-slate-700 font-medium">{{ customer.passport_number || '-' }}</div>
                     </div>
                 </div>
             </div>
@@ -119,12 +111,6 @@ const formatTime = (timeString) => {
                     </div>
                 </div>
                 <div class="px-6 py-4">
-                    <div v-if="room?.hotel_name_arabic || primaryHotel?.name_in_arabic" class="text-slate-600 text-right mb-3" dir="rtl">
-                        {{ room?.hotel_name_arabic || primaryHotel?.name_in_arabic }}
-                    </div>
-                    <div v-if="room?.hotel_address || primaryHotel?.address" class="text-slate-500 text-sm text-right mb-4" dir="rtl">
-                        {{ room?.hotel_address || primaryHotel?.address }}
-                    </div>
                     <div v-if="room" class="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3">
                         <div class="text-xs text-slate-400 uppercase tracking-wide">Room Number</div>
                         <div class="text-2xl font-bold text-slate-800">{{ room.room_number }}</div>
