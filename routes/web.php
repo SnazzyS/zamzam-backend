@@ -17,6 +17,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\TripGroupController;
+use App\Http\Controllers\ActivityController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -116,6 +117,20 @@ Route::prefix('office')->group(function () {
         Route::post('groups', [TripGroupController::class, 'store'])->name('groups.store');
         Route::put('groups/{group}', [TripGroupController::class, 'update'])->name('groups.update');
         Route::delete('groups/{group}', [TripGroupController::class, 'destroy'])->name('groups.destroy');
+
+        // Activities (Optional Trips)
+        Route::get('activities', [ActivityController::class, 'index'])->name('activities.index');
+        Route::post('activities', [ActivityController::class, 'store'])->name('activities.store');
+        Route::get('activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
+        Route::put('activities/{activity}', [ActivityController::class, 'update'])->name('activities.update');
+        Route::delete('activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+        Route::post('activities/{activity}/assign-customer', [ActivityController::class, 'assignCustomer'])->name('activities.assign-customer');
+        Route::delete('activities/{activity}/remove-customer', [ActivityController::class, 'removeCustomer'])->name('activities.remove-customer');
+        Route::post('activities/{activity}/accept-payment', [ActivityController::class, 'acceptPayment'])->name('activities.accept-payment');
+        Route::post('activities/{activity}/accept-bulk-payment', [ActivityController::class, 'acceptBulkPayment'])->name('activities.accept-bulk-payment');
+        Route::get('activities/{activity}/receipt/{customerActivity}', [ActivityController::class, 'showReceipt'])->name('activities.receipt');
+        Route::get('activities/{activity}/bulk-receipt', [ActivityController::class, 'showBulkReceipt'])->name('activities.bulk-receipt');
+        Route::get('activities/{activity}/passenger-list', [ActivityController::class, 'passengerList'])->name('activities.passenger-list');
 
         // Bulk Payments
         Route::post('bulk-payments', [BulkPaymentController::class, 'store'])->name('bulk-payments.store');

@@ -59,4 +59,15 @@ class Trip extends Model
         return $this->hotels()->wherePivot('is_primary', true)->first();
     }
 
+    public function activityTrips()
+    {
+        return $this->hasMany(ActivityTrip::class);
+    }
+
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'activity_trips')
+            ->withPivot('id', 'price_usd', 'price_mvr', 'price_sar', 'date', 'state')
+            ->withTimestamps();
+    }
 }

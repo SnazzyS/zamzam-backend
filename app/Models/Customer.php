@@ -60,4 +60,15 @@ class Customer extends Model
         return $this->belongsTo(Room::class);
     }
 
+    public function customerActivities()
+    {
+        return $this->hasMany(CustomerActivity::class);
+    }
+
+    public function activityTrips()
+    {
+        return $this->belongsToMany(ActivityTrip::class, 'customer_activities')
+            ->withPivot('currency', 'amount_paid', 'payment_method', 'receipt_number', 'paid_at')
+            ->withTimestamps();
+    }
 }
