@@ -446,13 +446,13 @@ const getQrUrl = (customer) => {
 }
 
 .photo-frame {
-    width: 28mm;
+    width: 24mm;
     height: 32mm;
     border: 2px solid #e5e7eb;
-    border-radius: 5mm;
+    border-radius: 4mm;
     overflow: hidden;
     background: #f9fafb;
-    margin-bottom: 3mm;
+    margin-bottom: 2mm;
 }
 
 .photo {

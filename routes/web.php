@@ -18,6 +18,8 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\TripGroupController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\FinanceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -38,6 +40,14 @@ Route::prefix('office')->group(function () {
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    // Finance
+    Route::prefix('finance')->name('finance.')->group(function () {
+        Route::get('/', [FinanceController::class, 'dashboard'])->name('dashboard');
+        Route::get('/trips/{trip}/report', [FinanceController::class, 'tripReport'])->name('trip-report');
+        Route::resource('expenses', ExpenseController::class);
+        Route::delete('expenses/{expense}/document', [ExpenseController::class, 'deleteDocument'])->name('expenses.delete-document');
+    });
 
     // Customers
     Route::get('/customers', [PassengerController::class, 'index'])->name('customers.index');

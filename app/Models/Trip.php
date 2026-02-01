@@ -70,4 +70,33 @@ class Trip extends Model
             ->withPivot('id', 'price_usd', 'price_mvr', 'price_sar', 'date', 'state')
             ->withTimestamps();
     }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function getTotalExpensesAttribute()
+    {
+        return $this->expenses()->sum('amount');
+    }
+
+    public function getTotalRevenueAttribute()
+    {
+        // Revenue from customer invoices/payments
+        $invoiceIds = Invoice::where('trip_id', $this->id)->pluck('id');
+        $invoiceRevenue = \App\Models\Payment::whereIn('invoice_id', $invoiceIds)->sum('amount');
+
+        // Revenue from activities
+        $activityRevenue = \App\Models\CustomerActivity::whereHas('activityTrip', function ($q) {
+            $q->where('trip_id', $this->id);
+        })->whereNotNull('paid_at')->sum('amount_paid');
+
+        return $invoiceRevenue + $activityRevenue;
+    }
+
+    public function getNetProfitAttribute()
+    {
+        return $this->total_revenue - $this->total_expenses;
+    }
 }

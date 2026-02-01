@@ -12,8 +12,37 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('expenses', function (Blueprint $table) {
-            $table->id(); 
-            $table->timestamps();            
+            $table->id();
+
+            // Trip relationship (nullable for general expenses)
+            $table->foreignId('trip_id')->nullable()->constrained()->onDelete('set null');
+
+            // Expense details
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->decimal('amount', 12, 2);
+            $table->enum('currency', ['MVR', 'USD', 'SAR'])->default('MVR');
+
+            // Expense categorization
+            $table->string('category')->nullable();
+            $table->date('expense_date');
+            $table->year('fiscal_year');
+
+            // Payment details
+            $table->enum('payment_method', ['transfer', 'cash', 'cheque']);
+            $table->string('transfer_reference_number')->nullable();
+            $table->string('cheque_number')->nullable();
+
+            // Document upload
+            $table->string('document_path')->nullable();
+            $table->string('document_filename')->nullable();
+            $table->string('document_mime_type')->nullable();
+
+            // Vendor/Payee information
+            $table->string('vendor_name')->nullable();
+
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
