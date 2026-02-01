@@ -144,7 +144,7 @@ const getCapacityStatus = (bus) => {
             </div>
             <button
                 type="button"
-                class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                class="inline-flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-600"
                 @click="openCreateModal"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -159,7 +159,7 @@ const getCapacityStatus = (bus) => {
             <div
                 v-for="bus in buses"
                 :key="bus.id"
-                class="group relative rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 overflow-hidden"
+                class="group relative rounded-lg border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 overflow-hidden"
             >
                 <!-- Color Bar -->
                 <div
@@ -212,7 +212,7 @@ const getCapacityStatus = (bus) => {
                             <h3 class="text-sm font-medium text-slate-700">Passengers</h3>
                             <button
                                 type="button"
-                                class="inline-flex items-center gap-1 rounded-lg bg-violet-50 px-2 py-1 text-xs font-medium text-violet-600 transition hover:bg-violet-100"
+                                class="inline-flex items-center gap-1 rounded-lg bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 transition hover:bg-blue-100"
                                 @click="openAssignModal(bus)"
                             >
                                 <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -228,7 +228,7 @@ const getCapacityStatus = (bus) => {
                                 class="flex items-center justify-between rounded-lg bg-slate-50 px-2.5 py-2 text-xs"
                             >
                                 <div class="flex items-center gap-2 min-w-0" dir="rtl" lang="dv">
-                                    <span v-if="passenger.umrah_id" class="shrink-0 rounded bg-violet-100 px-1.5 py-0.5 font-mono text-violet-700">{{ passenger.umrah_id }}</span>
+                                    <span v-if="passenger.umrah_id" class="shrink-0 rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-700">{{ passenger.umrah_id }}</span>
                                     <span class="truncate font-medium text-slate-700">{{ passenger.name }}</span>
                                 </div>
                                 <button
@@ -252,13 +252,13 @@ const getCapacityStatus = (bus) => {
                     <div class="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
                         <Link
                             :href="route('trips.buses.show', [trip.id, bus.id])"
-                            class="flex-1 rounded-xl bg-violet-600 px-4 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                            class="flex-1 rounded-md bg-blue-500 px-4 py-2.5 text-center text-sm font-medium text-white transition-all duration-200 hover:bg-blue-600"
                         >
                             Bus Details
                         </Link>
                         <button
                             type="button"
-                            class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
+                            class="rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
                             @click="openEditModal(bus)"
                             title="Edit Bus"
                         >
@@ -268,7 +268,7 @@ const getCapacityStatus = (bus) => {
                         </button>
                         <button
                             type="button"
-                            class="rounded-xl border border-red-200 bg-white px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50"
+                            class="rounded-md border border-red-200 bg-white px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50"
                             @click="deleteBus(bus)"
                             title="Delete Bus"
                         >
@@ -282,8 +282,8 @@ const getCapacityStatus = (bus) => {
         </div>
 
         <!-- Empty State -->
-        <div v-else class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 py-16 text-center">
-            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
+        <div v-else class="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-200 bg-slate-50/50 py-16 text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-slate-100">
                 <svg class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                 </svg>
@@ -292,7 +292,7 @@ const getCapacityStatus = (bus) => {
             <p class="text-sm text-slate-500">Create a bus to start assigning passengers</p>
             <button
                 type="button"
-                class="mt-4 inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                class="mt-4 inline-flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-600"
                 @click="openCreateModal"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -315,17 +315,17 @@ const getCapacityStatus = (bus) => {
         >
             <div v-if="showCreateModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeCreateModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeCreateModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Add New Bus</h3>
@@ -349,7 +349,7 @@ const getCapacityStatus = (bus) => {
                                         id="create-name"
                                         type="text"
                                         v-model="busForm.name"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="busForm.errors.name && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         placeholder="e.g., Bus A"
                                         required
@@ -364,7 +364,7 @@ const getCapacityStatus = (bus) => {
                                             id="create-bus-number"
                                             type="number"
                                             v-model="busForm.bus_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="busForm.errors.bus_number && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                             placeholder="1"
                                             required
@@ -377,7 +377,7 @@ const getCapacityStatus = (bus) => {
                                             id="create-capacity"
                                             type="number"
                                             v-model="busForm.capacity"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="busForm.errors.capacity && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                             placeholder="45"
                                             required
@@ -398,7 +398,7 @@ const getCapacityStatus = (bus) => {
                                         <input
                                             type="text"
                                             v-model="busForm.color_code"
-                                            class="flex-1 rounded-lg border border-slate-200 px-3 py-2 font-mono text-sm text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="flex-1 rounded-lg border border-slate-200 px-3 py-2 font-mono text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             placeholder="#8B5CF6"
                                         >
                                     </div>
@@ -414,7 +414,7 @@ const getCapacityStatus = (bus) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="busForm.processing"
                                     >
                                         {{ busForm.processing ? 'Creating...' : 'Create Bus' }}
@@ -440,17 +440,17 @@ const getCapacityStatus = (bus) => {
         >
             <div v-if="showEditModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeEditModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeEditModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showEditModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showEditModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Edit Bus</h3>
@@ -474,7 +474,7 @@ const getCapacityStatus = (bus) => {
                                         id="edit-name"
                                         type="text"
                                         v-model="busForm.name"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="busForm.errors.name && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -488,7 +488,7 @@ const getCapacityStatus = (bus) => {
                                             id="edit-bus-number"
                                             type="number"
                                             v-model="busForm.bus_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="busForm.errors.bus_number && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                             required
                                         >
@@ -500,7 +500,7 @@ const getCapacityStatus = (bus) => {
                                             id="edit-capacity"
                                             type="number"
                                             v-model="busForm.capacity"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="busForm.errors.capacity && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                             required
                                         >
@@ -520,7 +520,7 @@ const getCapacityStatus = (bus) => {
                                         <input
                                             type="text"
                                             v-model="busForm.color_code"
-                                            class="flex-1 rounded-lg border border-slate-200 px-3 py-2 font-mono text-sm text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="flex-1 rounded-lg border border-slate-200 px-3 py-2 font-mono text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             placeholder="#8B5CF6"
                                         >
                                     </div>
@@ -536,7 +536,7 @@ const getCapacityStatus = (bus) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="busForm.processing"
                                     >
                                         {{ busForm.processing ? 'Saving...' : 'Save Changes' }}
@@ -562,17 +562,17 @@ const getCapacityStatus = (bus) => {
         >
             <div v-if="showAssignModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeAssignModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeAssignModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showAssignModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showAssignModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Assign Customer</h3>
@@ -595,7 +595,7 @@ const getCapacityStatus = (bus) => {
                                     <select
                                         id="assign-customer"
                                         v-model="assignForm.customer_id"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="assignForm.errors.customer_id && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -620,7 +620,7 @@ const getCapacityStatus = (bus) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="assignForm.processing || availableCustomersForAssignment.length === 0"
                                     >
                                         {{ assignForm.processing ? 'Assigning...' : 'Assign Customer' }}

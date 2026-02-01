@@ -19,7 +19,7 @@ const format = (value) => JSON.stringify(value, null, 2);
             <p class="text-sm text-slate-500">Customers not assigned to any room in this hotel</p>
         </div>
 
-        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <h2 class="text-sm font-semibold text-slate-700">Details</h2>
             <pre class="mt-3 whitespace-pre-wrap rounded-lg bg-slate-50 p-4 text-xs text-slate-600">{{ format(props) }}</pre>
         </div>

@@ -179,7 +179,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                         v-model="customerSearch"
                         type="text"
                         placeholder="Search by ID, passport, or name..."
-                        class="w-72 rounded-lg border border-slate-200 px-3 py-2 pl-9 text-sm placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                        class="w-72 rounded-lg border border-slate-200 px-3 py-2 pl-9 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     >
                     <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -205,7 +205,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                         <tr
                             v-for="(customer, index) in filteredCustomers"
                             :key="customer.id"
-                            class="even:bg-slate-50/50 hover:bg-violet-50/50 transition-colors"
+                            class="even:bg-slate-50/50 hover:bg-blue-50/50 transition-colors"
                         >
                             <td class="border-b border-slate-100 px-4 py-3 text-center text-slate-500">{{ index + 1 }}</td>
                             <td class="border-b border-slate-100 px-4 py-3 font-medium text-right" lang="dv">{{ customer.name }}</td>
@@ -222,7 +222,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 <button
                                     type="button"
                                     @click="openEditModal(customer)"
-                                    class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50 hover:text-violet-600"
+                                    class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
                                 >
                                     <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M4 20h4l10.5-10.5a2.121 2.121 0 00-3-3L5 17v3z" />
@@ -258,17 +258,17 @@ const handleDhivehiKeydown = (event, form, field) => {
         >
             <div v-if="showEditModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeEditModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeEditModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showEditModal" class="relative w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showEditModal" class="relative w-full max-w-2xl rounded-xl bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Edit Customer</h3>
@@ -313,7 +313,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         @keydown="handleDhivehiKeydown($event, editForm, 'name')"
                                         @input="handleDhivehiInput($event, editForm, 'name')"
                                         required
@@ -327,7 +327,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <input
                                         v-model="editForm.national_id"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                     <p v-if="editForm.errors.national_id" class="text-xs text-red-500 mt-1">{{ editForm.errors.national_id }}</p>
                                 </div>
@@ -338,7 +338,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <input
                                         v-model="editForm.passport_number"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                     <p v-if="editForm.errors.passport_number" class="text-xs text-red-500 mt-1">{{ editForm.errors.passport_number }}</p>
@@ -349,7 +349,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <input
                                         v-model="editForm.phone_number"
                                         type="number"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                     <p v-if="editForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ editForm.errors.phone_number }}</p>
@@ -361,7 +361,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <button
                                         type="button"
                                         @click="showIslandDropdown = !showIslandDropdown"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         dir="rtl"
                                         lang="dv"
                                     >
@@ -379,7 +379,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                                 type="text"
                                                 dir="rtl"
                                                 lang="dv"
-                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
                                                 placeholder="ރަށް ހޯދާ..."
                                                 @click.stop
                                             >
@@ -390,10 +390,10 @@ const handleDhivehiKeydown = (event, form, field) => {
                                                 :key="island.value"
                                                 type="button"
                                                 @click="selectIsland(island)"
-                                                class="w-full px-3 py-2 text-right text-sm hover:bg-violet-50 transition-colors"
+                                                class="w-full px-3 py-2 text-right text-sm hover:bg-blue-50 transition-colors"
                                                 dir="rtl"
                                                 lang="dv"
-                                                :class="editForm.island === island.value ? 'bg-violet-100 text-violet-700' : 'text-slate-700'"
+                                                :class="editForm.island === island.value ? 'bg-blue-100 text-blue-700' : 'text-slate-700'"
                                             >
                                                 {{ island.label }}
                                             </button>
@@ -408,7 +408,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <button
                                         type="button"
                                         @click="showCountryDropdown = !showCountryDropdown"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                         <span :class="editForm.country ? 'text-slate-900' : 'text-slate-400'">
                                             {{ selectedCountryLabel || 'Select country' }}
@@ -422,7 +422,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                             <input
                                                 v-model="countrySearch"
                                                 type="text"
-                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
                                                 placeholder="Search country..."
                                                 @click.stop
                                             >
@@ -433,8 +433,8 @@ const handleDhivehiKeydown = (event, form, field) => {
                                                 :key="country.value"
                                                 type="button"
                                                 @click="selectCountry(country)"
-                                                class="w-full px-3 py-2 text-left text-sm hover:bg-violet-50 transition-colors"
-                                                :class="editForm.country === country.value ? 'bg-violet-100 text-violet-700' : 'text-slate-700'"
+                                                class="w-full px-3 py-2 text-left text-sm hover:bg-blue-50 transition-colors"
+                                                :class="editForm.country === country.value ? 'bg-blue-100 text-blue-700' : 'text-slate-700'"
                                             >
                                                 {{ country.label }}
                                             </button>
@@ -450,7 +450,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         @keydown="handleDhivehiKeydown($event, editForm, 'address')"
                                         @input="handleDhivehiInput($event, editForm, 'address')"
                                         required
@@ -462,7 +462,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Gender</label>
                                     <select
                                         v-model="editForm.gender"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="" disabled>Select</option>
@@ -482,7 +482,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="editForm.processing"
                                     >
                                         {{ editForm.processing ? 'Saving...' : 'Save Changes' }}

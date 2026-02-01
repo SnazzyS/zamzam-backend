@@ -81,7 +81,7 @@ const props = defineProps({
                 <p class="text-xs text-slate-400 print:hidden">
                     <a
                         :href="route('trips.buses.show', [trip.id, bus.id])"
-                        class="text-violet-600 hover:text-violet-800"
+                        class="text-blue-600 hover:text-blue-800"
                     >
                         Back to Bus
                     </a>

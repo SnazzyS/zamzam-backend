@@ -177,7 +177,7 @@ const returnDateError = computed(() => {
             </div>
             <button
                 type="button"
-                class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                class="inline-flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white  transition-all duration-200 hover:bg-blue-600"
                 @click="openCreateModal"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -192,11 +192,11 @@ const returnDateError = computed(() => {
             <div
                 v-for="flight in flights"
                 :key="flight.id"
-                class="group relative rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300"
+                class="group relative rounded-md bg-white p-4 transition hover:bg-slate-50"
             >
                 <!-- Customer Count Badge -->
                 <div class="absolute left-4 top-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-lg bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700">
+                    <span class="inline-flex items-center gap-1.5 rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
@@ -231,19 +231,19 @@ const returnDateError = computed(() => {
 
                     <!-- Flight Numbers -->
                     <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
-                        <div v-if="flight.departure_flight_number" class="rounded-lg bg-slate-50 px-2.5 py-2">
+                        <div v-if="flight.departure_flight_number" class="rounded-md bg-slate-50 px-2.5 py-2">
                             <span class="text-slate-500">Dep:</span>
                             <span class="ml-1 font-mono font-medium text-slate-700">{{ flight.departure_flight_number }}</span>
                         </div>
-                        <div v-if="flight.departure_transit_flight_number" class="rounded-lg bg-slate-50 px-2.5 py-2">
+                        <div v-if="flight.departure_transit_flight_number" class="rounded-md bg-slate-50 px-2.5 py-2">
                             <span class="text-slate-500">Dep Transit:</span>
                             <span class="ml-1 font-mono font-medium text-slate-700">{{ flight.departure_transit_flight_number }}</span>
                         </div>
-                        <div v-if="flight.return_flight_number" class="rounded-lg bg-slate-50 px-2.5 py-2">
+                        <div v-if="flight.return_flight_number" class="rounded-md bg-slate-50 px-2.5 py-2">
                             <span class="text-slate-500">Ret:</span>
                             <span class="ml-1 font-mono font-medium text-slate-700">{{ flight.return_flight_number }}</span>
                         </div>
-                        <div v-if="flight.return_transit_flight_number" class="rounded-lg bg-slate-50 px-2.5 py-2">
+                        <div v-if="flight.return_transit_flight_number" class="rounded-md bg-slate-50 px-2.5 py-2">
                             <span class="text-slate-500">Ret Transit:</span>
                             <span class="ml-1 font-mono font-medium text-slate-700">{{ flight.return_transit_flight_number }}</span>
                         </div>
@@ -255,7 +255,7 @@ const returnDateError = computed(() => {
                             <h3 class="text-sm font-medium text-slate-700">Passengers</h3>
                             <button
                                 type="button"
-                                class="inline-flex items-center gap-1 rounded-lg bg-violet-50 px-2 py-1 text-xs font-medium text-violet-600 transition hover:bg-violet-100"
+                                class="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 transition hover:bg-blue-100"
                                 @click="openAssignModal(flight)"
                             >
                                 <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -268,10 +268,10 @@ const returnDateError = computed(() => {
                             <div
                                 v-for="passenger in getPassengersForFlight(flight.id)"
                                 :key="passenger.id"
-                                class="flex items-center justify-between rounded-lg bg-slate-50 px-2.5 py-2 text-xs"
+                                class="flex items-center justify-between rounded-md bg-slate-50 px-2.5 py-2 text-xs"
                             >
                                 <div class="flex items-center gap-2 min-w-0" dir="rtl" lang="dv">
-                                    <span v-if="passenger.umrah_id" class="shrink-0 rounded bg-violet-100 px-1.5 py-0.5 font-mono text-violet-700">{{ passenger.umrah_id }}</span>
+                                    <span v-if="passenger.umrah_id" class="shrink-0 rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-700">{{ passenger.umrah_id }}</span>
                                     <span class="truncate font-medium text-slate-700">{{ passenger.name }}</span>
                                 </div>
                                 <button
@@ -294,13 +294,13 @@ const returnDateError = computed(() => {
                 <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
                     <Link
                         :href="route('trips.flights.show', [trip.id, flight.id])"
-                        class="flex-1 rounded-xl bg-violet-600 px-4 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                        class="flex-1 rounded-md bg-blue-500 px-4 py-2.5 text-center text-sm font-medium text-white  transition-all duration-200 hover:bg-blue-600"
                     >
                         Flight Details
                     </Link>
                     <button
                         type="button"
-                        class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
+                        class="rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
                         @click="openEditModal(flight)"
                         title="Edit Flight"
                     >
@@ -310,7 +310,7 @@ const returnDateError = computed(() => {
                     </button>
                     <button
                         type="button"
-                        class="rounded-xl border border-red-200 bg-white px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50"
+                        class="rounded-md border border-red-200 bg-white px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50"
                         @click="deleteFlight(flight)"
                         title="Delete Flight"
                     >
@@ -323,8 +323,8 @@ const returnDateError = computed(() => {
         </div>
 
         <!-- Empty State -->
-        <div v-else class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 py-16 text-center">
-            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
+        <div v-else class="flex flex-col items-center justify-center rounded-md border border-dashed border-slate-200 bg-slate-50/50 py-16 text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-md bg-slate-100">
                 <svg class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                 </svg>
@@ -333,7 +333,7 @@ const returnDateError = computed(() => {
             <p class="text-sm text-slate-500">Create a flight to start assigning passengers</p>
             <button
                 type="button"
-                class="mt-4 inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                class="mt-4 inline-flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white  transition-all duration-200 hover:bg-blue-600"
                 @click="openCreateModal"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -356,17 +356,17 @@ const returnDateError = computed(() => {
         >
             <div v-if="showCreateModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeCreateModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeCreateModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
-                        leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="duration-100 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showCreateModal" class="relative w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showCreateModal" class="relative w-full max-w-lg rounded-md bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Add New Flight</h3>
@@ -375,7 +375,7 @@ const returnDateError = computed(() => {
                                 <button
                                     type="button"
                                     @click="closeCreateModal"
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -390,7 +390,7 @@ const returnDateError = computed(() => {
                                         id="create-name"
                                         type="text"
                                         v-model="flightForm.name"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="flightForm.errors.name && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         placeholder="e.g., Flight Group 1"
                                         required
@@ -405,7 +405,7 @@ const returnDateError = computed(() => {
                                             id="create-departure-date"
                                             type="date"
                                             v-model="flightForm.departure_date"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="flightForm.errors.departure_date && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         >
                                         <p v-if="flightForm.errors.departure_date" class="text-xs text-red-500 mt-1">{{ flightForm.errors.departure_date }}</p>
@@ -416,7 +416,7 @@ const returnDateError = computed(() => {
                                             id="create-departure-time"
                                             type="time"
                                             v-model="flightForm.departure_time"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="flightForm.errors.departure_time && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         >
                                         <p v-if="flightForm.errors.departure_time" class="text-xs text-red-500 mt-1">{{ flightForm.errors.departure_time }}</p>
@@ -430,7 +430,7 @@ const returnDateError = computed(() => {
                                             id="create-return-date"
                                             type="date"
                                             v-model="flightForm.return_date"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="(flightForm.errors.return_date || returnDateError) && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         >
                                         <p v-if="returnDateError" class="text-xs text-red-500 mt-1">{{ returnDateError }}</p>
@@ -442,7 +442,7 @@ const returnDateError = computed(() => {
                                             id="create-return-time"
                                             type="time"
                                             v-model="flightForm.return_time"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="flightForm.errors.return_time && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         >
                                         <p v-if="flightForm.errors.return_time" class="text-xs text-red-500 mt-1">{{ flightForm.errors.return_time }}</p>
@@ -456,7 +456,7 @@ const returnDateError = computed(() => {
                                             id="create-departure-flight"
                                             type="text"
                                             v-model="flightForm.departure_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             placeholder="e.g., WY123"
                                         >
                                     </div>
@@ -466,7 +466,7 @@ const returnDateError = computed(() => {
                                             id="create-departure-transit"
                                             type="text"
                                             v-model="flightForm.departure_transit_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             placeholder="e.g., SV456"
                                         >
                                     </div>
@@ -479,7 +479,7 @@ const returnDateError = computed(() => {
                                             id="create-return-flight"
                                             type="text"
                                             v-model="flightForm.return_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             placeholder="e.g., SV789"
                                         >
                                     </div>
@@ -489,7 +489,7 @@ const returnDateError = computed(() => {
                                             id="create-return-transit"
                                             type="text"
                                             v-model="flightForm.return_transit_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             placeholder="e.g., WY321"
                                         >
                                     </div>
@@ -499,13 +499,13 @@ const returnDateError = computed(() => {
                                     <button
                                         type="button"
                                         @click="closeCreateModal"
-                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                        class="rounded-md px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="flightForm.processing || returnDateError"
                                     >
                                         {{ flightForm.processing ? 'Creating...' : 'Create Flight' }}
@@ -531,17 +531,17 @@ const returnDateError = computed(() => {
         >
             <div v-if="showEditModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeEditModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeEditModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
-                        leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="duration-100 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showEditModal" class="relative w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showEditModal" class="relative w-full max-w-lg rounded-md bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Edit Flight</h3>
@@ -550,7 +550,7 @@ const returnDateError = computed(() => {
                                 <button
                                     type="button"
                                     @click="closeEditModal"
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -565,7 +565,7 @@ const returnDateError = computed(() => {
                                         id="edit-name"
                                         type="text"
                                         v-model="flightForm.name"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="flightForm.errors.name && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -579,7 +579,7 @@ const returnDateError = computed(() => {
                                             id="edit-departure-date"
                                             type="date"
                                             v-model="flightForm.departure_date"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         >
                                     </div>
                                     <div>
@@ -588,7 +588,7 @@ const returnDateError = computed(() => {
                                             id="edit-departure-time"
                                             type="time"
                                             v-model="flightForm.departure_time"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         >
                                     </div>
                                 </div>
@@ -600,7 +600,7 @@ const returnDateError = computed(() => {
                                             id="edit-return-date"
                                             type="date"
                                             v-model="flightForm.return_date"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="returnDateError && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         >
                                         <p v-if="returnDateError" class="text-xs text-red-500 mt-1">{{ returnDateError }}</p>
@@ -611,7 +611,7 @@ const returnDateError = computed(() => {
                                             id="edit-return-time"
                                             type="time"
                                             v-model="flightForm.return_time"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         >
                                     </div>
                                 </div>
@@ -623,7 +623,7 @@ const returnDateError = computed(() => {
                                             id="edit-departure-flight"
                                             type="text"
                                             v-model="flightForm.departure_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         >
                                     </div>
                                     <div>
@@ -632,7 +632,7 @@ const returnDateError = computed(() => {
                                             id="edit-departure-transit"
                                             type="text"
                                             v-model="flightForm.departure_transit_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         >
                                     </div>
                                 </div>
@@ -644,7 +644,7 @@ const returnDateError = computed(() => {
                                             id="edit-return-flight"
                                             type="text"
                                             v-model="flightForm.return_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         >
                                     </div>
                                     <div>
@@ -653,7 +653,7 @@ const returnDateError = computed(() => {
                                             id="edit-return-transit"
                                             type="text"
                                             v-model="flightForm.return_transit_flight_number"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         >
                                     </div>
                                 </div>
@@ -662,13 +662,13 @@ const returnDateError = computed(() => {
                                     <button
                                         type="button"
                                         @click="closeEditModal"
-                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                        class="rounded-md px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="flightForm.processing || returnDateError"
                                     >
                                         {{ flightForm.processing ? 'Saving...' : 'Save Changes' }}
@@ -694,17 +694,17 @@ const returnDateError = computed(() => {
         >
             <div v-if="showAssignModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeAssignModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeAssignModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
-                        leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="duration-100 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showAssignModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showAssignModal" class="relative w-full max-w-md rounded-md bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Assign Customer</h3>
@@ -713,7 +713,7 @@ const returnDateError = computed(() => {
                                 <button
                                     type="button"
                                     @click="closeAssignModal"
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -727,7 +727,7 @@ const returnDateError = computed(() => {
                                     <select
                                         id="assign-customer"
                                         v-model="assignForm.customer_id"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="assignForm.errors.customer_id && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -746,13 +746,13 @@ const returnDateError = computed(() => {
                                     <button
                                         type="button"
                                         @click="closeAssignModal"
-                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                        class="rounded-md px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="flightForm.processing || availableCustomersForAssignment.length === 0"
                                     >
                                         {{ assignForm.processing ? 'Assigning...' : 'Assign Customer' }}

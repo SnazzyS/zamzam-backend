@@ -24,9 +24,13 @@ const formatDate = (dateString) => {
     });
 };
 
+const printPage = () => {
+    window.print();
+};
+
 onMounted(() => {
     setTimeout(() => {
-        window.print();
+        printPage();
     }, 500);
 });
 </script>
@@ -64,7 +68,6 @@ onMounted(() => {
                         <th class="border border-slate-300 px-3 py-2 text-center w-24">Hajee ID</th>
                         <th class="border border-slate-300 px-3 py-2 text-right" dir="rtl">Name</th>
                         <th class="border border-slate-300 px-3 py-2 text-center w-20">Status</th>
-                        <th class="border border-slate-300 px-3 py-2 text-center w-24 print:hidden">Signature</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,7 +87,6 @@ onMounted(() => {
                                 {{ customer.is_paid ? 'Paid' : 'Pending' }}
                             </span>
                         </td>
-                        <td class="border border-slate-300 px-3 py-6 print:hidden"></td>
                     </tr>
                 </tbody>
             </table>
@@ -110,8 +112,8 @@ onMounted(() => {
             <div class="mt-6 text-center print:hidden">
                 <button
                     type="button"
-                    class="rounded-lg bg-violet-600 px-6 py-2 text-sm font-medium text-white transition hover:bg-violet-700"
-                    @click="window.print()"
+                    class="rounded-md bg-blue-500 px-6 py-2 text-sm font-medium text-white transition hover:bg-blue-600"
+                    @click="printPage"
                 >
                     Print List
                 </button>

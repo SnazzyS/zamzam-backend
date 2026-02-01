@@ -152,7 +152,7 @@ const printList = () => {
     <!-- Configuration Panel (hidden when printing) -->
     <div v-if="!showList" class="min-h-screen bg-slate-50 p-8">
         <div class="max-w-2xl mx-auto">
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h1 class="text-xl font-bold text-slate-800">Configure Passenger List</h1>
@@ -184,7 +184,7 @@ const printList = () => {
                                 :checked="selectedColumnKeys.includes(col.key)"
                                 :disabled="col.locked"
                                 @change="toggleColumn(col.key)"
-                                class="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                             />
                             <span class="text-sm text-slate-700">{{ col.labelEn }}</span>
                             <span class="text-xs text-slate-400" dir="rtl">({{ col.label }})</span>
@@ -239,7 +239,7 @@ const printList = () => {
                 <button
                     type="button"
                     @click="generateList"
-                    class="w-full py-3 px-4 bg-violet-600 text-white font-medium rounded-lg hover:bg-violet-700 transition"
+                    class="w-full py-3 px-4 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition"
                 >
                     Generate Passenger List
                 </button>
@@ -344,7 +344,7 @@ const printList = () => {
                 <p class="text-xs text-slate-400 print:hidden">
                     <a
                         :href="route('trips.flights.show', [trip.id, flight.id])"
-                        class="text-violet-600 hover:text-violet-800"
+                        class="text-blue-600 hover:text-blue-800"
                     >
                         Back to Flight
                     </a>

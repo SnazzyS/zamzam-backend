@@ -321,16 +321,16 @@ const handleDhivehiKeydown = (event, form, field) => {
             </main>
 
             <aside v-if="hasTripSidebar" class="w-full lg:w-56">
-                <div class="sticky top-20 rounded-xl border border-slate-200 bg-white p-2">
-                    <nav class="space-y-1">
+                <div class="sticky top-20 bg-white p-2">
+                    <nav class="space-y-0.5">
                         <template v-for="item in sidebarItems" :key="item.name">
                             <button
                                 v-if="item.action === 'register'"
                                 type="button"
-                                class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                                class="flex w-full items-center gap-3 px-3 py-2 text-sm text-slate-600 transition hover:text-slate-900 hover:bg-slate-50"
                                 @click="openRegisterModal"
                             >
-                                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                                <div class="flex h-7 w-7 items-center justify-center rounded-md bg-slate-100 text-slate-500">
                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                     </svg>
@@ -341,9 +341,9 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 v-else-if="item.external"
                                 :href="item.href"
                                 target="_blank"
-                                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                                class="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 transition hover:text-slate-900 hover:bg-slate-50"
                             >
-                                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100">
+                                <div class="flex h-7 w-7 items-center justify-center rounded-md bg-slate-100">
                                     <!-- List Icon -->
                                     <svg v-if="item.icon === 'list'" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -359,15 +359,15 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 v-else
                                 :href="item.href"
                                 :class="[
-                                    'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition',
+                                    'flex items-center gap-3 px-3 py-2 text-sm transition',
                                     isActive(item.href)
-                                        ? 'bg-slate-900 text-white'
-                                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
+                                        ? 'text-blue-600 bg-blue-50 border-l-2 border-blue-600 -ml-0.5 pl-[calc(0.75rem-2px)]'
+                                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50',
                                 ]"
                             >
                                 <div :class="[
-                                    'flex h-8 w-8 items-center justify-center rounded-lg',
-                                    isActive(item.href) ? 'bg-white/20' : 'bg-slate-100',
+                                    'flex h-7 w-7 items-center justify-center rounded-md',
+                                    isActive(item.href) ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500',
                                 ]">
                                     <!-- Home Icon -->
                                     <svg v-if="item.icon === 'home'" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -419,17 +419,17 @@ const handleDhivehiKeydown = (event, form, field) => {
         >
             <div v-if="showRegisterModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeRegisterModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeRegisterModal"></div>
 
                     <Transition
-                        enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
-                        leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        enter-active-class="duration-150 ease-out"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="duration-100 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showRegisterModal" class="relative w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showRegisterModal" class="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Register Customer</h3>
@@ -442,7 +442,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 <button
                                     type="button"
                                     @click="closeRegisterModal"
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -451,7 +451,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                             </div>
 
                             <!-- Local/Foreigner Toggle -->
-                            <div class="mb-4 flex items-center gap-2 rounded-lg bg-slate-100 p-1">
+                            <div class="mb-4 flex items-center gap-1 rounded-md bg-slate-100 p-1">
                                 <button
                                     type="button"
                                     @click="isForeigner = false"
@@ -490,7 +490,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         @keydown="handleDhivehiKeydown($event, registerForm, 'name')"
                                         @input="handleDhivehiInput($event, registerForm, 'name')"
@@ -510,13 +510,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                             v-if="isForeigner"
                                             v-model="passportInput"
                                             type="text"
-                                            class="w-full rounded-lg border px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2"
+                                            class="w-full rounded-md border px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1"
                                             :class="[
                                                 alreadyAttached
                                                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
                                                     : existingCustomer
                                                         ? 'border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500/20'
-                                                        : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/20'
+                                                        : 'border-slate-200 focus:border-blue-500 focus:ring-blue-500'
                                             ]"
                                             placeholder="Passport number"
                                             required
@@ -525,13 +525,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                             v-else
                                             v-model="nationalIdInput"
                                             type="text"
-                                            class="w-full rounded-lg border px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2"
+                                            class="w-full rounded-md border px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1"
                                             :class="[
                                                 alreadyAttached
                                                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
                                                     : existingCustomer
                                                         ? 'border-emerald-300 focus:border-emerald-500 focus:ring-emerald-500/20'
-                                                        : 'border-slate-200 focus:border-violet-500 focus:ring-violet-500/20'
+                                                        : 'border-slate-200 focus:border-blue-500 focus:ring-blue-500'
                                             ]"
                                             placeholder="A123456"
                                             required
@@ -554,7 +554,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <input
                                         v-model="registerForm.date_of_birth"
                                         type="date"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         :readonly="!!existingCustomer"
                                         required
@@ -573,7 +573,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         <input
                                             v-model="countrySearch"
                                             type="text"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="existingCustomer && 'bg-slate-50'"
                                             placeholder="Search country..."
                                             @focus="openCountryDropdown"
@@ -583,13 +583,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         >
                                         <div
                                             v-if="countryDropdownOpen && !existingCustomer"
-                                            class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+                                            class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-md border border-slate-200 bg-white shadow-lg"
                                         >
                                             <button
                                                 v-for="country in filteredCountries"
                                                 :key="country.value"
                                                 type="button"
-                                                class="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+                                                class="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600"
                                                 @mousedown.prevent="selectCountry(country)"
                                             >
                                                 {{ country.label }}
@@ -608,7 +608,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                             type="text"
                                             dir="rtl"
                                             lang="dv"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             :class="existingCustomer && 'bg-slate-50'"
                                             placeholder="ރަށް ހޯދާ..."
                                             @focus="openIslandDropdown"
@@ -618,7 +618,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         >
                                         <div
                                             v-if="islandDropdownOpen && !existingCustomer"
-                                            class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+                                            class="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-md border border-slate-200 bg-white shadow-lg"
                                         >
                                             <button
                                                 v-for="island in filteredIslands"
@@ -626,7 +626,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                                 type="button"
                                                 dir="rtl"
                                                 lang="dv"
-                                                class="w-full px-3 py-2 text-right text-sm text-slate-700 hover:bg-violet-50 hover:text-violet-700"
+                                                class="w-full px-3 py-2 text-right text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600"
                                                 @mousedown.prevent="selectIsland(island)"
                                             >
                                                 {{ island.label }}
@@ -644,7 +644,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <input
                                         v-model="registerForm.phone_number"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         :readonly="!!existingCustomer"
                                         required
@@ -658,7 +658,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         v-if="isForeigner"
                                         v-model="registerForm.address"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         :readonly="!!existingCustomer"
                                         required
@@ -669,7 +669,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         @keydown="handleDhivehiKeydown($event, registerForm, 'address')"
                                         @input="handleDhivehiInput($event, registerForm, 'address')"
@@ -683,7 +683,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Gender</label>
                                     <select
                                         v-model="registerForm.gender"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="existingCustomer && 'bg-slate-50'"
                                         :disabled="!!existingCustomer"
                                         required
@@ -703,7 +703,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                                 type="radio"
                                                 v-model="registerForm.customer_type"
                                                 value="customer"
-                                                class="text-violet-600 focus:ring-violet-500"
+                                                class="text-blue-500 focus:ring-blue-500"
                                             >
                                             <span class="text-sm text-slate-700">Customer</span>
                                         </label>
@@ -712,7 +712,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                                 type="radio"
                                                 v-model="registerForm.customer_type"
                                                 value="staff"
-                                                class="text-violet-600 focus:ring-violet-500"
+                                                class="text-blue-500 focus:ring-blue-500"
                                             >
                                             <span class="text-sm text-slate-700">Staff</span>
                                         </label>
@@ -724,13 +724,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <button
                                         type="button"
                                         @click="closeRegisterModal"
-                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                        class="rounded-md px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         :disabled="registerForm.processing || alreadyAttached"
                                     >
                                         <span v-if="registerForm.processing">Registering...</span>

@@ -145,7 +145,7 @@ const getGroupName = (groupId) => {
 
             <button
                 type="button"
-                class="inline-flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                class="inline-flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                 :disabled="groupForm.processing"
                 @click="createGroup"
             >
@@ -157,7 +157,7 @@ const getGroupName = (groupId) => {
         </div>
 
         <!-- Empty state -->
-        <div v-if="groupTags.length === 0" class="rounded-xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+        <div v-if="groupTags.length === 0" class="rounded-lg border border-slate-200 bg-white p-12 text-center shadow-sm">
             <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
                 <svg class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -172,7 +172,7 @@ const getGroupName = (groupId) => {
             <div
                 v-for="group in groupTags"
                 :key="group.id"
-                class="rounded-xl border border-slate-200 bg-white shadow-sm"
+                class="rounded-lg border border-slate-200 bg-white shadow-sm"
             >
                 <!-- Card header -->
                 <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
@@ -180,13 +180,13 @@ const getGroupName = (groupId) => {
                         <input
                             v-model="editForm.name"
                             type="text"
-                            class="flex-1 rounded-lg border border-slate-300 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                            class="flex-1 rounded-lg border border-slate-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             @keyup.enter="saveEdit(group.id)"
                             @keyup.escape="cancelEdit"
                         >
                         <button
                             type="button"
-                            class="rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-violet-700"
+                            class="rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-600"
                             :disabled="editForm.processing"
                             @click="saveEdit(group.id)"
                         >
@@ -202,7 +202,7 @@ const getGroupName = (groupId) => {
                     </div>
                     <template v-else>
                         <div class="flex items-center gap-2.5">
-                            <span class="flex h-7 w-7 items-center justify-center rounded-md bg-violet-100 text-xs font-bold text-violet-700">
+                            <span class="flex h-7 w-7 items-center justify-center rounded-md bg-blue-100 text-xs font-bold text-blue-700">
                                 {{ group.tag }}
                             </span>
                             <h3 class="font-semibold text-slate-800" dir="rtl" lang="dv">{{ group.name }}</h3>
@@ -246,7 +246,7 @@ const getGroupName = (groupId) => {
                         >
                             <div class="flex flex-row-reverse items-center gap-3 min-w-0">
                                 <span class="text-sm font-medium text-slate-700 truncate" dir="rtl" lang="dv">{{ customer.name }}</span>
-                                <span class="inline-flex items-center justify-center rounded bg-violet-50 px-2 py-0.5 text-xs font-semibold text-violet-700 tabular-nums">
+                                <span class="inline-flex items-center justify-center rounded bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700 tabular-nums">
                                     {{ customer.pivot?.umrah_id || '-' }}
                                 </span>
                             </div>
@@ -267,7 +267,7 @@ const getGroupName = (groupId) => {
                     <!-- Add member button -->
                     <button
                         type="button"
-                        class="mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-slate-200 py-2 text-xs font-medium text-slate-400 transition hover:border-violet-300 hover:bg-violet-50 hover:text-violet-600"
+                        class="mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-slate-200 py-2 text-xs font-medium text-slate-400 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
                         @click="openAddMember(group.id)"
                     >
                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -280,7 +280,7 @@ const getGroupName = (groupId) => {
         </div>
 
         <!-- Individuals section -->
-        <div v-if="individuals.length > 0" class="rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div v-if="individuals.length > 0" class="rounded-lg border border-slate-200 bg-white shadow-sm">
             <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                 <div class="flex items-center gap-2.5">
                     <span class="flex h-7 w-7 items-center justify-center rounded-md bg-slate-100">
@@ -323,23 +323,23 @@ const getGroupName = (groupId) => {
         >
             <div v-if="addMemberGroupId" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeAddMember"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeAddMember"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="addMemberGroupId" class="relative w-full max-w-md rounded-xl bg-white shadow-xl">
+                        <div v-if="addMemberGroupId" class="relative w-full max-w-md rounded-lg bg-white shadow-lg">
                             <!-- Modal header -->
                             <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Add Members</h3>
                                     <p class="text-sm text-slate-500">
-                                        Adding to <span class="font-medium text-violet-600">{{ getGroupTag(addMemberGroupId) }}</span>
+                                        Adding to <span class="font-medium text-blue-600">{{ getGroupTag(addMemberGroupId) }}</span>
                                         <span v-if="getGroupName(addMemberGroupId)" dir="rtl" lang="dv"> - {{ getGroupName(addMemberGroupId) }}</span>
                                     </p>
                                 </div>
@@ -376,7 +376,7 @@ const getGroupName = (groupId) => {
                                         </div>
                                         <button
                                             type="button"
-                                            class="ml-2 rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                            class="ml-2 rounded-md bg-blue-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                             :disabled="assigningCustomerId === customer.id"
                                             @click="addToGroup(customer.id, addMemberGroupId)"
                                         >

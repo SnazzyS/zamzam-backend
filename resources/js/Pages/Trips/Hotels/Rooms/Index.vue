@@ -66,7 +66,7 @@ const removeCustomer = (roomId, customerId) => {
             <div
                 v-for="room in rooms"
                 :key="room.id"
-                class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+                class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
             >
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div>
@@ -128,7 +128,7 @@ const removeCustomer = (roomId, customerId) => {
             </div>
         </div>
 
-        <div v-else class="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-sm text-slate-400">
+        <div v-else class="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-sm text-slate-400">
             No rooms for this trip
         </div>
     </main>

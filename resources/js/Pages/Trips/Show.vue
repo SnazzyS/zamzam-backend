@@ -178,7 +178,7 @@ const submitBulkPayment = () => {
         <div class="flex items-center justify-between">
             <button
                 type="button"
-                class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+                class="rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-600"
                 @click="openBulkPaymentModal"
             >
                 Accept Bulk Payments
@@ -189,7 +189,7 @@ const submitBulkPayment = () => {
             </div>
         </div>
 
-        <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <div class="overflow-hidden rounded-lg bg-white">
             <div class="overflow-x-auto">
                 <table class="min-w-full border-collapse text-sm">
                     <thead class="bg-slate-100 text-xs font-semibold text-slate-600" dir="rtl" lang="dv">
@@ -210,7 +210,7 @@ const submitBulkPayment = () => {
                         <tr
                             v-for="(customer, index) in customers"
                             :key="customer.id"
-                            class="even:bg-slate-50/70 cursor-pointer hover:bg-violet-50 transition-colors"
+                            class="even:bg-slate-50/50 cursor-pointer hover:bg-blue-50 transition-colors"
                             @click="navigateToCustomer(customer.id)"
                         >
                             <td class="border border-slate-200 px-3 py-2 text-center" dir="ltr">
@@ -238,7 +238,7 @@ const submitBulkPayment = () => {
                             <td class="border border-slate-200 px-3 py-2 text-center" dir="ltr">
                                 <span
                                     v-if="customer.pivot?.group_id"
-                                    class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700"
+                                    class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700"
                                 >
                                     {{ getGroupTag(customer.pivot.group_id) }}
                                 </span>
@@ -292,17 +292,17 @@ const submitBulkPayment = () => {
         >
             <div v-if="showBulkPaymentModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeBulkPaymentModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeBulkPaymentModal"></div>
 
                     <Transition
-                        enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
-                        leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        enter-active-class="duration-150 ease-out"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="duration-100 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showBulkPaymentModal" class="relative w-full max-w-3xl rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showBulkPaymentModal" class="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900" dir="rtl" lang="dv">ފައިސާ ބަލައިގަތުން</h3>
@@ -311,7 +311,7 @@ const submitBulkPayment = () => {
                                 <button
                                     type="button"
                                     @click="closeBulkPaymentModal"
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -321,13 +321,13 @@ const submitBulkPayment = () => {
 
                             <form @submit.prevent="submitBulkPayment" class="space-y-4">
                                 <!-- Customer Selection -->
-                                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                                <div class="border border-slate-100 rounded-md overflow-hidden">
                                     <div class="bg-slate-50 px-4 py-2 flex items-center justify-between">
                                         <span class="text-sm font-medium text-slate-700">Select Customers</span>
                                         <div class="flex gap-2">
                                             <button
                                                 type="button"
-                                                class="text-xs text-violet-600 hover:text-violet-800"
+                                                class="text-xs text-blue-600 hover:text-blue-700"
                                                 @click="selectAllCustomers"
                                             >
                                                 Select All
@@ -359,14 +359,14 @@ const submitBulkPayment = () => {
                                                     v-for="customer in customersWithBalance"
                                                     :key="customer.id"
                                                     class="border-t border-slate-100 hover:bg-slate-50"
-                                                    :class="{ 'bg-violet-50': selectedCustomers.has(customer.id) }"
+                                                    :class="{ 'bg-blue-50': selectedCustomers.has(customer.id) }"
                                                 >
                                                     <td class="px-3 py-2">
                                                         <input
                                                             type="checkbox"
                                                             :checked="selectedCustomers.has(customer.id)"
                                                             @change="toggleCustomerSelection(customer.id)"
-                                                            class="rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                                            class="rounded border-slate-300 text-blue-500 focus:ring-blue-500"
                                                         >
                                                     </td>
                                                     <td class="px-3 py-2 text-right" dir="rtl" lang="dv">
@@ -415,7 +415,7 @@ const submitBulkPayment = () => {
                                 </div>
 
                                 <!-- Totals -->
-                                <div class="bg-slate-50 rounded-lg p-4 flex items-center justify-between gap-6">
+                                <div class="bg-slate-50 rounded-md p-4 flex items-center justify-between gap-6">
                                     <div class="flex items-center gap-6">
                                         <div v-if="selectedDiscountTotal > 0">
                                             <span class="text-sm text-slate-500" dir="rtl" lang="dv">ޖުމްލަ ޑިސްކައުންޓް:</span>
@@ -434,7 +434,7 @@ const submitBulkPayment = () => {
                                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Payment Method</label>
                                         <select
                                             v-model="bulkPaymentForm.payment_method"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             required
                                         >
                                             <option value="cash">Cash</option>
@@ -447,7 +447,7 @@ const submitBulkPayment = () => {
                                         <input
                                             v-model="bulkPaymentForm.transfer_reference_number"
                                             type="text"
-                                            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                            class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             placeholder="Reference number"
                                         >
                                     </div>
@@ -460,7 +460,7 @@ const submitBulkPayment = () => {
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :placeholder="trip?.name"
                                     >
                                 </div>
@@ -469,13 +469,13 @@ const submitBulkPayment = () => {
                                     <button
                                         type="button"
                                         @click="closeBulkPaymentModal"
-                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                        class="rounded-md px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
+                                        class="rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-600 disabled:opacity-50"
                                         :disabled="bulkPaymentForm.processing || selectedCustomers.size === 0"
                                     >
                                         {{ bulkPaymentForm.processing ? 'Processing...' : `Accept Payment (${formatCurrency(selectedTotal)})` }}

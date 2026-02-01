@@ -119,7 +119,7 @@ const handleDhivehiKeydown = (event, form, field) => {
         <div class="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
             <!-- Logo -->
             <div class="flex items-center gap-3">
-                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600">
+                <div class="flex h-8 w-8 items-center justify-center rounded-md bg-blue-500">
                     <svg class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -136,7 +136,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                         v-if="item.action === 'createTrip'"
                         type="button"
                         @click="openCreateModal"
-                        class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                        class="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
                     >
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -147,10 +147,10 @@ const handleDhivehiKeydown = (event, form, field) => {
                         v-else
                         :href="item.href"
                         :class="[
-                            'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition',
+                            'flex items-center gap-2 rounded-md px-3 py-1.5 text-sm transition',
                             isActive(item.href)
-                                ? 'bg-slate-900 text-white'
-                                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
+                                ? 'text-blue-600 bg-blue-50'
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900',
                         ]"
                     >
                         <!-- Home Icon -->
@@ -171,12 +171,12 @@ const handleDhivehiKeydown = (event, form, field) => {
             </div>
 
             <!-- Right side -->
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1">
                 <!-- Settings Button -->
                 <button
                     type="button"
                     @click="openSettingsModal"
-                    class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition hover:bg-slate-50 hover:text-slate-700"
                     title="Company Settings"
                 >
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -184,13 +184,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                 </button>
-                <button type="button" class="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700">
+                <button type="button" class="relative flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition hover:bg-slate-50 hover:text-slate-700">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
-                    <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-violet-500"></span>
+                    <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-blue-500"></span>
                 </button>
-                <button class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-white transition hover:bg-slate-800">
+                <button class="flex h-8 w-8 items-center justify-center rounded-md bg-slate-900 text-white transition hover:bg-slate-800">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
@@ -211,17 +211,17 @@ const handleDhivehiKeydown = (event, form, field) => {
         >
             <div v-if="showCreateModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeCreateModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeCreateModal"></div>
 
                     <Transition
-                        enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
-                        leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        enter-active-class="duration-150 ease-out"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="duration-100 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Create Trip</h3>
@@ -230,7 +230,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 <button
                                     type="button"
                                     @click="closeCreateModal"
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -245,7 +245,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         id="create-name"
                                         type="text"
                                         v-model="createForm.name"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="createForm.errors.name && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -258,7 +258,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         id="create-departure-date"
                                         type="date"
                                         v-model="createForm.departure_date"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="createForm.errors.departure_date && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -271,7 +271,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         id="create-price"
                                         type="number"
                                         v-model="createForm.price"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="createForm.errors.price && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                         required
                                     >
@@ -285,7 +285,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="text"
                                         v-model="createForm.phone_number"
                                         placeholder="e.g. 7999065"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="createForm.errors.phone_number && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                     >
                                     <p v-if="createForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ createForm.errors.phone_number }}</p>
@@ -296,13 +296,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <button
                                         type="button"
                                         @click="closeCreateModal"
-                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                        class="rounded-md px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="createForm.processing"
                                     >
                                         {{ createForm.processing ? 'Creating...' : 'Create Trip' }}
@@ -328,17 +328,17 @@ const handleDhivehiKeydown = (event, form, field) => {
         >
             <div v-if="showSettingsModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeSettingsModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeSettingsModal"></div>
 
                     <Transition
-                        enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
-                        leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        enter-active-class="duration-150 ease-out"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="duration-100 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showSettingsModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showSettingsModal" class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Company Settings</h3>
@@ -347,7 +347,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                 <button
                                     type="button"
                                     @click="closeSettingsModal"
-                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                    class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -363,7 +363,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         v-model="settingsForm.company_address"
                                         rows="3"
                                         placeholder="Enter company address"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="settingsForm.errors.company_address && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                     ></textarea>
                                     <p v-if="settingsForm.errors.company_address" class="text-xs text-red-500 mt-1">{{ settingsForm.errors.company_address }}</p>
@@ -376,7 +376,7 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         type="text"
                                         v-model="settingsForm.company_phone"
                                         placeholder="e.g. 7999065"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-md border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :class="settingsForm.errors.company_phone && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
                                     >
                                     <p v-if="settingsForm.errors.company_phone" class="text-xs text-red-500 mt-1">{{ settingsForm.errors.company_phone }}</p>
@@ -386,13 +386,13 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <button
                                         type="button"
                                         @click="closeSettingsModal"
-                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                        class="rounded-md px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="settingsForm.processing"
                                     >
                                         {{ settingsForm.processing ? 'Saving...' : 'Save Changes' }}

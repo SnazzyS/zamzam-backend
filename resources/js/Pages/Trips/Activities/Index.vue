@@ -104,7 +104,7 @@ const formatDate = (dateString) => {
             </div>
             <button
                 type="button"
-                class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                class="inline-flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-600"
                 @click="openCreateModal"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -119,7 +119,7 @@ const formatDate = (dateString) => {
             <div
                 v-for="activity in activityTrips"
                 :key="activity.id"
-                class="group relative rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 overflow-hidden"
+                class="group relative rounded-lg border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 overflow-hidden"
             >
                 <!-- Color Bar -->
                 <div class="h-2 w-full bg-amber-500"></div>
@@ -180,13 +180,13 @@ const formatDate = (dateString) => {
                     <div class="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
                         <Link
                             :href="route('trips.activities.show', [trip.id, activity.id])"
-                            class="flex-1 rounded-xl bg-violet-600 px-4 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                            class="flex-1 rounded-md bg-blue-500 px-4 py-2.5 text-center text-sm font-medium text-white transition-all duration-200 hover:bg-blue-600"
                         >
                             Manage
                         </Link>
                         <Link
                             :href="route('trips.activities.passenger-list', [trip.id, activity.id])"
-                            class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
+                            class="rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
                             title="Print List"
                         >
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -195,7 +195,7 @@ const formatDate = (dateString) => {
                         </Link>
                         <button
                             type="button"
-                            class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
+                            class="rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
                             @click="openEditModal(activity)"
                             title="Edit"
                         >
@@ -205,7 +205,7 @@ const formatDate = (dateString) => {
                         </button>
                         <button
                             type="button"
-                            class="rounded-xl border border-red-200 bg-white px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50"
+                            class="rounded-md border border-red-200 bg-white px-3 py-2.5 text-sm font-medium text-red-600 transition-all duration-200 hover:bg-red-50"
                             @click="deleteActivity(activity)"
                             title="Delete"
                         >
@@ -219,8 +219,8 @@ const formatDate = (dateString) => {
         </div>
 
         <!-- Empty State -->
-        <div v-else class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 py-16 text-center">
-            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
+        <div v-else class="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-200 bg-slate-50/50 py-16 text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-slate-100">
                 <svg class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
@@ -229,7 +229,7 @@ const formatDate = (dateString) => {
             <p class="text-sm text-slate-500">Create an activity like "Jeddah Trip" to get started</p>
             <button
                 type="button"
-                class="mt-4 inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                class="mt-4 inline-flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-600"
                 @click="openCreateModal"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -252,17 +252,17 @@ const formatDate = (dateString) => {
         >
             <div v-if="showCreateModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeCreateModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeCreateModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showCreateModal" class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Add Optional Trip</h3>
@@ -285,7 +285,7 @@ const formatDate = (dateString) => {
                                     <input
                                         type="text"
                                         v-model="activityForm.name"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         placeholder="e.g., Jeddah Trip"
                                         required
                                     >
@@ -297,7 +297,7 @@ const formatDate = (dateString) => {
                                     <input
                                         type="date"
                                         v-model="activityForm.date"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                 </div>
 
@@ -310,7 +310,7 @@ const formatDate = (dateString) => {
                                                 type="number"
                                                 step="0.01"
                                                 v-model="activityForm.price_usd"
-                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                 placeholder="0.00"
                                             >
                                         </div>
@@ -320,7 +320,7 @@ const formatDate = (dateString) => {
                                                 type="number"
                                                 step="0.01"
                                                 v-model="activityForm.price_mvr"
-                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                 placeholder="0.00"
                                             >
                                         </div>
@@ -330,7 +330,7 @@ const formatDate = (dateString) => {
                                                 type="number"
                                                 step="0.01"
                                                 v-model="activityForm.price_sar"
-                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                 placeholder="0.00"
                                             >
                                         </div>
@@ -347,7 +347,7 @@ const formatDate = (dateString) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="activityForm.processing"
                                     >
                                         {{ activityForm.processing ? 'Creating...' : 'Create Activity' }}
@@ -373,17 +373,17 @@ const formatDate = (dateString) => {
         >
             <div v-if="showEditModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeEditModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeEditModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showEditModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showEditModal" class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Edit Activity</h3>
@@ -406,7 +406,7 @@ const formatDate = (dateString) => {
                                     <input
                                         type="text"
                                         v-model="activityForm.name"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                     <p v-if="activityForm.errors.name" class="text-xs text-red-500 mt-1">{{ activityForm.errors.name }}</p>
@@ -417,7 +417,7 @@ const formatDate = (dateString) => {
                                     <input
                                         type="date"
                                         v-model="activityForm.date"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                 </div>
 
@@ -430,7 +430,7 @@ const formatDate = (dateString) => {
                                                 type="number"
                                                 step="0.01"
                                                 v-model="activityForm.price_usd"
-                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             >
                                         </div>
                                         <div>
@@ -439,7 +439,7 @@ const formatDate = (dateString) => {
                                                 type="number"
                                                 step="0.01"
                                                 v-model="activityForm.price_mvr"
-                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             >
                                         </div>
                                         <div>
@@ -448,7 +448,7 @@ const formatDate = (dateString) => {
                                                 type="number"
                                                 step="0.01"
                                                 v-model="activityForm.price_sar"
-                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                             >
                                         </div>
                                     </div>
@@ -464,7 +464,7 @@ const formatDate = (dateString) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="activityForm.processing"
                                     >
                                         {{ activityForm.processing ? 'Saving...' : 'Save Changes' }}

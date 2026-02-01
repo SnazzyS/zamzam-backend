@@ -369,9 +369,18 @@ const openReceipt = (paymentId) => {
 };
 
 const deletePhoto = (photoId) => {
-    if (!confirm('Are you sure you want to remove this photo?')) return;
+    if (!photoId) {
+        alert('No photo ID provided');
+        return;
+    }
     router.delete(route('trips.customers.photos.destroy', [props.trip.id, props.customer.id, photoId]), {
         preserveScroll: true,
+        onSuccess: () => {
+            alert('Photo deleted successfully');
+        },
+        onError: (errors) => {
+            alert('Error deleting photo: ' + JSON.stringify(errors));
+        },
     });
 };
 
@@ -392,7 +401,7 @@ const showPhotoActions = ref(false);
             </Link>
             <button
                 type="button"
-                class="rounded-lg bg-violet-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-violet-700"
+                class="rounded-lg bg-blue-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-600"
                 @click="openEditModal"
             >
                 Edit Customer
@@ -405,7 +414,7 @@ const showPhotoActions = ref(false);
                 <!-- Circular profile photo with drag-and-drop -->
                 <div
                     class="relative w-32 h-32 rounded-full border-2 border-dashed transition-colors cursor-pointer overflow-hidden group"
-                    :class="isDragging ? 'border-violet-500 bg-violet-50' : profilePhoto ? 'border-transparent' : 'border-slate-300 hover:border-slate-400'"
+                    :class="isDragging ? 'border-blue-500 bg-blue-50' : profilePhoto ? 'border-transparent' : 'border-slate-300 hover:border-slate-400'"
                     @drop="handleDrop"
                     @dragover="handleDragOver"
                     @dragleave="handleDragLeave"
@@ -484,7 +493,7 @@ const showPhotoActions = ref(false);
                 <button
                     v-if="photoPreview"
                     type="button"
-                    class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                    class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                     :disabled="photoForm.processing"
                     @click="submitPhoto"
                 >
@@ -557,13 +566,13 @@ const showPhotoActions = ref(false);
                             ref="visaInput"
                             type="file"
                             accept="application/pdf"
-                            class="flex-1 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 cursor-pointer"
+                            class="flex-1 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
                             @change="handleVisaSelect"
                         >
                         <button
                             v-if="visaForm.visa"
                             type="button"
-                            class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50 flex items-center gap-2"
+                            class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50 flex items-center gap-2"
                             :disabled="visaForm.processing"
                             @click="submitVisa"
                         >
@@ -647,7 +656,7 @@ const showPhotoActions = ref(false);
                         <tr
                             v-for="payment in payments"
                             :key="payment.id"
-                            class="even:bg-slate-50/50 hover:bg-violet-50/50 transition-colors"
+                            class="even:bg-slate-50/50 hover:bg-blue-50/50 transition-colors"
                         >
                             <td class="border-b border-slate-100 px-4 py-3 font-mono text-slate-600">#{{ payment.id }}</td>
                             <td class="border-b border-slate-100 px-4 py-3">{{ formatDateTime(payment.created_at) }}</td>
@@ -756,17 +765,17 @@ const showPhotoActions = ref(false);
         >
             <div v-if="showEditModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeEditModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeEditModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showEditModal" class="relative w-full max-w-3xl rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showEditModal" class="relative w-full max-w-3xl rounded-xl bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Edit Customer</h3>
@@ -814,7 +823,7 @@ const showPhotoActions = ref(false);
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         @keydown="handleDhivehiKeydown($event, editForm, 'name')"
                                         @input="handleDhivehiInput($event, editForm, 'name')"
                                         required
@@ -827,7 +836,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.national_id"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                     <p v-if="editForm.errors.national_id" class="text-xs text-red-500 mt-1">{{ editForm.errors.national_id }}</p>
@@ -838,7 +847,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.passport_number"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                     <p v-if="editForm.errors.passport_number" class="text-xs text-red-500 mt-1">{{ editForm.errors.passport_number }}</p>
@@ -848,7 +857,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.date_of_birth"
                                         type="date"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                     <p v-if="editForm.errors.date_of_birth" class="text-xs text-red-500 mt-1">{{ editForm.errors.date_of_birth }}</p>
@@ -859,7 +868,7 @@ const showPhotoActions = ref(false);
                                     <button
                                         type="button"
                                         @click="showIslandDropdown = !showIslandDropdown"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-right bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         dir="rtl"
                                         lang="dv"
                                     >
@@ -878,7 +887,7 @@ const showPhotoActions = ref(false);
                                                 type="text"
                                                 dir="rtl"
                                                 lang="dv"
-                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
                                                 placeholder="ރަށް ހޯދާ..."
                                                 @click.stop
                                             >
@@ -889,10 +898,10 @@ const showPhotoActions = ref(false);
                                                 :key="island.value"
                                                 type="button"
                                                 @click="selectIsland(island)"
-                                                class="w-full px-3 py-2 text-right text-sm hover:bg-violet-50 transition-colors"
+                                                class="w-full px-3 py-2 text-right text-sm hover:bg-blue-50 transition-colors"
                                                 dir="rtl"
                                                 lang="dv"
-                                                :class="editForm.island === island.value ? 'bg-violet-100 text-violet-700' : 'text-slate-700'"
+                                                :class="editForm.island === island.value ? 'bg-blue-100 text-blue-700' : 'text-slate-700'"
                                             >
                                                 {{ island.label }}
                                             </button>
@@ -906,7 +915,7 @@ const showPhotoActions = ref(false);
                                     <button
                                         type="button"
                                         @click="showCountryDropdown = !showCountryDropdown"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-left bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                         <span :class="editForm.country ? 'text-slate-900' : 'text-slate-400'">
                                             {{ selectedCountryLabel || 'Select country' }}
@@ -921,7 +930,7 @@ const showPhotoActions = ref(false);
                                             <input
                                                 v-model="countrySearch"
                                                 type="text"
-                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+                                                class="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
                                                 placeholder="Search country..."
                                                 @click.stop
                                             >
@@ -932,8 +941,8 @@ const showPhotoActions = ref(false);
                                                 :key="country.value"
                                                 type="button"
                                                 @click="selectCountry(country)"
-                                                class="w-full px-3 py-2 text-left text-sm hover:bg-violet-50 transition-colors"
-                                                :class="editForm.country === country.value ? 'bg-violet-100 text-violet-700' : 'text-slate-700'"
+                                                class="w-full px-3 py-2 text-left text-sm hover:bg-blue-50 transition-colors"
+                                                :class="editForm.country === country.value ? 'bg-blue-100 text-blue-700' : 'text-slate-700'"
                                             >
                                                 {{ country.label }}
                                             </button>
@@ -946,7 +955,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.phone_number"
                                         type="number"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                     <p v-if="editForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ editForm.errors.phone_number }}</p>
@@ -958,7 +967,7 @@ const showPhotoActions = ref(false);
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         @keydown="handleDhivehiKeydown($event, editForm, 'address')"
                                         @input="handleDhivehiInput($event, editForm, 'address')"
                                         required
@@ -969,7 +978,7 @@ const showPhotoActions = ref(false);
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Gender</label>
                                     <select
                                         v-model="editForm.gender"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="" disabled>Select</option>
@@ -983,7 +992,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.name_in_english"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                     <p v-if="editForm.errors.name_in_english" class="text-xs text-red-500 mt-1">{{ editForm.errors.name_in_english }}</p>
                                 </div>
@@ -993,7 +1002,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.passport_number"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                     <p v-if="editForm.errors.passport_number" class="text-xs text-red-500 mt-1">{{ editForm.errors.passport_number }}</p>
                                 </div>
@@ -1002,7 +1011,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.passport_issued_date"
                                         type="date"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                     <p v-if="editForm.errors.passport_issued_date" class="text-xs text-red-500 mt-1">{{ editForm.errors.passport_issued_date }}</p>
                                 </div>
@@ -1011,7 +1020,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="editForm.passport_expiry_date"
                                         type="date"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     >
                                     <p v-if="editForm.errors.passport_expiry_date" class="text-xs text-red-500 mt-1">{{ editForm.errors.passport_expiry_date }}</p>
                                 </div>
@@ -1025,7 +1034,7 @@ const showPhotoActions = ref(false);
                                                 type="radio"
                                                 v-model="editForm.customer_type"
                                                 value="customer"
-                                                class="text-violet-600 focus:ring-violet-500"
+                                                class="text-blue-600 focus:ring-blue-500"
                                             >
                                             <span class="text-sm text-slate-700" lang="dv">ކަސްޓަމަރު</span>
                                         </label>
@@ -1034,7 +1043,7 @@ const showPhotoActions = ref(false);
                                                 type="radio"
                                                 v-model="editForm.customer_type"
                                                 value="staff"
-                                                class="text-violet-600 focus:ring-violet-500"
+                                                class="text-blue-600 focus:ring-blue-500"
                                             >
                                             <span class="text-sm text-slate-700" lang="dv">ސްޓާފް</span>
                                         </label>
@@ -1052,7 +1061,7 @@ const showPhotoActions = ref(false);
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="editForm.processing"
                                     >
                                         {{ editForm.processing ? 'Saving...' : 'Save Changes' }}
@@ -1076,17 +1085,17 @@ const showPhotoActions = ref(false);
         >
             <div v-if="showPaymentModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closePaymentModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closePaymentModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showPaymentModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showPaymentModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Accept Payment</h3>
@@ -1111,7 +1120,7 @@ const showPhotoActions = ref(false);
                                         type="number"
                                         step="0.01"
                                         min="1"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         placeholder="Enter amount"
                                         required
                                     >
@@ -1122,7 +1131,7 @@ const showPhotoActions = ref(false);
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Payment Method</label>
                                     <select
                                         v-model="paymentForm.payment_method"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="cash">Cash</option>
@@ -1136,7 +1145,7 @@ const showPhotoActions = ref(false);
                                     <input
                                         v-model="paymentForm.transfer_reference_number"
                                         type="text"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         placeholder="Reference number"
                                     >
                                 </div>
@@ -1148,7 +1157,7 @@ const showPhotoActions = ref(false);
                                         type="text"
                                         dir="rtl"
                                         lang="dv"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         :placeholder="trip?.name"
                                     >
                                     <p class="text-xs text-slate-500 mt-1">Default: Trip name</p>
@@ -1188,17 +1197,17 @@ const showPhotoActions = ref(false);
         >
             <div v-if="showDiscountModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeDiscountModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeDiscountModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showDiscountModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showDiscountModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Add Discount</h3>
@@ -1223,7 +1232,7 @@ const showPhotoActions = ref(false);
                                         type="number"
                                         step="0.01"
                                         min="1"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         placeholder="Enter discount amount"
                                         required
                                     >

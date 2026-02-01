@@ -49,7 +49,7 @@ const removePassenger = (customerId) => {
                 <div class="flex items-center gap-3 mb-1">
                     <Link
                         :href="route('trips.flights.index', trip.id)"
-                        class="text-slate-400 hover:text-violet-600 transition"
+                        class="text-slate-400 hover:text-blue-600 transition"
                     >
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -72,7 +72,7 @@ const removePassenger = (customerId) => {
         </div>
 
         <!-- Flight Details Card -->
-        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <h2 class="text-sm font-semibold text-slate-700 mb-4">Flight Details</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
@@ -111,7 +111,7 @@ const removePassenger = (customerId) => {
         </div>
 
         <!-- Passengers Table -->
-        <div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div class="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
             <div class="border-b border-slate-200 bg-slate-50 px-5 py-4">
                 <h2 class="text-sm font-semibold text-slate-700">Passengers</h2>
             </div>
@@ -135,14 +135,14 @@ const removePassenger = (customerId) => {
                         <tr
                             v-for="(passenger, index) in passengers"
                             :key="passenger.id"
-                            class="even:bg-slate-50/50 hover:bg-violet-50/50 transition-colors"
+                            class="even:bg-slate-50/50 hover:bg-blue-50/50 transition-colors"
                         >
                             <td class="border-b border-slate-100 px-4 py-3 text-slate-500">{{ index + 1 }}</td>
                             <td class="border-b border-slate-100 px-4 py-3 font-mono text-slate-600">{{ passenger.umrah_id || '-' }}</td>
                             <td class="border-b border-slate-100 px-4 py-3">
                                 <Link
                                     :href="route('trips.customers.show', [trip.id, passenger.id])"
-                                    class="font-medium text-slate-800 hover:text-violet-600 transition"
+                                    class="font-medium text-slate-800 hover:text-blue-600 transition"
                                 >
                                     {{ passenger.name }}
                                 </Link>
@@ -181,7 +181,7 @@ const removePassenger = (customerId) => {
                 <p class="mt-1 text-sm text-slate-500">Assign customers to this flight from the flights list</p>
                 <Link
                     :href="route('trips.flights.index', trip.id)"
-                    class="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                    class="mt-4 inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
                 >
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />

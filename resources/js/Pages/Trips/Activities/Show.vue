@@ -226,7 +226,7 @@ const bulkPaymentTotal = computed(() => {
             <div class="flex items-center gap-2">
                 <Link
                     :href="route('trips.activities.passenger-list', [trip.id, activityTrip.id])"
-                    class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                    class="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
                 >
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -235,7 +235,7 @@ const bulkPaymentTotal = computed(() => {
                 </Link>
                 <button
                     type="button"
-                    class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700"
+                    class="inline-flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-600"
                     @click="openAssignModal"
                 >
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -247,7 +247,7 @@ const bulkPaymentTotal = computed(() => {
         </div>
 
         <!-- Prices Info -->
-        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <h3 class="text-sm font-medium text-slate-700 mb-3">Activity Prices</h3>
             <div class="grid grid-cols-3 gap-4">
                 <div class="rounded-lg bg-slate-50 p-3 text-center">
@@ -266,7 +266,7 @@ const bulkPaymentTotal = computed(() => {
         </div>
 
         <!-- Bulk Payment Action Bar -->
-        <div v-if="selectedCustomerIds.length > 0" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 flex items-center justify-between">
+        <div v-if="selectedCustomerIds.length > 0" class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-600 text-white text-sm font-bold">
                     {{ selectedCustomerIds.length }}
@@ -292,7 +292,7 @@ const bulkPaymentTotal = computed(() => {
         </div>
 
         <!-- Customers Table -->
-        <div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div class="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
             <div class="border-b border-slate-200 bg-slate-50 px-5 py-4 flex items-center justify-between">
                 <h2 class="text-sm font-semibold text-slate-700">Customers ({{ customers.length }})</h2>
                 <div v-if="unpaidCustomers.length > 0" class="flex items-center gap-2">
@@ -327,7 +327,7 @@ const bulkPaymentTotal = computed(() => {
                             :key="customer.id"
                             class="transition-colors"
                             :class="[
-                                selectedCustomerIds.includes(customer.customer_id) ? 'bg-emerald-50' : 'even:bg-slate-50/50 hover:bg-violet-50/50'
+                                selectedCustomerIds.includes(customer.customer_id) ? 'bg-emerald-50' : 'even:bg-slate-50/50 hover:bg-blue-50/50'
                             ]"
                         >
                             <td class="border-b border-slate-100 px-4 py-3 text-center">
@@ -424,17 +424,17 @@ const bulkPaymentTotal = computed(() => {
         >
             <div v-if="showAssignModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeAssignModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeAssignModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showAssignModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showAssignModal" class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Add Customer</h3>
@@ -456,7 +456,7 @@ const bulkPaymentTotal = computed(() => {
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Select Customer</label>
                                     <select
                                         v-model="assignForm.customer_id"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="">Select a customer...</option>
@@ -480,7 +480,7 @@ const bulkPaymentTotal = computed(() => {
                                     </button>
                                     <button
                                         type="submit"
-                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        class="rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600 disabled:opacity-50"
                                         :disabled="assignForm.processing || availableCustomers.length === 0"
                                     >
                                         {{ assignForm.processing ? 'Adding...' : 'Add Customer' }}
@@ -506,17 +506,17 @@ const bulkPaymentTotal = computed(() => {
         >
             <div v-if="showPaymentModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closePaymentModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closePaymentModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showPaymentModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showPaymentModal" class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Accept Payment</h3>
@@ -542,11 +542,11 @@ const bulkPaymentTotal = computed(() => {
                                             type="button"
                                             @click="paymentForm.currency = 'USD'"
                                             class="rounded-lg border-2 p-3 text-center transition"
-                                            :class="paymentForm.currency === 'USD' ? 'border-violet-500 bg-violet-50' : 'border-slate-200 hover:border-slate-300'"
+                                            :class="paymentForm.currency === 'USD' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'"
                                             :disabled="!activityTrip.price_usd"
                                         >
                                             <div class="text-xs text-slate-500">USD</div>
-                                            <div class="font-bold" :class="paymentForm.currency === 'USD' ? 'text-violet-700' : 'text-slate-700'">
+                                            <div class="font-bold" :class="paymentForm.currency === 'USD' ? 'text-blue-700' : 'text-slate-700'">
                                                 {{ activityTrip.price_usd ? parseFloat(activityTrip.price_usd).toFixed(2) : 'N/A' }}
                                             </div>
                                         </button>
@@ -554,11 +554,11 @@ const bulkPaymentTotal = computed(() => {
                                             type="button"
                                             @click="paymentForm.currency = 'MVR'"
                                             class="rounded-lg border-2 p-3 text-center transition"
-                                            :class="paymentForm.currency === 'MVR' ? 'border-violet-500 bg-violet-50' : 'border-slate-200 hover:border-slate-300'"
+                                            :class="paymentForm.currency === 'MVR' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'"
                                             :disabled="!activityTrip.price_mvr"
                                         >
                                             <div class="text-xs text-slate-500">MVR</div>
-                                            <div class="font-bold" :class="paymentForm.currency === 'MVR' ? 'text-violet-700' : 'text-slate-700'">
+                                            <div class="font-bold" :class="paymentForm.currency === 'MVR' ? 'text-blue-700' : 'text-slate-700'">
                                                 {{ activityTrip.price_mvr || 'N/A' }}
                                             </div>
                                         </button>
@@ -566,11 +566,11 @@ const bulkPaymentTotal = computed(() => {
                                             type="button"
                                             @click="paymentForm.currency = 'SAR'"
                                             class="rounded-lg border-2 p-3 text-center transition"
-                                            :class="paymentForm.currency === 'SAR' ? 'border-violet-500 bg-violet-50' : 'border-slate-200 hover:border-slate-300'"
+                                            :class="paymentForm.currency === 'SAR' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'"
                                             :disabled="!activityTrip.price_sar"
                                         >
                                             <div class="text-xs text-slate-500">SAR</div>
-                                            <div class="font-bold" :class="paymentForm.currency === 'SAR' ? 'text-violet-700' : 'text-slate-700'">
+                                            <div class="font-bold" :class="paymentForm.currency === 'SAR' ? 'text-blue-700' : 'text-slate-700'">
                                                 {{ activityTrip.price_sar || 'N/A' }}
                                             </div>
                                         </button>
@@ -583,7 +583,7 @@ const bulkPaymentTotal = computed(() => {
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Payment Method</label>
                                     <select
                                         v-model="paymentForm.payment_method"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="cash">Cash</option>
@@ -635,17 +635,17 @@ const bulkPaymentTotal = computed(() => {
         >
             <div v-if="showBulkPaymentModal" class="fixed inset-0 z-[100] overflow-y-auto">
                 <div class="flex min-h-full items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeBulkPaymentModal"></div>
+                    <div class="fixed inset-0 bg-black/50" @click="closeBulkPaymentModal"></div>
 
                     <Transition
                         enter-active-class="duration-200 ease-out"
-                        enter-from-class="opacity-0 scale-95"
-                        enter-to-class="opacity-100 scale-100"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
                         leave-active-class="duration-150 ease-in"
-                        leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
                     >
-                        <div v-if="showBulkPaymentModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                        <div v-if="showBulkPaymentModal" class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
                             <div class="mb-5 flex items-center justify-between">
                                 <div>
                                     <h3 class="text-lg font-semibold text-slate-900">Bulk Payment</h3>
@@ -671,11 +671,11 @@ const bulkPaymentTotal = computed(() => {
                                             type="button"
                                             @click="bulkPaymentForm.currency = 'USD'"
                                             class="rounded-lg border-2 p-3 text-center transition"
-                                            :class="bulkPaymentForm.currency === 'USD' ? 'border-violet-500 bg-violet-50' : 'border-slate-200 hover:border-slate-300'"
+                                            :class="bulkPaymentForm.currency === 'USD' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'"
                                             :disabled="!activityTrip.price_usd"
                                         >
                                             <div class="text-xs text-slate-500">USD</div>
-                                            <div class="font-bold" :class="bulkPaymentForm.currency === 'USD' ? 'text-violet-700' : 'text-slate-700'">
+                                            <div class="font-bold" :class="bulkPaymentForm.currency === 'USD' ? 'text-blue-700' : 'text-slate-700'">
                                                 {{ activityTrip.price_usd ? parseFloat(activityTrip.price_usd).toFixed(2) : 'N/A' }}
                                             </div>
                                         </button>
@@ -683,11 +683,11 @@ const bulkPaymentTotal = computed(() => {
                                             type="button"
                                             @click="bulkPaymentForm.currency = 'MVR'"
                                             class="rounded-lg border-2 p-3 text-center transition"
-                                            :class="bulkPaymentForm.currency === 'MVR' ? 'border-violet-500 bg-violet-50' : 'border-slate-200 hover:border-slate-300'"
+                                            :class="bulkPaymentForm.currency === 'MVR' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'"
                                             :disabled="!activityTrip.price_mvr"
                                         >
                                             <div class="text-xs text-slate-500">MVR</div>
-                                            <div class="font-bold" :class="bulkPaymentForm.currency === 'MVR' ? 'text-violet-700' : 'text-slate-700'">
+                                            <div class="font-bold" :class="bulkPaymentForm.currency === 'MVR' ? 'text-blue-700' : 'text-slate-700'">
                                                 {{ activityTrip.price_mvr || 'N/A' }}
                                             </div>
                                         </button>
@@ -695,11 +695,11 @@ const bulkPaymentTotal = computed(() => {
                                             type="button"
                                             @click="bulkPaymentForm.currency = 'SAR'"
                                             class="rounded-lg border-2 p-3 text-center transition"
-                                            :class="bulkPaymentForm.currency === 'SAR' ? 'border-violet-500 bg-violet-50' : 'border-slate-200 hover:border-slate-300'"
+                                            :class="bulkPaymentForm.currency === 'SAR' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'"
                                             :disabled="!activityTrip.price_sar"
                                         >
                                             <div class="text-xs text-slate-500">SAR</div>
-                                            <div class="font-bold" :class="bulkPaymentForm.currency === 'SAR' ? 'text-violet-700' : 'text-slate-700'">
+                                            <div class="font-bold" :class="bulkPaymentForm.currency === 'SAR' ? 'text-blue-700' : 'text-slate-700'">
                                                 {{ activityTrip.price_sar || 'N/A' }}
                                             </div>
                                         </button>
@@ -712,7 +712,7 @@ const bulkPaymentTotal = computed(() => {
                                     <label class="block text-sm font-medium text-slate-700 mb-1.5">Payment Method</label>
                                     <select
                                         v-model="bulkPaymentForm.payment_method"
-                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="cash">Cash</option>

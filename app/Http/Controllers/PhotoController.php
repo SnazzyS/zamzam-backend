@@ -23,6 +23,15 @@ class PhotoController extends Controller
             Storage::disk('public')->makeDirectory('photos');
         }
 
+        // Delete existing photo of the same type if it exists
+        $existingPhoto = $customer->photos()->where('type', $photoType)->first();
+        if ($existingPhoto) {
+            if (Storage::disk('public')->exists($existingPhoto->path)) {
+                Storage::disk('public')->delete($existingPhoto->path);
+            }
+            $existingPhoto->delete();
+        }
+
         $manager = new ImageManager(new Driver());
         $image = $manager->read($file);
 
