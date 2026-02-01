@@ -17,7 +17,7 @@ class Trip extends Model
     public function customers()
     {
         return $this->belongsToMany(Customer::class)
-            ->withPivot(['bus_id', 'flight_id', 'umrah_id', 'group_id', 'customer_type'])
+            ->withPivot(['bus_id', 'flight_id', 'umrah_id', 'group_id', 'customer_type', 'visa_path'])
             ->withTimestamps();
     }
 
@@ -50,7 +50,13 @@ class Trip extends Model
     public function hotels()
     {
         return $this->belongsToMany(Hotel::class)
+            ->withPivot('is_primary')
             ->withTimestamps();
+    }
+
+    public function primaryHotel()
+    {
+        return $this->hotels()->wherePivot('is_primary', true)->first();
     }
 
 }

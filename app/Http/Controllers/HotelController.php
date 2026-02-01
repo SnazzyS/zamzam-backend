@@ -18,14 +18,19 @@ class HotelController extends Controller
             ->orderBy('name')
             ->get();
 
-        $attachedHotelIds = $trip->hotels()
-            ->pluck('hotels.id')
-            ->values();
+        $attachedHotels = $trip->hotels()
+            ->withPivot('is_primary')
+            ->get();
+
+        $attachedHotelIds = $attachedHotels->pluck('id')->values();
+        $primaryHotel = $attachedHotels->first(fn($h) => $h->pivot->is_primary);
+        $primaryHotelId = $primaryHotel?->id;
 
         return Inertia::render('Trips/Hotels/Index', [
             'trip' => $trip,
             'hotels' => $hotels,
             'attachedHotelIds' => $attachedHotelIds,
+            'primaryHotelId' => $primaryHotelId,
         ]);
     }
 
@@ -105,5 +110,23 @@ class HotelController extends Controller
         return redirect()
             ->back()
             ->with('success', 'ހޮޓާ ދަތުރުން ނެގިއްޖެ');
+    }
+
+    public function setPrimary(Trip $trip, Hotel $hotel)
+    {
+        // First, unset all hotels as primary for this trip
+        \DB::table('hotel_trip')
+            ->where('trip_id', $trip->id)
+            ->update(['is_primary' => false]);
+
+        // Then set the selected hotel as primary
+        \DB::table('hotel_trip')
+            ->where('trip_id', $trip->id)
+            ->where('hotel_id', $hotel->id)
+            ->update(['is_primary' => true]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Primary hotel set successfully');
     }
 }

@@ -6,11 +6,14 @@ const props = defineProps({
     trip: Object,
     hotels: Array,
     attachedHotelIds: Array,
+    primaryHotelId: Number,
 });
 
 const attachedSet = computed(() => new Set((props.attachedHotelIds || []).map((id) => Number(id))));
 
 const isAttached = (hotelId) => attachedSet.value.has(Number(hotelId));
+
+const isPrimary = (hotelId) => Number(props.primaryHotelId) === Number(hotelId);
 
 const attachHotel = (hotelId) => {
     router.post(route('trips.hotels.attach', [props.trip.id, hotelId]), {}, { preserveScroll: true });
@@ -20,6 +23,10 @@ const detachHotel = (hotelId) => {
     router.delete(route('trips.hotels.detach', [props.trip.id, hotelId]), {
         preserveScroll: true,
     });
+};
+
+const setPrimaryHotel = (hotelId) => {
+    router.post(route('trips.hotels.set-primary', [props.trip.id, hotelId]), {}, { preserveScroll: true });
 };
 </script>
 
@@ -41,7 +48,7 @@ const detachHotel = (hotelId) => {
                 class="group relative rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300"
             >
                 <!-- Attached Badge -->
-                <div class="absolute left-4 top-4">
+                <div class="absolute left-4 top-4 flex items-center gap-2">
                     <span
                         :class="[
                             'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium',
@@ -52,6 +59,15 @@ const detachHotel = (hotelId) => {
                     >
                         <span v-if="isAttached(hotel.id)" class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                         {{ isAttached(hotel.id) ? 'Attached' : 'Not attached' }}
+                    </span>
+                    <span
+                        v-if="isPrimary(hotel.id)"
+                        class="inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700"
+                    >
+                        <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        Primary
                     </span>
                 </div>
 
@@ -79,21 +95,29 @@ const detachHotel = (hotelId) => {
                     >
                         Attach
                     </button>
-                    <button
-                        v-else
-                        type="button"
-                        class="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
-                        @click="detachHotel(hotel.id)"
-                    >
-                        Detach
-                    </button>
-                    <Link
-                        v-if="isAttached(hotel.id)"
-                        :href="route('trips.hotels.rooms.index', [trip.id, hotel.id])"
-                        class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-center text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
-                    >
-                        Rooms
-                    </Link>
+                    <template v-else>
+                        <button
+                            type="button"
+                            class="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
+                            @click="detachHotel(hotel.id)"
+                        >
+                            Detach
+                        </button>
+                        <button
+                            v-if="!isPrimary(hotel.id)"
+                            type="button"
+                            class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-medium text-amber-700 transition-all duration-200 hover:bg-amber-100"
+                            @click="setPrimaryHotel(hotel.id)"
+                        >
+                            Set Primary
+                        </button>
+                        <Link
+                            :href="route('trips.hotels.rooms.index', [trip.id, hotel.id])"
+                            class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-center text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50"
+                        >
+                            Rooms
+                        </Link>
+                    </template>
                 </div>
             </div>
         </div>

@@ -11,9 +11,9 @@ class Hotel extends Model
 
     protected $fillable = [
         'name',
+        'name_in_arabic',
         'address',
         'phone_number',
-    
     ];
 
 

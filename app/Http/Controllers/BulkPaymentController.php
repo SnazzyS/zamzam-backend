@@ -13,6 +13,25 @@ use Inertia\Inertia;
 
 class BulkPaymentController extends Controller
 {
+    /**
+     * Generate a receipt number in format RCP-YYMMDD-NNN
+     */
+    private function generateReceiptNumber(): string
+    {
+        $today = now();
+        $datePrefix = $today->format('ymd');
+
+        // Count receipts created today
+        $todayCount = Payment::whereNotNull('batch_id')
+            ->whereDate('created_at', $today->toDateString())
+            ->distinct('batch_id')
+            ->count('batch_id');
+
+        $sequence = str_pad($todayCount + 1, 3, '0', STR_PAD_LEFT);
+
+        return "INV-{$datePrefix}-{$sequence}";
+    }
+
     public function store(Trip $trip, Request $request)
     {
         $request->validate([
@@ -25,7 +44,7 @@ class BulkPaymentController extends Controller
             'transfer_reference_number' => ['nullable', 'string'],
         ]);
 
-        $batchId = Str::uuid()->toString();
+        $batchId = $this->generateReceiptNumber();
         $paymentIds = [];
 
         foreach ($request->payments as $paymentData) {

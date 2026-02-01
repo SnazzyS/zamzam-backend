@@ -29,8 +29,9 @@ class HotelManagementController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('hotels', 'name')],
-            'address' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'numeric'],
+            'name_in_arabic' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'phone_number' => ['nullable', 'string', 'max:50'],
         ]);
 
         Hotel::create($data);
@@ -44,8 +45,9 @@ class HotelManagementController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('hotels', 'name')->ignore($hotel->id)],
-            'address' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'numeric'],
+            'name_in_arabic' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'phone_number' => ['nullable', 'string', 'max:50'],
         ]);
 
         $nameChanged = $data['name'] !== $hotel->name;

@@ -12,7 +12,9 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PassengerController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\TripGroupController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +23,7 @@ use Inertia\Inertia;
 // Public Website Routes
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/about', [PublicController::class, 'about'])->name('about');
+Route::get('/card/{trip}/{customer}', [QrCodeController::class, 'show'])->name('card.show');
 
 // Office Portal Routes (Admin)
 Route::prefix('office')->group(function () {
@@ -30,6 +33,10 @@ Route::prefix('office')->group(function () {
 
     // Dashboard - no auth required for now
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    // Settings
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     // Customers
     Route::get('/customers', [PassengerController::class, 'index'])->name('customers.index');
@@ -46,6 +53,8 @@ Route::prefix('office')->group(function () {
 
     // Trips
     Route::resource('trips', TripController::class)->only(['show', 'store', 'update']);
+    Route::get('trips/{trip}/customer-list', [TripController::class, 'customerList'])->name('trips.customer-list');
+    Route::get('trips/{trip}/id-cards', [TripController::class, 'idCards'])->name('trips.id-cards');
 
     Route::prefix('trips/{trip}')->name('trips.')->group(function () {
 
@@ -65,6 +74,7 @@ Route::prefix('office')->group(function () {
         Route::resource('hotels', HotelController::class);
         Route::post('hotels/{hotel}/attach', [HotelController::class, 'attach'])->name('hotels.attach');
         Route::delete('hotels/{hotel}/detach', [HotelController::class, 'detach'])->name('hotels.detach');
+        Route::post('hotels/{hotel}/set-primary', [HotelController::class, 'setPrimary'])->name('hotels.set-primary');
 
         // Hotel Rooms (Nested under Hotel)
         Route::prefix('hotels/{hotel}')->name('hotels.')->group(function () {
@@ -91,6 +101,10 @@ Route::prefix('office')->group(function () {
 
             // Photos
             Route::resource('photos', PhotoController::class)->only(['store', 'destroy']);
+
+            // Visa
+            Route::post('visa', [CustomerController::class, 'uploadVisa'])->name('visa.upload');
+            Route::delete('visa', [CustomerController::class, 'removeVisa'])->name('visa.remove');
 
             // Invoices / Discounts
             Route::post('invoice/add-discount', [InvoiceController::class, 'addDiscount'])->name('invoice.add-discount');

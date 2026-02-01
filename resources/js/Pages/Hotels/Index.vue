@@ -8,6 +8,7 @@ const props = defineProps({
 
 const hotelForm = useForm({
     name: '',
+    name_in_arabic: '',
     address: '',
     phone_number: '',
 });
@@ -25,6 +26,7 @@ const showEditHotelModal = ref(false);
 const editingHotel = ref(null);
 const editHotelForm = useForm({
     name: '',
+    name_in_arabic: '',
     address: '',
     phone_number: '',
 });
@@ -32,8 +34,9 @@ const editHotelForm = useForm({
 const openEditHotel = (hotel) => {
     editingHotel.value = hotel;
     editHotelForm.name = hotel.name;
-    editHotelForm.address = hotel.address;
-    editHotelForm.phone_number = hotel.phone_number;
+    editHotelForm.name_in_arabic = hotel.name_in_arabic || '';
+    editHotelForm.address = hotel.address || '';
+    editHotelForm.phone_number = hotel.phone_number || '';
     showEditHotelModal.value = true;
 };
 
@@ -159,7 +162,7 @@ const deleteRoom = (room) => {
         <!-- Create Hotel Form -->
         <section class="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm">
             <h2 class="text-xl font-semibold text-slate-800 mb-5">Create Hotel</h2>
-            <form @submit.prevent="submitHotel" class="grid gap-4 md:grid-cols-3">
+            <form @submit.prevent="submitHotel" class="grid gap-4 md:grid-cols-2">
                 <div class="space-y-1.5">
                     <label class="block text-sm font-medium text-slate-700">Name</label>
                     <input
@@ -171,12 +174,22 @@ const deleteRoom = (room) => {
                     <p v-if="hotelForm.errors.name" class="text-xs text-red-500 mt-1">{{ hotelForm.errors.name }}</p>
                 </div>
                 <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-slate-700">Address</label>
+                    <label class="block text-sm font-medium text-slate-700">Name in Arabic</label>
+                    <input
+                        v-model="hotelForm.name_in_arabic"
+                        type="text"
+                        dir="rtl"
+                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-all duration-200 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10"
+                    >
+                    <p v-if="hotelForm.errors.name_in_arabic" class="text-xs text-red-500 mt-1">{{ hotelForm.errors.name_in_arabic }}</p>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-slate-700">Address in Arabic</label>
                     <input
                         v-model="hotelForm.address"
                         type="text"
+                        dir="rtl"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-all duration-200 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10"
-                        required
                     >
                     <p v-if="hotelForm.errors.address" class="text-xs text-red-500 mt-1">{{ hotelForm.errors.address }}</p>
                 </div>
@@ -184,13 +197,12 @@ const deleteRoom = (room) => {
                     <label class="block text-sm font-medium text-slate-700">Phone Number</label>
                     <input
                         v-model="hotelForm.phone_number"
-                        type="number"
+                        type="text"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-all duration-200 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10"
-                        required
                     >
                     <p v-if="hotelForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ hotelForm.errors.phone_number }}</p>
                 </div>
-                <div class="md:col-span-3 flex justify-end pt-2">
+                <div class="md:col-span-2 flex justify-end pt-2">
                     <button
                         type="submit"
                         class="rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
@@ -359,12 +371,22 @@ const deleteRoom = (room) => {
                                     <p v-if="editHotelForm.errors.name" class="text-xs text-red-500 mt-1">{{ editHotelForm.errors.name }}</p>
                                 </div>
                                 <div class="space-y-1.5">
-                                    <label class="block text-sm font-medium text-slate-700">Address</label>
+                                    <label class="block text-sm font-medium text-slate-700">Name in Arabic</label>
+                                    <input
+                                        v-model="editHotelForm.name_in_arabic"
+                                        type="text"
+                                        dir="rtl"
+                                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-all duration-200 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10"
+                                    >
+                                    <p v-if="editHotelForm.errors.name_in_arabic" class="text-xs text-red-500 mt-1">{{ editHotelForm.errors.name_in_arabic }}</p>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-medium text-slate-700">Address in Arabic</label>
                                     <input
                                         v-model="editHotelForm.address"
                                         type="text"
+                                        dir="rtl"
                                         class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-all duration-200 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10"
-                                        required
                                     >
                                     <p v-if="editHotelForm.errors.address" class="text-xs text-red-500 mt-1">{{ editHotelForm.errors.address }}</p>
                                 </div>
@@ -372,9 +394,8 @@ const deleteRoom = (room) => {
                                     <label class="block text-sm font-medium text-slate-700">Phone Number</label>
                                     <input
                                         v-model="editHotelForm.phone_number"
-                                        type="number"
+                                        type="text"
                                         class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-all duration-200 placeholder:text-slate-400 focus:border-violet-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10"
-                                        required
                                     >
                                     <p v-if="editHotelForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ editHotelForm.errors.phone_number }}</p>
                                 </div>

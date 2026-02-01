@@ -259,6 +259,40 @@ const profilePhoto = computed(() => {
     return props.customer?.photos?.find(p => p.type === 'profile');
 });
 
+// Visa form
+const visaForm = useForm({
+    visa: null,
+});
+
+const visaInput = ref(null);
+
+const handleVisaSelect = (event) => {
+    const file = event.target.files?.[0];
+    if (file && file.type === 'application/pdf') {
+        visaForm.visa = file;
+    }
+};
+
+const submitVisa = () => {
+    visaForm.post(route('trips.customers.visa.upload', [props.trip.id, props.customer.id]), {
+        forceFormData: true,
+        preserveScroll: true,
+        onSuccess: () => {
+            visaForm.reset('visa');
+            if (visaInput.value) {
+                visaInput.value.value = '';
+            }
+        },
+    });
+};
+
+const removeVisa = () => {
+    if (!confirm('Are you sure you want to remove the visa?')) return;
+    router.delete(route('trips.customers.visa.remove', [props.trip.id, props.customer.id]), {
+        preserveScroll: true,
+    });
+};
+
 const handleDhivehiInput = (event, form, field) => {
     const mapped = toDhivehi(event.target.value);
     if (mapped !== event.target.value) {
@@ -333,6 +367,15 @@ const openReceipt = (paymentId) => {
         '_blank'
     );
 };
+
+const deletePhoto = (photoId) => {
+    if (!confirm('Are you sure you want to remove this photo?')) return;
+    router.delete(route('trips.customers.photos.destroy', [props.trip.id, props.customer.id, photoId]), {
+        preserveScroll: true,
+    });
+};
+
+const showPhotoActions = ref(false);
 </script>
 
 <template>
@@ -361,12 +404,14 @@ const openReceipt = (paymentId) => {
             <div class="flex flex-col items-center gap-4">
                 <!-- Circular profile photo with drag-and-drop -->
                 <div
-                    class="relative w-32 h-32 rounded-full border-2 border-dashed transition-colors cursor-pointer overflow-hidden"
+                    class="relative w-32 h-32 rounded-full border-2 border-dashed transition-colors cursor-pointer overflow-hidden group"
                     :class="isDragging ? 'border-violet-500 bg-violet-50' : profilePhoto ? 'border-transparent' : 'border-slate-300 hover:border-slate-400'"
                     @drop="handleDrop"
                     @dragover="handleDragOver"
                     @dragleave="handleDragLeave"
                     @click="photoInput?.click()"
+                    @mouseenter="showPhotoActions = true"
+                    @mouseleave="showPhotoActions = false"
                 >
                     <!-- Current photo or preview -->
                     <img
@@ -387,6 +432,33 @@ const openReceipt = (paymentId) => {
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                         </svg>
                         <span class="text-xs mt-1">Drop photo</span>
+                    </div>
+                    <!-- Hover overlay with actions for existing photo -->
+                    <div
+                        v-if="profilePhoto && !photoPreview && showPhotoActions"
+                        class="absolute inset-0 bg-black/50 flex items-center justify-center gap-2 rounded-full"
+                        @click.stop
+                    >
+                        <button
+                            type="button"
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm hover:bg-slate-100"
+                            @click.stop="photoInput?.click()"
+                            title="Replace photo"
+                        >
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow-sm hover:bg-red-600"
+                            @click.stop="deletePhoto(profilePhoto.id)"
+                            title="Remove photo"
+                        >
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
                     </div>
                     <!-- Clear button when there's a preview -->
                     <button
@@ -416,7 +488,7 @@ const openReceipt = (paymentId) => {
                     :disabled="photoForm.processing"
                     @click="submitPhoto"
                 >
-                    {{ photoForm.processing ? 'Uploading...' : 'Upload Photo' }}
+                    {{ photoForm.processing ? 'Uploading...' : profilePhoto ? 'Replace Photo' : 'Upload Photo' }}
                 </button>
                 <p v-if="photoForm.errors.photo" class="text-xs text-red-500">{{ photoForm.errors.photo }}</p>
 
@@ -431,6 +503,82 @@ const openReceipt = (paymentId) => {
                 <div class="text-center">
                     <p class="text-xs text-slate-500 uppercase tracking-wide">Hajee Number</p>
                     <p class="text-3xl font-bold text-slate-900 mt-1">{{ tripCustomer?.umrah_id || '-' }}</p>
+                </div>
+
+                <!-- Visa Upload Section -->
+                <div class="mt-6 pt-6 border-t border-slate-200 w-full">
+                    <h3 class="text-sm font-semibold text-slate-700 mb-3">Visa Document</h3>
+
+                    <!-- Current Visa -->
+                    <div v-if="tripCustomer?.visa_path" class="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3 mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-emerald-700">Visa Uploaded</p>
+                                <a :href="'/storage/' + tripCustomer.visa_path" target="_blank" class="text-xs text-emerald-600 hover:underline flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    View PDF
+                                </a>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            class="flex items-center gap-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition text-sm"
+                            @click="removeVisa"
+                            title="Remove Visa"
+                        >
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Remove
+                        </button>
+                    </div>
+
+                    <!-- No visa message -->
+                    <div v-else class="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-3">
+                        <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <p class="text-sm text-slate-500">No visa uploaded yet</p>
+                    </div>
+
+                    <!-- Upload New Visa -->
+                    <div class="flex items-center gap-3">
+                        <input
+                            ref="visaInput"
+                            type="file"
+                            accept="application/pdf"
+                            class="flex-1 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 cursor-pointer"
+                            @change="handleVisaSelect"
+                        >
+                        <button
+                            v-if="visaForm.visa"
+                            type="button"
+                            class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50 flex items-center gap-2"
+                            :disabled="visaForm.processing"
+                            @click="submitVisa"
+                        >
+                            <svg v-if="visaForm.processing" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                            {{ visaForm.processing ? 'Uploading...' : (tripCustomer?.visa_path ? 'Replace Visa' : 'Upload Visa') }}
+                        </button>
+                    </div>
+                    <p v-if="visaForm.errors.visa" class="text-xs text-red-500 mt-1">{{ visaForm.errors.visa }}</p>
+                    <p class="text-xs text-slate-400 mt-2">Accepted format: PDF (max 10MB)</p>
                 </div>
             </div>
         </div>

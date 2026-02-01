@@ -16,6 +16,7 @@ const editForm = useForm({
     name: '',
     departure_date: '',
     price: '',
+    phone_number: '',
 });
 
 const filteredTrips = computed(() => {
@@ -53,6 +54,7 @@ const openEditModal = (trip) => {
     editForm.name = trip?.name ?? '';
     editForm.departure_date = trip?.departure_date ?? '';
     editForm.price = trip?.price ?? '';
+    editForm.phone_number = trip?.phone_number ?? '';
     editForm.clearErrors();
     showEditModal.value = true;
 };
@@ -343,6 +345,20 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         required
                                     >
                                     <p v-if="editForm.errors.price" class="text-xs text-red-500 mt-1">{{ editForm.errors.price }}</p>
+                                </div>
+
+                                <div>
+                                    <label for="edit-phone" class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number (Optional)</label>
+                                    <input
+                                        id="edit-phone"
+                                        type="text"
+                                        v-model="editForm.phone_number"
+                                        placeholder="e.g. 7999065"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="editForm.errors.phone_number && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
+                                    >
+                                    <p v-if="editForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ editForm.errors.phone_number }}</p>
+                                    <p class="text-xs text-slate-500 mt-1">This number will appear on ID cards</p>
                                 </div>
 
                                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">

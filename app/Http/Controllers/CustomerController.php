@@ -108,7 +108,7 @@ class CustomerController extends Controller
             'payments' => $payments,
             'isStaff' => $isStaff,
             'paymentSummary' => [
-                'tripPrice' => $trip->price,
+                'tripPrice' => $invoice->grand_total ?? $trip->price,
                 'discount' => $invoice->discount ?? 0,
                 'totalPaid' => $totalPaid,
                 'balance' => $balance,
@@ -280,5 +280,52 @@ class CustomerController extends Controller
             ],
             'already_attached' => $alreadyAttached,
         ]);
+    }
+
+    public function uploadVisa(Trip $trip, Customer $customer, Request $request)
+    {
+        $request->validate([
+            'visa' => ['required', 'file', 'mimes:pdf', 'max:10240'], // 10MB max
+        ]);
+
+        $tripCustomer = CustomerTrip::where([
+            'trip_id' => $trip->id,
+            'customer_id' => $customer->id,
+        ])->first();
+
+        if (!$tripCustomer) {
+            return redirect()->back()->withErrors(['visa' => 'Customer not found in this trip']);
+        }
+
+        // Delete old visa if exists
+        if ($tripCustomer->visa_path) {
+            \Storage::disk('public')->delete($tripCustomer->visa_path);
+        }
+
+        // Store new visa
+        $path = $request->file('visa')->store("visas/{$trip->id}", 'public');
+
+        $tripCustomer->update(['visa_path' => $path]);
+
+        return redirect()->back()->with('success', 'Visa uploaded successfully');
+    }
+
+    public function removeVisa(Trip $trip, Customer $customer)
+    {
+        $tripCustomer = CustomerTrip::where([
+            'trip_id' => $trip->id,
+            'customer_id' => $customer->id,
+        ])->first();
+
+        if (!$tripCustomer) {
+            return redirect()->back()->withErrors(['visa' => 'Customer not found in this trip']);
+        }
+
+        if ($tripCustomer->visa_path) {
+            \Storage::disk('public')->delete($tripCustomer->visa_path);
+            $tripCustomer->update(['visa_path' => null]);
+        }
+
+        return redirect()->back()->with('success', 'Visa removed successfully');
     }
 }

@@ -12,6 +12,25 @@ use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
+    /**
+     * Generate a receipt number in format INV-YYMMDD-NNN
+     */
+    private function generateReceiptNumber(): string
+    {
+        $today = now();
+        $datePrefix = $today->format('ymd');
+
+        // Count receipts created today
+        $todayCount = Payment::whereNotNull('batch_id')
+            ->whereDate('created_at', $today->toDateString())
+            ->distinct('batch_id')
+            ->count('batch_id');
+
+        $sequence = str_pad($todayCount + 1, 3, '0', STR_PAD_LEFT);
+
+        return "INV-{$datePrefix}-{$sequence}";
+    }
+
     public function store(Trip $trip, Customer $customer, Request $request)
     {
         $request->validate([
@@ -37,6 +56,7 @@ class PaymentController extends Controller
             'payment_method' => $request->payment_method,
             'transfer_reference_number' => $request->transfer_reference_number,
             'details' => $request->details ?? $trip->name,
+            'batch_id' => $this->generateReceiptNumber(),
         ]);
 
         return redirect()

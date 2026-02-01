@@ -14,12 +14,45 @@ const navItems = [
 ];
 
 const showCreateModal = ref(false);
+const showSettingsModal = ref(false);
 
 const createForm = useForm({
     name: '',
     price: '',
     departure_date: '',
+    phone_number: '',
 });
+
+const settingsForm = useForm({
+    company_address: '',
+    company_phone: '',
+});
+
+const openSettingsModal = async () => {
+    try {
+        const response = await fetch(route('settings.index'));
+        const data = await response.json();
+        settingsForm.company_address = data.company_address || '';
+        settingsForm.company_phone = data.company_phone || '';
+    } catch (error) {
+        console.error('Failed to load settings:', error);
+    }
+    showSettingsModal.value = true;
+};
+
+const closeSettingsModal = () => {
+    showSettingsModal.value = false;
+    settingsForm.clearErrors();
+};
+
+const submitSettings = () => {
+    settingsForm.put(route('settings.update'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            closeSettingsModal();
+        },
+    });
+};
 
 const isActive = (href) => {
     if (href === '/office/dashboard') {
@@ -139,6 +172,18 @@ const handleDhivehiKeydown = (event, form, field) => {
 
             <!-- Right side -->
             <div class="flex items-center gap-2">
+                <!-- Settings Button -->
+                <button
+                    type="button"
+                    @click="openSettingsModal"
+                    class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+                    title="Company Settings"
+                >
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </button>
                 <button type="button" class="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -233,6 +278,20 @@ const handleDhivehiKeydown = (event, form, field) => {
                                     <p v-if="createForm.errors.price" class="text-xs text-red-500 mt-1">{{ createForm.errors.price }}</p>
                                 </div>
 
+                                <div>
+                                    <label for="create-phone" class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number (Optional)</label>
+                                    <input
+                                        id="create-phone"
+                                        type="text"
+                                        v-model="createForm.phone_number"
+                                        placeholder="e.g. 7999065"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="createForm.errors.phone_number && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
+                                    >
+                                    <p v-if="createForm.errors.phone_number" class="text-xs text-red-500 mt-1">{{ createForm.errors.phone_number }}</p>
+                                    <p class="text-xs text-slate-500 mt-1">This number will appear on ID cards</p>
+                                </div>
+
                                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                                     <button
                                         type="button"
@@ -247,6 +306,96 @@ const handleDhivehiKeydown = (event, form, field) => {
                                         :disabled="createForm.processing"
                                     >
                                         {{ createForm.processing ? 'Creating...' : 'Create Trip' }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </Transition>
+                </div>
+            </div>
+        </Transition>
+    </Teleport>
+
+    <!-- Settings Modal -->
+    <Teleport to="body">
+        <Transition
+            enter-active-class="duration-200 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="duration-150 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
+            <div v-if="showSettingsModal" class="fixed inset-0 z-[100] overflow-y-auto">
+                <div class="flex min-h-full items-center justify-center p-4">
+                    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" @click="closeSettingsModal"></div>
+
+                    <Transition
+                        enter-active-class="duration-200 ease-out"
+                        enter-from-class="opacity-0 scale-95"
+                        enter-to-class="opacity-100 scale-100"
+                        leave-active-class="duration-150 ease-in"
+                        leave-from-class="opacity-100 scale-100"
+                        leave-to-class="opacity-0 scale-95"
+                    >
+                        <div v-if="showSettingsModal" class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+                            <div class="mb-5 flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-900">Company Settings</h3>
+                                    <p class="text-sm text-slate-500">Update company information</p>
+                                </div>
+                                <button
+                                    type="button"
+                                    @click="closeSettingsModal"
+                                    class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                                >
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <form @submit.prevent="submitSettings" class="space-y-4">
+                                <div>
+                                    <label for="company-address" class="block text-sm font-medium text-slate-700 mb-1.5">Company Address</label>
+                                    <textarea
+                                        id="company-address"
+                                        v-model="settingsForm.company_address"
+                                        rows="3"
+                                        placeholder="Enter company address"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="settingsForm.errors.company_address && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
+                                    ></textarea>
+                                    <p v-if="settingsForm.errors.company_address" class="text-xs text-red-500 mt-1">{{ settingsForm.errors.company_address }}</p>
+                                </div>
+
+                                <div>
+                                    <label for="company-phone" class="block text-sm font-medium text-slate-700 mb-1.5">Company Phone Number</label>
+                                    <input
+                                        id="company-phone"
+                                        type="text"
+                                        v-model="settingsForm.company_phone"
+                                        placeholder="e.g. 7999065"
+                                        class="w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                                        :class="settingsForm.errors.company_phone && 'border-red-300 focus:border-red-500 focus:ring-red-500/20'"
+                                    >
+                                    <p v-if="settingsForm.errors.company_phone" class="text-xs text-red-500 mt-1">{{ settingsForm.errors.company_phone }}</p>
+                                </div>
+
+                                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                                    <button
+                                        type="button"
+                                        @click="closeSettingsModal"
+                                        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        class="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700 disabled:opacity-50"
+                                        :disabled="settingsForm.processing"
+                                    >
+                                        {{ settingsForm.processing ? 'Saving...' : 'Save Changes' }}
                                     </button>
                                 </div>
                             </form>

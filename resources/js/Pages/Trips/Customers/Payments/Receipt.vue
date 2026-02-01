@@ -34,7 +34,7 @@ const formatCurrency = (value) => {
 </script>
 
 <template>
-    <Head :title="`Receipt #${payment?.id}`" />
+    <Head :title="`Receipt - ${payment?.batch_id || payment?.id}`" />
 
     <div class="min-h-screen bg-white flex items-start justify-center p-6 print:p-0 print:items-start">
         <!-- A5 Receipt Container: 148mm x 210mm -->
@@ -46,7 +46,7 @@ const formatCurrency = (value) => {
                     <div class="text-sm space-y-1">
                         <p>
                             <span class="text-slate-500">ރަސީދު ނަންބަރު:</span>
-                            <span class="font-semibold mr-1">{{ payment?.id }}</span>
+                            <span class="font-semibold mr-1" dir="ltr">{{ payment?.batch_id || payment?.id }}</span>
                         </p>
                         <p>
                             <span class="text-slate-500">ތާރީޚް:</span>
@@ -60,7 +60,7 @@ const formatCurrency = (value) => {
 
                     <!-- Center - Title -->
                     <div class="text-center flex-1 px-4">
-                        <h1 class="text-lg font-bold text-emerald-700">ފައިސާ ބަލައިގަތް ރަސީދު</h1>
+                        <h1 class="text-lg font-bold">ފައިސާ ބަލައިގަތް ރަސީދު</h1>
                     </div>
 
                     <!-- Logo (Left side in RTL) -->
@@ -99,7 +99,7 @@ const formatCurrency = (value) => {
                     <div class="flex-1 space-y-3">
                         <div>
                             <span class="text-sm text-slate-500">އަދަދު:</span>
-                            <p class="text-2xl font-bold text-red-600" dir="ltr">{{ formatCurrency(payment?.amount) }}</p>
+                            <p class="text-2xl font-bold" dir="ltr">{{ formatCurrency(payment?.amount) }}</p>
                         </div>
                         <div>
                             <span class="text-sm text-slate-500">ބާކީ:</span>
