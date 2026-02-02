@@ -22,13 +22,23 @@ defineProps({
         default: () => ({
             responsive: true,
             maintainAspectRatio: false,
+            cutout: '70%',
             animation: {
-                duration: 1000,
+                duration: 750,
                 easing: 'easeOutQuart',
             },
             plugins: {
                 legend: {
-                    position: 'right',
+                    display: false,
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleColor: '#f8fafc',
+                    bodyColor: '#cbd5e1',
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: true,
+                    boxPadding: 4,
                 },
             },
         }),
